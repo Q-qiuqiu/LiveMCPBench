@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 INPUT_QUERIES_FILE = "./baseline/data/example_queries.json"
 CONVERSATION_RESULTS_FILE = f"./baseline/output/{os.getenv('MODEL', 'None').replace('/', '_')}_{os.getenv('EMBEDDING_MODEL', 'None').replace('/', '_')}.json"
-
+TOOLS_FILE = "./tools/LiveMCPTool/tools.json"
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -43,17 +43,63 @@ def parse_args():
         default=CONVERSATION_RESULTS_FILE,
         help="Path to the output conversation results file.",
     )
+    parser.add_argument(
+        "--tools_path",
+        type=str,
+        default=TOOLS_FILE,   # 默认值
+        help="Path to the tools.json file.",
+    )
+    parser.add_argument(
+        "--max_tools",
+        type=int,
+        default=None,
+        help="Maximum number of tools to load from tools.json. If None, load all.",
+)
     return parser.parse_args()
+
+def build_system_prompt(tools_file: str, max_tools: Optional[int] = None) -> str:
+    """把所有工具简介拼成系统 prompt，LLM 会通过 execute 调用具体工具"""
+    with open(tools_file, "r", encoding="utf-8") as f:
+        tools_data = json.load(f)
+
+        # 系统提示开头
+    prompt_lines = [
+        "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
+        "Important rules:\n"
+        "1. You have access to a single execution tool called 'execute-tool'. You must always use this tool to invoke any of the available MCP tools.\n"
+        "2. Never call MCP tools directly. Always select the appropriate tool and call it via 'execute-tool'.\n"
+        "3. Provide accurate and complete responses to the user. You can combine multiple tool calls if necessary, but respond to the user only once.\n"
+        "4. For each tool call, specify:\n"
+        "   - server_name: the MCP server hosting the target tool\n"
+        "   - tool_name: the name of the target tool\n"
+        "   - params: a dictionary of input parameters for the tool\n\n"
+        "Available MCP tools (choose from these, but always call via 'execute-tool'):\n"
+    ]
+    total_count = 0
+    for tool_entry in tools_data:
+        for server_id, server in tool_entry.get("tools", {}).items():
+            for tool in server.get("tools", []):
+
+                line = f"- {tool['name']} (server: {server_id}): {tool['description']}. Input: {json.dumps(tool['inputSchema']['properties'])}"
+                prompt_lines.append(line)
+                total_count += 1
+                if max_tools is not None and total_count >= max_tools:
+                    #prompt_lines.append(f"...and {len(tools_data) - total_count} more tools truncated")
+                    logger.info(f"Loaded {total_count} tools from {tools_file}")
+                    return "\n".join(prompt_lines)
+    logger.info(f"Loaded {total_count} tools from {tools_file}")
+    return "\n".join(prompt_lines)
 
 
 class LoggingMCPClient(MCPClient):
-    def __init__(self):
+    def __init__(self,tools_file: str = TOOLS_FILE,max_tools: Optional[int] = None):
         super().__init__(timeout=180, max_sessions=9999)
         self.chat_model = ChatModel(
             model_name=os.getenv("MODEL"),
             api_key=os.getenv("OPENAI_API_KEY"),
             model_url=os.getenv("BASE_URL"),
         )
+        self.system_prompt  = build_system_prompt(tools_file, max_tools)
 
     async def connect_copilot(self):
         if "mcp-copilot" not in self.sessions:
@@ -79,11 +125,7 @@ class LoggingMCPClient(MCPClient):
             messages = [
                 {
                     "role": "system",
-                    "content": """\
-You are an agent designed to assist users with daily tasks by using external tools. You have access to two tools: a retrieval tool and an execution tool. The retrieval tool allows you to search a large toolset for relevant tools, and the execution tool lets you invoke the tools you retrieved. Whenever possible, you should use these tools to get accurate, up-to-date information and to perform file operations.
-
-Note that you can only response to user once, so you should try to provide a complete answer in your response.
-""",
+                    "content": self.system_prompt
                 }
             ]
         else:
@@ -92,38 +134,45 @@ Note that you can only response to user once, so you should try to provide a com
         messages.append({"role": "user", "content": query})
 
         available_tools = []
+
         for server in self.sessions:
             session = self.sessions[server]
             assert isinstance(session, ClientSession), (
                 "Session must be an instance of ClientSession"
             )
             response = await session.list_tools()
-            available_tools += [
-                {
-                    "type": "function",
-                    "function": {
-                        "name": tool.name,
-                        "description": tool.description,
-                        "parameters": tool.inputSchema,
-                    },
-                }
-                for tool in response.tools
-            ]
+            for tool in response.tools:
+                if tool.name != "execute-tool":
+                    continue  # 跳过 route 或其他工具
+                available_tools += [
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": tool.name,
+                            "description": tool.description,
+                            "parameters": tool.inputSchema,
+                        },
+                    }
+                ]
+
         final_text = []
         stop_flag = False
         try:
-            while not stop_flag:
+            while True:
                 request_payload = {
                     "messages": messages,
                     "tools": available_tools,
                 }
+
+
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
                     raise Exception(
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
                     )
-
                 response_message = response.choices[0].message
+
+                
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -131,7 +180,9 @@ Note that you can only response to user once, so you should try to provide a com
                             tool_call.id = str(uuid.uuid4())
                         tool_call_list.append(tool_call)
                     response_message.tool_calls = tool_call_list
+
                 messages.append(response_message.model_dump(exclude_none=True))
+                
                 content = response_message.content
                 if (
                     content
@@ -162,9 +213,12 @@ Note that you can only response to user once, so you should try to provide a com
                                 f"LLM is calling tool: {tool_name}({tool_args})"
                             )
                             # timeout
+
                             result = await asyncio.wait_for(
-                                session.call_tool(tool_name, tool_args), timeout=300
+                                session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
                             )
+
+
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
@@ -197,7 +251,7 @@ async def main(args):
     with open(args.input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     logger.info(f"len(queries): {len(data)}")
-    client = LoggingMCPClient()
+    client = LoggingMCPClient(args.tools_path,args.max_tools)
     await client.connect_copilot()
     if os.path.exists(args.output_path):
         with open(args.output_path, "r", encoding="utf-8") as f:
