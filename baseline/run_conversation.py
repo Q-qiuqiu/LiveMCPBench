@@ -29,6 +29,7 @@ INPUT_QUERIES_FILE = "./baseline/data/example_queries.json"
 CONVERSATION_RESULTS_FILE = f"./baseline/output/{os.getenv('MODEL', 'None').replace('/', '_')}_{os.getenv('EMBEDDING_MODEL', 'None').replace('/', '_')}.json"
 TOOLS_FILE = "./tools/LiveMCPTool/tools.json"
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -50,6 +51,12 @@ def parse_args():
         help="Path to the tools.json file.",
     )
     parser.add_argument(
+        "--insert_number",
+        type=int,
+        default=0,
+        help="Insert ground-truth tools after N tools (0 = insert at beginning).",
+    )
+    parser.add_argument(
         "--max_tools",
         type=int,
         default=None,
@@ -57,12 +64,46 @@ def parse_args():
 )
     return parser.parse_args()
 
-def build_system_prompt(tools_file: str, max_tools: Optional[int] = None) -> str:
-    """把所有工具简介拼成系统 prompt，LLM 会通过 execute 调用具体工具"""
+def parse_answer_tools(entry):
+    """
+    从 entry 中解析出正确答案工具列表
+    """
+    tools_text = entry["Annotator Metadata"]["Tools"]
+    answer_tools = []
+    for line in tools_text.splitlines():
+        # 形如 "1. get-weread-rank"
+        parts = line.split(".", 1)
+        if len(parts) == 2:
+            tool_name = parts[1].strip()
+            answer_tools.append(tool_name)
+    return answer_tools
+
+
+def build_system_prompt(tools_file: str, 
+                        answer_tools: List[str],
+                        max_tools: Optional[int] = None, 
+                        task_index:int=0,   
+                        insert_number: int = 0) -> str:
+    """
+    把所有工具简介拼成系统 prompt，LLM 会通过 execute-tool 调用具体工具。
+    如果 skip_tools 中包含的工具，就跳过注入，避免暴露“正确答案”。
+    """
+
     with open(tools_file, "r", encoding="utf-8") as f:
         tools_data = json.load(f)
+    # 构建工具映射: tool_name -> 工具对象
+    tools_map = {}
+    for entry in tools_data:
+        for server_id, server in entry.get("tools", {}).items():
+            for tool in server.get("tools", []):
+                tools_map[tool["name"]] = {
+                    "server_id": server_id,
+                    "description": tool.get("description", ""),
+                    "inputSchema": tool.get("inputSchema", {"type":"object","properties":{}})
+                }
+    logger.info(f"Ground-truth tools: {answer_tools}")
 
-        # 系统提示开头
+    # 系统提示开头
     prompt_lines = [
         "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
         "Important rules:\n"
@@ -76,30 +117,90 @@ def build_system_prompt(tools_file: str, max_tools: Optional[int] = None) -> str
         "Available MCP tools (choose from these, but always call via 'execute-tool'):\n"
     ]
     total_count = 0
+    answers_number = len(answer_tools)
+    inserted = False
+    max_other_tools = None
+    if max_tools is not None:
+        max_other_tools = max_tools - answers_number
+        if max_other_tools < 0:
+            raise ValueError(
+                f"max_tools={max_tools} 太小，不够容纳标准答案 {answers_number} 个"
+            )
+        
     for tool_entry in tools_data:
         for server_id, server in tool_entry.get("tools", {}).items():
             for tool in server.get("tools", []):
+                tool_name = tool["name"]
+                if tool_name in answer_tools:  # 过滤掉“正确答案”
+                    logger.info(f"Skipping tool {tool_name} (marked as correct answer)")
+                    continue
 
-                line = f"- {tool['name']} (server: {server_id}): {tool['description']}. Input: {json.dumps(tool['inputSchema']['properties'])}"
+                # 插入标准答案工具
+                if not inserted and total_count >= insert_number:
+                    for i, ans_tool_name in enumerate(answer_tools):
+                        if ans_tool_name in tools_map:
+                            t = tools_map[ans_tool_name]
+                            t_props = t.get("inputSchema", {}).get("properties", {})#防止格式异常，有些工具的inputSchema选项为空
+                            prompt_lines.append(
+                                f"- {ans_tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(t_props)}"
+                            )
+                            #logger.info(f"insert tool {ans_tool_name} ")
+
+                           # 只记录第一个标准答案工具
+                            if i == 0:
+                                with open("answer_tools.txt", "a", encoding="utf-8") as f:
+                                    f.write(f"{task_index}."+f"{ans_tool_name}\n")
+                        else:
+                            # 万一找不到对应工具，用占位
+                            prompt_lines.append(f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}")
+                    inserted = True
+                if max_other_tools is not None and total_count >= max_other_tools:
+                    # 如果还没插入过答案，则现在必须插
+                    if not inserted:
+                        for ans_tool_name in answer_tools:
+                            if ans_tool_name in tools_map:
+                                t = tools_map[ans_tool_name]
+                                prompt_lines.append(
+                                    f"- {ans_tool_name} (server: {t['server_id']}): "
+                                    f"{t['description']}. Input: {json.dumps(t['inputSchema']['properties'])}"
+                                )
+                                #logger.info(f"insert tool {ans_tool_name} ")
+                            else:
+                                prompt_lines.append(
+                                    f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}"
+                                )
+                        inserted = True
+                    return "\n".join(prompt_lines)
+            
+                #插入备选工具
+                input_props = tool.get("inputSchema", {}).get("properties", {})
+                line = f"- {tool['name']} (server: {server_id}): {tool['description']}. Input: {json.dumps(input_props)}"
+
                 prompt_lines.append(line)
                 total_count += 1
+                #logger.info(f"insert tool {tool_name} ")
+                
+
                 if max_tools is not None and total_count >= max_tools:
-                    #prompt_lines.append(f"...and {len(tools_data) - total_count} more tools truncated")
                     logger.info(f"Loaded {total_count} tools from {tools_file}")
                     return "\n".join(prompt_lines)
+                
+     # 如果正确答案未插入，警报
+    if not inserted and answer_tools:
+        logger.error(f"Please attention the answer position and the tools number!")
+
     logger.info(f"Loaded {total_count} tools from {tools_file}")
     return "\n".join(prompt_lines)
 
 
 class LoggingMCPClient(MCPClient):
-    def __init__(self,tools_file: str = TOOLS_FILE,max_tools: Optional[int] = None):
+    def __init__(self):
         super().__init__(timeout=180, max_sessions=9999)
         self.chat_model = ChatModel(
             model_name=os.getenv("MODEL"),
             api_key=os.getenv("OPENAI_API_KEY"),
             model_url=os.getenv("BASE_URL"),
         )
-        self.system_prompt  = build_system_prompt(tools_file, max_tools)
 
     async def connect_copilot(self):
         if "mcp-copilot" not in self.sessions:
@@ -118,6 +219,11 @@ class LoggingMCPClient(MCPClient):
     async def process_query(
         self,
         query: str,
+        answer_tools: list,
+        tools_file: str = TOOLS_FILE,
+        max_tools: Optional[int] = None,
+        insert_number: int = 0,
+        task_index: int = 0,
         history: Optional[list] = None,
         max_tool_tokens: int = 10000,
     ) -> Tuple[str, List[dict]]:
@@ -125,15 +231,15 @@ class LoggingMCPClient(MCPClient):
             messages = [
                 {
                     "role": "system",
-                    "content": self.system_prompt
+                    "content": build_system_prompt(tools_file,answer_tools,max_tools,task_index,insert_number)
                 }
             ]
         else:
             messages = history.copy()
 
         messages.append({"role": "user", "content": query})
-
         available_tools = []
+
 
         for server in self.sessions:
             session = self.sessions[server]
@@ -158,12 +264,11 @@ class LoggingMCPClient(MCPClient):
         final_text = []
         stop_flag = False
         try:
-            while True:
+            while not stop_flag:
                 request_payload = {
                     "messages": messages,
                     "tools": available_tools,
                 }
-
 
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
@@ -172,7 +277,7 @@ class LoggingMCPClient(MCPClient):
                     )
                 response_message = response.choices[0].message
 
-                
+                tool_names_selected = []#保存大模型筛选的工具名称
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -180,9 +285,15 @@ class LoggingMCPClient(MCPClient):
                             tool_call.id = str(uuid.uuid4())
                         tool_call_list.append(tool_call)
                     response_message.tool_calls = tool_call_list
+                    args = json.loads(tool_call.function.arguments)
+                    tool_name = args.get("tool_name")
+                    if tool_name:
+                        tool_names_selected.append(tool_name)
 
+                final_text = ["[Skipped tool execution]"]
                 messages.append(response_message.model_dump(exclude_none=True))
-                
+
+            
                 content = response_message.content
                 if (
                     content
@@ -190,6 +301,9 @@ class LoggingMCPClient(MCPClient):
                     and not response_message.function_call
                 ):
                     final_text.append(content)
+                    # 写入日志文件
+                    with open("selected_tools.txt", "a", encoding="utf-8") as f:
+                        f.write(f"{task_index}.no chose" + "\n")
                     stop_flag = True
                 else:
                     tool_calls = response_message.tool_calls
@@ -200,34 +314,41 @@ class LoggingMCPClient(MCPClient):
                         break
 
                     for tool_call in tool_calls:
-                        try:
-                            tool_name = tool_call.function.name
-                            tool_args = json.loads(tool_call.function.arguments)
-                            tool_id = tool_call.id
+                    
+                        tool_name = tool_call.function.name
+                        tool_args = json.loads(tool_call.function.arguments)
+                        tool_id = tool_call.id
                             # There is only one server in our method
                             # We use mcp-copilot to route the servers
-                            server_id = "mcp-copilot"
-                            session = self.sessions[server_id]
+                            # server_id = "mcp-copilot"
+                            # session = self.sessions[server_id]
 
-                            logger.info(
-                                f"LLM is calling tool: {tool_name}({tool_args})"
-                            )
+                            # logger.info(
+                            #     f"LLM is calling tool: {tool_name}({tool_args})"
+                            # )
+
+                        logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
+                        # 写入日志文件
+                        with open("selected_tools.txt", "a", encoding="utf-8") as f:
+                                f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
+                        stop_flag = True
+                        break
                             # timeout
 
-                            result = await asyncio.wait_for(
-                                session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
-                            )
+                            # result = await asyncio.wait_for(
+                            #     session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
+                            # )
 
 
-                        except asyncio.TimeoutError:
-                            logger.error(f"Tool call {tool_name} timed out.")
-                            result = "Tool call timed out."
-                            await self.cleanup_server("mcp-copilot")
-                            await self.connect_copilot()
-                        except Exception as e:
-                            logger.error(f"Error calling tool {tool_name}: {e}")
-                            result = f"Error: {str(e)}"
-                        result = str(result)
+                        # except asyncio.TimeoutError:
+                        #     logger.error(f"Tool call {tool_name} timed out.")
+                        #     result = "Tool call timed out."
+                        #     await self.cleanup_server("mcp-copilot")
+                        #     await self.connect_copilot()
+                        # except Exception as e:
+                        #     logger.error(f"Error calling tool {tool_name}: {e}")
+                        #     result = f"Error: {str(e)}"
+                        result = str("[Skipped tool execution]")
                         result = result[:max_tool_tokens]
                         messages.append(
                             {
@@ -240,6 +361,9 @@ class LoggingMCPClient(MCPClient):
             logger.error(f"Error processing query '{query}': {e}")
             final_text.append(f"Error: {str(e)}")
             messages.append({"role": "assistant", "content": str(e)})
+            # 写入日志文件
+            with open("selected_tools.txt", "a", encoding="utf-8") as f:
+                f.write(f"{task_index}.error" + "\n")
         self.history = messages
         return "\n".join(final_text), messages
 
@@ -251,7 +375,7 @@ async def main(args):
     with open(args.input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     logger.info(f"len(queries): {len(data)}")
-    client = LoggingMCPClient(args.tools_path,args.max_tools)
+    client = LoggingMCPClient()
     await client.connect_copilot()
     if os.path.exists(args.output_path):
         with open(args.output_path, "r", encoding="utf-8") as f:
@@ -262,14 +386,21 @@ async def main(args):
         exist_ids = set()
     error_queries = set()
     try:
-        for entry in tqdm(data):
+        for idx, entry in tqdm(enumerate(data), total=len(data)):
             task_id = entry["task_id"]
             if task_id in exist_ids:
                 continue
             query = entry["Question"]
             logger.info(f"{query}")
+            # 从 entry 解析出答案工具
+            answer_tools = parse_answer_tools(entry)
             try:
-                response, messages = await client.process_query(query, None)
+                response, messages = await client.process_query(query=query,
+                                                                 answer_tools=answer_tools,
+                                                                 tools_file=TOOLS_FILE,
+                                                                 max_tools=args.max_tools,
+                                                                 insert_number=args.insert_number,
+                                                                 task_index=idx )
                 logger.info(f"{response}")
                 entry["response"] = response
                 entry["messages"] = messages
