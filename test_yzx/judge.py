@@ -34,8 +34,8 @@ def compute_accuracy(ground_truth, predicted):
 
 
 if __name__ == "__main__":
-    gt_file = "answer_tools.txt"
-    pred_file = "selected_tools.txt"
+    gt_file = "./test_yzx/answer_tools.txt"
+    pred_file = "./test_yzx/selected_tools.txt"
 
     gt_tools = parse_tool_log(gt_file)
     pred_tools = parse_tool_log(pred_file)

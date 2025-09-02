@@ -147,9 +147,9 @@ def build_system_prompt(tools_file: str,
                             #logger.info(f"insert tool {ans_tool_name} ")
 
                            # 只记录第一个标准答案工具
-                            if i == 0:
-                                with open("answer_tools.txt", "a", encoding="utf-8") as f:
-                                    f.write(f"{task_index}."+f"{ans_tool_name}\n")
+                            # if i == 0:
+                            #     with open("answer_tools.txt", "a", encoding="utf-8") as f:
+                            #         f.write(f"{task_index}."+f"{ans_tool_name}\n")
                         else:
                             # 万一找不到对应工具，用占位
                             prompt_lines.append(f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}")
@@ -302,7 +302,7 @@ class LoggingMCPClient(MCPClient):
                 ):
                     final_text.append(content)
                     # 写入日志文件
-                    with open("selected_tools.txt", "a", encoding="utf-8") as f:
+                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                         f.write(f"{task_index}.no chose" + "\n")
                     stop_flag = True
                 else:
@@ -329,7 +329,7 @@ class LoggingMCPClient(MCPClient):
 
                         logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
                         # 写入日志文件
-                        with open("selected_tools.txt", "a", encoding="utf-8") as f:
+                        with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                 f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
                         stop_flag = True
                         break
@@ -362,9 +362,9 @@ class LoggingMCPClient(MCPClient):
             final_text.append(f"Error: {str(e)}")
             messages.append({"role": "assistant", "content": str(e)})
             # 写入日志文件
-            with open("selected_tools.txt", "a", encoding="utf-8") as f:
+            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                 f.write(f"{task_index}.error" + "\n")
-        self.history = messages
+        #self.history = messages
         return "\n".join(final_text), messages
 
 
