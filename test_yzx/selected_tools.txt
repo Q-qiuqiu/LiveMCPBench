@@ -1,24 +1,9 @@
 0.get-weread-rank
 1.load
-2.error
+2.geocode_address
 3.valorant-meta-characters
 4.suggest_meeting_point
-5.get-douyin-trending
+5.get-gcores-new
 6.search_papers
 7.whois_domain
-8.geocode_address
-9.get_historical_stock_prices
-10.trial_getter
-11.error
-12.buildBaziFromSolarDatetime
-13.get-daily-challenge
-14.list-components
-15.excel_read_sheet
-16.get_github_trending_repositories
-17.no chose
-18.research-with-keywords
-19.bing_search
-20.get-36kr-trending
-21.get-smzdm-rank
-22.deepwiki_fetch
-23.drawing_generateCanvas
+8.get_route_directions

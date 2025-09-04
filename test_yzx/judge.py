@@ -48,6 +48,4 @@ if __name__ == "__main__":
     for i, (gt, pred) in enumerate(zip(gt_tools, pred_tools)):
         print(f"{i}: {gt} | {pred} | {'✔' if gt==pred else '✘'}")
 
-    print(f"Total tools: {total}")
-    print(f"Correctly predicted: {correct_count}")
-    print(f"Accuracy: {accuracy:.2%}")
+    print(f"Accuracy: {accuracy:.2%}({correct_count}/{total})")

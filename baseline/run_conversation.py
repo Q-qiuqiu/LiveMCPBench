@@ -277,7 +277,6 @@ class LoggingMCPClient(MCPClient):
                     )
                 response_message = response.choices[0].message
 
-                tool_names_selected = []#保存大模型筛选的工具名称
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -285,15 +284,10 @@ class LoggingMCPClient(MCPClient):
                             tool_call.id = str(uuid.uuid4())
                         tool_call_list.append(tool_call)
                     response_message.tool_calls = tool_call_list
-                    args = json.loads(tool_call.function.arguments)
-                    tool_name = args.get("tool_name")
-                    if tool_name:
-                        tool_names_selected.append(tool_name)
 
                 final_text = ["[Skipped tool execution]"]
                 messages.append(response_message.model_dump(exclude_none=True))
 
-            
                 content = response_message.content
                 if (
                     content
@@ -313,26 +307,26 @@ class LoggingMCPClient(MCPClient):
                         )
                         break
 
+
                     for tool_call in tool_calls:
-                    
-                        tool_name = tool_call.function.name
-                        tool_args = json.loads(tool_call.function.arguments)
-                        tool_id = tool_call.id
-                            # There is only one server in our method
-                            # We use mcp-copilot to route the servers
-                            # server_id = "mcp-copilot"
-                            # session = self.sessions[server_id]
+                        try:
+                            tool_name = tool_call.function.name
+                            tool_args = json.loads(tool_call.function.arguments)
+                            tool_id = tool_call.id
+                                # There is only one server in our method
+                                # We use mcp-copilot to route the servers
+                                # server_id = "mcp-copilot"
+                                # session = self.sessions[server_id]
 
-                            # logger.info(
-                            #     f"LLM is calling tool: {tool_name}({tool_args})"
-                            # )
-
-                        logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
-                        # 写入日志文件
-                        with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
-                        stop_flag = True
-                        break
+                                # logger.info(
+                                #     f"LLM is calling tool: {tool_name}({tool_args})"
+                                # )
+                            logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
+                            # 写入日志文件
+                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                    f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
+                            stop_flag = True
+                            break
                             # timeout
 
                             # result = await asyncio.wait_for(
@@ -340,30 +334,42 @@ class LoggingMCPClient(MCPClient):
                             # )
 
 
-                        # except asyncio.TimeoutError:
-                        #     logger.error(f"Tool call {tool_name} timed out.")
-                        #     result = "Tool call timed out."
-                        #     await self.cleanup_server("mcp-copilot")
-                        #     await self.connect_copilot()
-                        # except Exception as e:
-                        #     logger.error(f"Error calling tool {tool_name}: {e}")
-                        #     result = f"Error: {str(e)}"
-                        result = str("[Skipped tool execution]")
-                        result = result[:max_tool_tokens]
-                        messages.append(
-                            {
-                                "role": "tool",
-                                "tool_call_id": tool_id,
-                                "content": str(result),
-                            }
-                        )
+                        except asyncio.TimeoutError:
+                            logger.error(f"Tool call {tool_name} timed out.")
+                            result = "Tool call timed out."
+                            # await self.cleanup_server("mcp-copilot")
+                            # await self.connect_copilot()
+                            # 写入日志文件
+                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                f.write(f"{task_index}.{tool_name}" + "\n")
+                            stop_flag = True
+                            break
+                        except Exception as e:
+                            logger.error(f"Error calling tool {tool_name}: {e}")
+                            result = f"Error: {str(e)}"
+                            # 写入日志文件
+                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                f.write(f"{task_index}.{tool_name}" + "\n")
+                            stop_flag = True
+                            break
+                        # result = str("[Skipped tool execution]")
+                        # result = result[:max_tool_tokens]
+                        # messages.append(
+                        #     {
+                        #         "role": "tool",
+                        #         "tool_call_id": tool_id,
+                        #         "content": str(result),
+                        #     }
+                        #)
         except Exception as e:
-            logger.error(f"Error processing query '{query}': {e}")
-            final_text.append(f"Error: {str(e)}")
+            error_traceback = traceback.format_exc()
+            logger.error(f"Error occurred at: {error_traceback}")
+            logger.error(f"Error processing query '{query}': {e} response_message: {response_message}")
+            final_text.append(f"Error: {str(e)} ")
             messages.append({"role": "assistant", "content": str(e)})
             # 写入日志文件
             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                f.write(f"{task_index}.error" + "\n")
+                f.write(f"{task_index}.error content: {str(e)}" + "\n")
         #self.history = messages
         return "\n".join(final_text), messages
 

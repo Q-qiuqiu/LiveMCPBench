@@ -2,8 +2,8 @@
 # run_baseline_loop.sh
 
 # 定义参数数组
-max_tools_list=(100 150 200 300 350 400 450 500 )
-insert_numbers=(0 30 50 70 90 )
+max_tools_list=(350)
+insert_numbers=(250 300 340)
 
 # 计数器
 total_runs=$(( ${#max_tools_list[@]} * ${#insert_numbers[@]} ))
@@ -43,7 +43,8 @@ for max_tools in "${max_tools_list[@]}"; do
             python3 ./test_yzx/judge.py 2>&1 | tee -a "$LOG_FILE"
             
             if [ $? -eq 0 ]; then
-                echo "judge.py执行完成" | tee -a "$LOG_FILE"
+
+                echo "参数max_tools=$max_tools, insert_number=$insert_number judge完成" | tee -a "$LOG_FILE"
             else
                 echo "judge.py执行失败" | tee -a "$LOG_FILE"
             fi
