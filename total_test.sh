@@ -2,8 +2,8 @@
 # run_baseline_loop.sh
 
 # 定义参数数组
-max_tools_list=(350)
-insert_numbers=(250 300 340)
+max_tools_list=(450)
+insert_numbers=(440)
 
 # 计数器
 total_runs=$(( ${#max_tools_list[@]} * ${#insert_numbers[@]} ))

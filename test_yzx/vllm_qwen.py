@@ -59,5 +59,3 @@ response = client.chat.completions.create(
     ],
     temperature=0.7,
 )
-
-print(response.choices[0].message.content)

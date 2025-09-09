@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
 
     # 可选：打印逐条匹配情况
-    for i, (gt, pred) in enumerate(zip(gt_tools, pred_tools)):
-        print(f"{i}: {gt} | {pred} | {'✔' if gt==pred else '✘'}")
+    # for i, (gt, pred) in enumerate(zip(gt_tools, pred_tools)):
+    #     print(f"{i}: {gt} | {pred} | {'✔' if gt==pred else '✘'}")
 
     print(f"Accuracy: {accuracy:.2%}({correct_count}/{total})")
