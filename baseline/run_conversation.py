@@ -11,7 +11,8 @@ from mcp import ClientSession
 from tqdm import tqdm
 import argparse
 import uuid
-
+import re
+import yaml
 from utils.clogger import _set_logger
 from utils.llm_api import ChatModel
 from utils.mcp_client import MCPClient
@@ -192,6 +193,53 @@ def build_system_prompt(tools_file: str,
     logger.info(f"Loaded {total_count} tools from {tools_file}")
     return "\n".join(prompt_lines)
 
+def reorder_tools(response, answer_tools: list[str], insert_index: int) -> str:
+    """
+    调整 matched_tools 的顺序，把所有正确答案工具移动到 target_index 开始的位置。
+    其他工具保持原顺序。
+    
+    response: 大模型返回的原始字符串
+    answer_tools: 正确答案工具名列表，例如 ["mfcc", "chroma_cqt"]
+    insert_index: 正确答案工具放置的位置 (0 表示第一个)
+    """
+    text = response.content[0].text
+    # 提取 matched_tools 下的所有工具块
+    tool_pattern = r"(?m)^- server_name:.*?(?=^-\sserver_name:|\Z)"
+    tools = re.findall(tool_pattern, text, flags=re.S)
+    if not tools:
+        return response  # 没有工具，直接返回
+    
+    # 分离正确答案工具 & 其他
+    matched = [t for t in tools if any(f"tool_name: {ans}" in t for ans in answer_tools)]
+    remaining = [t for t in tools if t not in matched]
+
+    # 新顺序
+    new_tools = remaining.copy()
+    if insert_index < 0:
+        insert_index = 0
+    if insert_index > len(remaining):
+        insert_index = len(remaining)
+    new_tools[insert_index:insert_index] = matched
+
+
+    # 拼回文本（替换原 matched_tools 部分）
+    new_text = re.sub(r"matched_tools:\n.*", "matched_tools:\n" + "\n".join(new_tools), text, flags=re.S)
+
+    # 替换 response 内部的 text
+    response.content[0].text = new_text
+    return response
+
+def show_tools(response, log_text):
+    # 获取 text 内容
+    if hasattr(response, "content") and len(response.content) > 0:
+        text = response.content[0].text
+    else:
+        raise ValueError("CallToolResult 对象中没有 content 或为空") 
+    matched_tools_yaml = "\n".join(text.split("matched_tools:")[1].splitlines())
+
+    # 加载为 Python 对象
+    tools_list = yaml.safe_load(matched_tools_yaml)
+    print(f"{log_text} tools: {[tool['tool_name'] for tool in tools_list]}")
 
 class LoggingMCPClient(MCPClient):
     def __init__(self):
@@ -234,7 +282,7 @@ class LoggingMCPClient(MCPClient):
                     "content": """\
 You are an agent designed to assist users with daily tasks by using external tools. You have access to two tools: a retrieval tool and an execution tool. The retrieval tool allows you to search a large toolset for relevant tools, and the execution tool lets you invoke the tools you retrieved. Whenever possible, you should use these tools to get accurate, up-to-date information and to perform file operations.
 
-Note that you can only response to user once, so you should try to provide a complete answer in your response.
+Note that you can only response to user once and only use the retrieval tool once, so you should try to provide a complete answer in your response.
 """,
                 }
             ]
@@ -244,31 +292,56 @@ Note that you can only response to user once, so you should try to provide a com
         messages.append({"role": "user", "content": query})
        
         available_tools = []
+        available_tools_exec_only = []
         for server in self.sessions:
             session = self.sessions[server]
             assert isinstance(session, ClientSession), (
                 "Session must be an instance of ClientSession"
             )
             response = await session.list_tools()
-            available_tools += [
-                {
-                    "type": "function",
-                    "function": {
-                        "name": tool.name,
-                        "description": tool.description,
-                        "parameters": tool.inputSchema,
-                    },
-                }
-                for tool in response.tools
-            ]
-
+            for tool in response.tools:
+                available_tools += [
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": tool.name,
+                            "description": tool.description,
+                            "parameters": tool.inputSchema,
+                        },
+                    }
+                ]
+                # 新增：仅包含 execute-tool 的工具列表 + 当前工具列表
+                if tool.name == "execute-tool":
+                    available_tools_exec_only += [
+                        {
+                            "type": "function",
+                            "function": {
+                                "name": tool.name,
+                                "description": tool.description,
+                                "parameters": tool.inputSchema,
+                            },
+                        }
+                    ]
+        routed = False
         final_text = []
         stop_flag = False
         try:
             while not stop_flag:
+                #只使用一次route
+                if not routed:
+                    current_tools = available_tools
+                    messages_to_send = messages.copy()
+                else:
+                    current_tools = available_tools_exec_only
+                    system_prompt = """You have already retrieved the tools. 
+                Do not call the retrieval tool again. 
+                You may only call the execution tool ('execute-tool') to perform any actions."""
+                    messages_to_send = [{"role": "system", "content": system_prompt}] + [
+                        m for m in messages if m["role"] == "user"
+                    ]
                 request_payload = {
-                    "messages": messages,
-                    "tools": available_tools,
+                    "messages": messages_to_send,
+                    "tools": current_tools,
                 }
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
@@ -276,7 +349,9 @@ Note that you can only response to user once, so you should try to provide a com
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
                     )
                 response_message = response.choices[0].message
-
+                # 第一次循环结束就标记 routed=True
+                if not routed:
+                    routed = True
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -286,7 +361,7 @@ Note that you can only response to user once, so you should try to provide a com
                     response_message.tool_calls = tool_call_list
 
                 messages.append(response_message.model_dump(exclude_none=True))
-
+               
                 content = response_message.content
                 if (
                     content
@@ -294,9 +369,10 @@ Note that you can only response to user once, so you should try to provide a com
                     and not response_message.function_call
                 ):
                     final_text.append(content)
-                    # # 写入日志文件
-                    # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                    #     f.write(f"{task_index}.no chose" + "\n")
+                    # 写入日志文件
+                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                        f.write(f"{task_index}.no chose" + "\n")
+                    logger.info(f"LLM is calling mcp-tool: no chose")
                     stop_flag = True
                 else:
                     tool_calls = response_message.tool_calls
@@ -318,38 +394,46 @@ Note that you can only response to user once, so you should try to provide a com
                             logger.info(
                                 f"LLM is calling tool: {tool_name}({tool_args})"
                             )
-                            # logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
-                            # 写入日志文件
-                            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                            #         f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
-                            # stop_flag = True
-                            # break
+
                             # timeout
-                            # if tool_name == "execute-tool":
-                            #     print("skip tool execution")
-                            
+                            if tool_name == "execute-tool":
+                                print("skip tool execution")
+                                logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
+                                # 写入日志文件
+                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
+                                result= "skip tool execution"
+                                stop_flag = True
+                                break
+                    
                             result = await asyncio.wait_for(
                                 session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
                             )
-                            print ("LLM response:", result)
+                        
+                            show_tools(result,"RAG")
+                            result = reorder_tools(result, answer_tools, insert_number)
+                            
+                            print("Answer tools:", answer_tools)
+                            show_tools(result,"Reordered")
+
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
-                            await self.cleanup_server("mcp-copilot")
-                            await self.connect_copilot()
-                            # 写入日志文件
-                            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                            #     f.write(f"{task_index}.{tool_name}" + "\n")
-                            # stop_flag = True
-                            # break
+                            # await self.cleanup_server("mcp-copilot")
+                            # await self.connect_copilot()
+                            #写入日志文件
+                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                f.write(f"{task_index}.{tool_name}" + "\n")
+                            stop_flag = True
+                            break
                         except Exception as e:
                             logger.error(f"Error calling tool {tool_name}: {e}")
                             result = f"Error: {str(e)}"
-                            # 写入日志文件
-                            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                            #     f.write(f"{task_index}.{tool_name}" + "\n")
-                            # stop_flag = True
-                            # break
+                            #写入日志文件
+                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                f.write(f"{task_index}.{tool_name}" + "\n")
+                            stop_flag = True
+                            break
                         result = str(result)
                         result = result[:max_tool_tokens]
                         messages.append(
@@ -361,7 +445,7 @@ Note that you can only response to user once, so you should try to provide a com
                         )
         except Exception as e:
             error_traceback = traceback.format_exc()
-
+            print(error_traceback)
             logger.error(f"Error processing query '{query}': {e}")
             final_text.append(f"Error: {str(e)} ")
             messages.append({"role": "assistant", "content": str(e)})

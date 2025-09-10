@@ -1,14 +1,14 @@
 [
   {
-    "task_id": "dda8ea55-629c-4ae8-ab87-0c81477ae615",
-    "Question": "I'm planning a trip to the Forbidden City in Beijing, show me where to park and what's interesting to do within 1km distance?",
+    "task_id": "99d7541a-73c0-4ea1-8002-a70a041f3ffc",
+    "Question": "Please perform a comprehensive analysis of the audio file located at /root/music/mixkit-retro-game-emergency-alarm-1000.wav. The analysis should include beat tracking, MFCC extraction, and chroma CQT calculation. Upon completion, please provide the resulting data along with a brief summary of the findings.",
     "answers": "",
-    "category": "Travel",
-    "file_name": "",
+    "category": "Leisure",
+    "file_name": "/root/music/mixkit-retro-game-emergency-alarm-1000.wav",
     "Annotator Metadata": {
-      "Steps": "1. convert the address of Location into precise geographic coordinates.\n2. find parking facilities within a 1-kilometer radius of Location, filtering for both surface and multi-storey parking options, and provide details such as capacity, fee structure, and access restrictions. \n3. discover nearby points of interest and amenities within the same radius, focusing on categories such as restaurants, shops, and tourist attractions.\n4. convert the coordinates of each identified parking facility and point of interest back into human-readable addresses to facilitate easy navigation and planning. ",
-      "Number of steps": "4",
-      "Tools": "1. geocode_address\n2. find_parking_facilities\n3. find_nearby_places\n4. reverse_geocode",
+      "Steps": "1. Load the audio file\n2. Compute the beat track of the audio to understand its rhythmic structure. \n3. Extract the Mel-Frequency Cepstral Coefficients (MFCCs) from the audio to analyze its spectral content.\n4. Compute the Chroma Constant-Q Transform (CQT) to analyze the chromatic content of the audio. \n5. Write a summary document outlining the key findings and insights from the analysis.\n",
+      "Number of steps": "5",
+      "Tools": "1. load\n2. beat_track\n3. mfcc\n4. chroma_cqt",
       "Number of tools": "4"
     }
   }
