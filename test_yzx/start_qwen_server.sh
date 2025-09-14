@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+export CUDA_VISIBLE_DEVICES=4,5,6,7
 
 # python -m vllm.entrypoints.openai.api_server \
 #     --model /data/labshare/Param/Qwen/qwen3-30b \

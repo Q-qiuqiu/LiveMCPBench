@@ -3,10 +3,12 @@
 
 # 定义 TOP_TOOLS 与 insert_number 的组合数组，格式为 "TOP_TOOLS:insert_number"
 test_combinations=(
-    "3:0"
-    "4:0"
-    "5:0"
+    "30:20"
+    "30:25"
+    "35:20"
+    "35:25"
 )
+
 # 计数器
 total_runs=${#test_combinations[@]}
 current_run=1
@@ -33,7 +35,6 @@ for combo in "${test_combinations[@]}"; do
     echo "============================================================"| tee -a "$LOG_FILE"
     echo "第 $current_run/$total_runs 次执行"| tee -a "$LOG_FILE"
     echo "参数:TOP_TOOLS=$top_tools, insert_number=$insert_number"| tee -a "$LOG_FILE"
-    echo "============================================================"| tee -a "$LOG_FILE"
 
     # 删除旧文件
     rm -f ./baseline/output/baseline_results.json

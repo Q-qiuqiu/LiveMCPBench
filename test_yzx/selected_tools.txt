@@ -1,4 +1,95 @@
-0.generate_pdf_report
-1.beat_track
-2.get_attractions_nearby
-3.no chose
+0.route twice
+1.get_duration
+2.explore_area
+3.valorant-leaderboard
+4.find_meeting_point
+5.get-bilibili-rank
+6.list_categories
+7.whois_domain
+8.find_nearby_places
+9.get_historical_stock_prices
+10.trial_getter
+11.get-current-date
+12.buildBaziFromSolarDatetime
+13.route twice
+14.duckduckgo_web_search
+15.excel_describe_sheets
+16.get_github_trending_repositories
+17.generate_flow_diagram
+18.deepwiki_fetch
+19.duckduckgo_web_search
+20.get-theverge-news
+21.duckduckgo_web_search
+22.deepwiki_fetch
+23.drawing_generateCanvas
+24.auto_generate_presentation
+25.excel_describe_sheets
+26.search_papers
+27.route twice
+28.get_transcript
+29.get_article
+30.get-station-code-by-names
+31.get-historical-analysis
+32.mcp_howtocook_whatToEat
+33.mcp_howtocook_recommendMeals
+34.airbnb_listing_details
+35.lol-champion-positions-data
+36.search-museum-objects
+37.duckduckgo_web_search
+38.read_paper
+39.search_papers
+40.route twice
+41.search
+42.get_asset_price
+43.search_cards
+44.no chose
+45.tag_list
+46.playwright_navigate
+47.read_file
+48.get_latest_release
+49.generate_radar_chart
+50.list_directory
+51.route twice
+52.load_all_tickers
+53.list_allowed_directories
+54.route twice
+55.search_components
+56.get-douban-rank
+57.get-sspai-rank
+58.list_papers
+59.route twice
+60.no chose
+61.analyze_commute
+62.document_reader
+63.read_file
+64.get_asset_price
+65.duckduckgo_web_search
+66.convert_bib_to_word
+67.summarize_article_for_query
+68.get_route_directions
+69.explore_area
+70.search
+71.get-nytimes-news
+72.get_crypto_fear_greed_index
+73.route twice
+74.generate_path_map
+75.get_weather_by_city
+76.list_allowed_directories
+77.get-theverge-news
+78.generate_path_map
+79.getStoryWithComments
+80.get-bbc-news
+81.duckduckgo_web_search
+82.get_article
+83.random_choices
+84.create_document
+85.whois_domain
+86.text_diff
+87.route twice
+88.get_current_stock_price
+89.search_wikipedia
+90.get-current-date
+91.route twice
+92.getChineseCalendar
+93.convert_to_pdf
+94.get_ticker_data

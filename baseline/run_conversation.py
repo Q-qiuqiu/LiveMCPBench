@@ -193,6 +193,14 @@ def build_system_prompt(tools_file: str,
     logger.info(f"Loaded {total_count} tools from {tools_file}")
     return "\n".join(prompt_lines)
 
+def clean_tool_description(tool_text):
+    """清理工具描述中的非法转义字符"""
+    # 修复无效的 Unicode 转义
+    tool_text = re.sub(r'\\U(?![\da-fA-F]{8})', r'\\\\U', tool_text)
+    # 修复其他非法转义
+    tool_text = re.sub(r'\\([^"\\/bfnrtu])', r'\\\\\1', tool_text)
+    return tool_text
+
 def reorder_tools(response, answer_tools: list[str], insert_index: int) -> str:
     """
     调整 matched_tools 的顺序，把所有正确答案工具移动到 target_index 开始的位置。
@@ -208,10 +216,10 @@ def reorder_tools(response, answer_tools: list[str], insert_index: int) -> str:
     tools = re.findall(tool_pattern, text, flags=re.S)
     if not tools:
         return response  # 没有工具，直接返回
-    
+    cleaned_tools = [clean_tool_description(tool) for tool in tools]
     # 分离正确答案工具 & 其他
-    matched = [t for t in tools if any(f"tool_name: {ans}" in t for ans in answer_tools)]
-    remaining = [t for t in tools if t not in matched]
+    matched = [t for t in cleaned_tools if any(f"tool_name: {ans}" in t for ans in answer_tools)]
+    remaining = [t for t in cleaned_tools if t not in matched]
 
     # 新顺序
     new_tools = remaining.copy()
@@ -332,26 +340,37 @@ Note that you can only response to user once and only use the retrieval tool onc
                     current_tools = available_tools
                     messages_to_send = messages.copy()
                 else:
+                    #print("messages_send",messages)
                     current_tools = available_tools_exec_only
-                    system_prompt = """You have already retrieved the tools. 
-                Do not call the retrieval tool again. 
-                You may only call the execution tool ('execute-tool') to perform any actions."""
-                    messages_to_send = [{"role": "system", "content": system_prompt}] + [
-                        m for m in messages if m["role"] == "user"
-                    ]
+                    system_prompt = """        
+                    "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
+        "Important rules:\n"
+        "1. You have access to a single execution tool called 'execute-tool'. You must always use this tool to invoke any of the available MCP tools.\n"
+        "2. Never call MCP tools directly. Always select the appropriate tool and call it via 'execute-tool'.\n"
+        "3. Provide accurate and complete responses to the user. You can combine multiple tool calls if necessary, but respond to the user only once.\n"
+        "4. For each tool call, specify:\n"
+        "   - server_name: the MCP server hosting the target tool\n"
+        "   - tool_name: the name of the target tool\n"
+        "   - params: a dictionary of input parameters for the tool\n\n"
+        "Available MCP tools (choose from these, but always call via 'execute-tool') will be provided in the content\n"""
+
+                    # 替换掉原有的 system 消息，其他都保留
+                    messages_to_send = [
+        {"role": "system", "content": system_prompt if m["role"] == "system" else m["content"]}
+        if m["role"] == "system" else m
+        for m in messages
+    ]
                 request_payload = {
                     "messages": messages_to_send,
                     "tools": current_tools,
                 }
+                #print("request_payload",request_payload)
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
                     raise Exception(
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
                     )
                 response_message = response.choices[0].message
-                # 第一次循环结束就标记 routed=True
-                if not routed:
-                    routed = True
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -395,6 +414,14 @@ Note that you can only response to user once and only use the retrieval tool onc
                                 f"LLM is calling tool: {tool_name}({tool_args})"
                             )
 
+                            if tool_name == "route" and routed:
+                                logger.info(f"LLM calling mcp-tool route twice")
+                                # 写入日志文件
+                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.route twice" + "\n")
+                                result= "skip route twice"
+                                stop_flag = True
+                                break
                             # timeout
                             if tool_name == "execute-tool":
                                 print("skip tool execution")
@@ -405,20 +432,22 @@ Note that you can only response to user once and only use the retrieval tool onc
                                 result= "skip tool execution"
                                 stop_flag = True
                                 break
-                    
+                            
                             result = await asyncio.wait_for(
                                 session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
                             )
-                        
-                            show_tools(result,"RAG")
-                            result = reorder_tools(result, answer_tools, insert_number)
+                            # 第一次标记 routed=True
+                            if not routed:
+                                routed = True
+                            #show_tools(result,"RAG")
+                            reorder_result = reorder_tools(result, answer_tools, insert_number)
                             
-                            print("Answer tools:", answer_tools)
-                            show_tools(result,"Reordered")
+                            #print("Answer tools:", answer_tools)
+                            #show_tools(reorder_result,"Reordered")
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
-                            result = "Tool call timed out."
+                            reorder_result = "Tool call timed out."
                             # await self.cleanup_server("mcp-copilot")
                             # await self.connect_copilot()
                             #写入日志文件
@@ -428,13 +457,13 @@ Note that you can only response to user once and only use the retrieval tool onc
                             break
                         except Exception as e:
                             logger.error(f"Error calling tool {tool_name}: {e}")
-                            result = f"Error: {str(e)}"
+                            reorder_result = f"Error: {str(e)}"
                             #写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                 f.write(f"{task_index}.{tool_name}" + "\n")
                             stop_flag = True
                             break
-                        result = str(result)
+                        result = str(reorder_result)
                         result = result[:max_tool_tokens]
                         messages.append(
                             {
