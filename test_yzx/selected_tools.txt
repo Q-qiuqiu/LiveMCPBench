@@ -93,3 +93,7 @@
 92.getChineseCalendar
 93.convert_to_pdf
 94.get_ticker_data
+0.beat_tracking
+0.beat_track
+0.beat_track
+0.load

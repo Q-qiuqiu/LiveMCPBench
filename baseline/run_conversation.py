@@ -80,14 +80,12 @@ def parse_answer_tools(entry):
     return answer_tools
 
 
-def build_system_prompt(tools_file: str, 
+def build_prompt_from_rag(tools_file: str, 
+                        rag_tools: List[str],     # RAG 筛选出的工具名
                         answer_tools: List[str],
-                        max_tools: Optional[int] = None, 
-                        task_index:int=0,   
                         insert_number: int = 0) -> str:
     """
-    把所有工具简介拼成系统 prompt，LLM 会通过 execute-tool 调用具体工具。
-    如果 skip_tools 中包含的工具，就跳过注入，避免暴露“正确答案”。
+    根据 rag_tools 和 tools.json 生成 system prompt
     """
 
     with open(tools_file, "r", encoding="utf-8") as f:
@@ -103,6 +101,14 @@ def build_system_prompt(tools_file: str,
                     "inputSchema": tool.get("inputSchema", {"type":"object","properties":{}})
                 }
     logger.info(f"Ground-truth tools: {answer_tools}")
+    logger.info(f"RAG selected tools: {rag_tools}")
+
+    # 去重，避免重复
+    remaining_tools = [t for t in rag_tools if t not in answer_tools]
+    # 控制插入位置不越界
+    insert_number = max(0, min(insert_number, len(remaining_tools)))
+    # 拼接后的最终工具列表
+    final_tools = remaining_tools[:insert_number] + answer_tools + remaining_tools[insert_number:]
 
     # 系统提示开头
     prompt_lines = [
@@ -117,80 +123,22 @@ def build_system_prompt(tools_file: str,
         "   - params: a dictionary of input parameters for the tool\n\n"
         "Available MCP tools (choose from these, but always call via 'execute-tool'):\n"
     ]
-    total_count = 0
-    answers_number = len(answer_tools)
-    inserted = False
-    max_other_tools = None
-    if max_tools is not None:
-        max_other_tools = max_tools - answers_number
-        if max_other_tools < 0:
-            raise ValueError(
-                f"max_tools={max_tools} 太小，不够容纳标准答案 {answers_number} 个"
+
+    # 遍历 RAG 给出的工具名，拼接到 prompt
+    for tool_name in final_tools:
+        if tool_name in tools_map:
+            t = tools_map[tool_name]
+            input_props = t["inputSchema"].get("properties", {})
+            prompt_lines.append(
+                f"- {tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(input_props)}"
             )
-        
-    for tool_entry in tools_data:
-        for server_id, server in tool_entry.get("tools", {}).items():
-            for tool in server.get("tools", []):
-                tool_name = tool["name"]
-                if tool_name in answer_tools:  # 过滤掉“正确答案”
-                    logger.info(f"Skipping tool {tool_name} (marked as correct answer)")
-                    continue
+        else:
+            # 如果 RAG 工具不在 tools.json 中，留个占位
+            prompt_lines.append(
+                f"- {tool_name} (server: unknown): description missing. Input: {{}}"
+            )
+            logger.warning(f"RAG tool {tool_name} not found in tools.json")
 
-                # 插入标准答案工具
-                if not inserted and total_count >= insert_number:
-                    for i, ans_tool_name in enumerate(answer_tools):
-                        if ans_tool_name in tools_map:
-                            t = tools_map[ans_tool_name]
-                            t_props = t.get("inputSchema", {}).get("properties", {})#防止格式异常，有些工具的inputSchema选项为空
-                            prompt_lines.append(
-                                f"- {ans_tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(t_props)}"
-                            )
-                            #logger.info(f"insert tool {ans_tool_name} ")
-
-                           # 只记录第一个标准答案工具
-                            # if i == 0:
-                            #     with open("answer_tools.txt", "a", encoding="utf-8") as f:
-                            #         f.write(f"{task_index}."+f"{ans_tool_name}\n")
-                        else:
-                            # 万一找不到对应工具，用占位
-                            prompt_lines.append(f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}")
-                    inserted = True
-                if max_other_tools is not None and total_count >= max_other_tools:
-                    # 如果还没插入过答案，则现在必须插
-                    if not inserted:
-                        for ans_tool_name in answer_tools:
-                            if ans_tool_name in tools_map:
-                                t = tools_map[ans_tool_name]
-                                prompt_lines.append(
-                                    f"- {ans_tool_name} (server: {t['server_id']}): "
-                                    f"{t['description']}. Input: {json.dumps(t['inputSchema']['properties'])}"
-                                )
-                                #logger.info(f"insert tool {ans_tool_name} ")
-                            else:
-                                prompt_lines.append(
-                                    f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}"
-                                )
-                        inserted = True
-                    return "\n".join(prompt_lines)
-            
-                #插入备选工具
-                input_props = tool.get("inputSchema", {}).get("properties", {})
-                line = f"- {tool['name']} (server: {server_id}): {tool['description']}. Input: {json.dumps(input_props)}"
-
-                prompt_lines.append(line)
-                total_count += 1
-                #logger.info(f"insert tool {tool_name} ")
-                
-
-                if max_tools is not None and total_count >= max_tools:
-                    logger.info(f"Loaded {total_count} tools from {tools_file}")
-                    return "\n".join(prompt_lines)
-                
-     # 如果正确答案未插入，警报
-    if not inserted and answer_tools:
-        logger.error(f"Please attention the answer position and the tools number!")
-
-    logger.info(f"Loaded {total_count} tools from {tools_file}")
     return "\n".join(prompt_lines)
 
 def clean_tool_description(tool_text):
@@ -248,6 +196,31 @@ def show_tools(response, log_text):
     # 加载为 Python 对象
     tools_list = yaml.safe_load(matched_tools_yaml)
     print(f"{log_text} tools: {[tool['tool_name'] for tool in tools_list]}")
+
+
+def extract_tools(response) -> list:
+    """
+    从 response 中解析 matched_tools，提取工具名并返回列表
+    """
+    # 获取 text 内容
+    if hasattr(response, "content") and len(response.content) > 0:
+        text = response.content[0].text
+    else:
+        raise ValueError("CallToolResult 对象中没有 content 或为空") 
+
+    # 提取 matched_tools 部分
+    if "matched_tools:" not in text:
+        raise ValueError("response.text 中没有找到 'matched_tools:' 段落")
+
+    matched_tools_yaml = "\n".join(text.split("matched_tools:")[1].splitlines())
+
+    # 加载为 Python 对象
+    tools_list = yaml.safe_load(matched_tools_yaml)
+
+    # 提取 tool_name
+    rag_tools = [tool["tool_name"] for tool in tools_list if "tool_name" in tool]
+    return rag_tools
+
 
 class LoggingMCPClient(MCPClient):
     def __init__(self):
@@ -340,31 +313,24 @@ Note that you can only response to user once and only use the retrieval tool onc
                     current_tools = available_tools
                     messages_to_send = messages.copy()
                 else:
-                    #print("messages_send",messages)
                     current_tools = available_tools_exec_only
-                    system_prompt = """        
-                    "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
-        "Important rules:\n"
-        "1. You have access to a single execution tool called 'execute-tool'. You must always use this tool to invoke any of the available MCP tools.\n"
-        "2. Never call MCP tools directly. Always select the appropriate tool and call it via 'execute-tool'.\n"
-        "3. Provide accurate and complete responses to the user. You can combine multiple tool calls if necessary, but respond to the user only once.\n"
-        "4. For each tool call, specify:\n"
-        "   - server_name: the MCP server hosting the target tool\n"
-        "   - tool_name: the name of the target tool\n"
-        "   - params: a dictionary of input parameters for the tool\n\n"
-        "Available MCP tools (choose from these, but always call via 'execute-tool') will be provided in the content\n"""
+                    new_messages = []
+                    # 遍历原 messages
+                    for msg in messages:
+                        if "role" in msg:
+                            # 保留工具调用消息
+                            if msg["role"] in ("tool",):
+                                new_messages.append(msg)
+                            # 如果是 system，但原来的只是工具定义，保留可选
+                            elif msg["role"] == "system" and "Available MCP tools" in msg.get("content", ""):
+                                new_messages.append(msg)
 
-                    # 替换掉原有的 system 消息，其他都保留
-                    messages_to_send = [
-        {"role": "system", "content": system_prompt if m["role"] == "system" else m["content"]}
-        if m["role"] == "system" else m
-        for m in messages
-    ]
+                
                 request_payload = {
-                    "messages": messages_to_send,
+                    "messages": messages,
                     "tools": current_tools,
                 }
-                #print("request_payload",request_payload)
+                print("request_payload",request_payload)
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
                     raise Exception(
@@ -440,14 +406,15 @@ Note that you can only response to user once and only use the retrieval tool onc
                             if not routed:
                                 routed = True
                             #show_tools(result,"RAG")
-                            reorder_result = reorder_tools(result, answer_tools, insert_number)
-                            
+                            result=reorder_tools(result,answer_tools,insert_number)
+                            rag_tools=extract_tools(result)
+                            new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number)
                             #print("Answer tools:", answer_tools)
                             #show_tools(reorder_result,"Reordered")
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
-                            reorder_result = "Tool call timed out."
+                            result = "Tool call timed out."
                             # await self.cleanup_server("mcp-copilot")
                             # await self.connect_copilot()
                             #写入日志文件
@@ -457,13 +424,13 @@ Note that you can only response to user once and only use the retrieval tool onc
                             break
                         except Exception as e:
                             logger.error(f"Error calling tool {tool_name}: {e}")
-                            reorder_result = f"Error: {str(e)}"
+                            result = f"Error: {str(e)}"
                             #写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                 f.write(f"{task_index}.{tool_name}" + "\n")
                             stop_flag = True
                             break
-                        result = str(reorder_result)
+                        result = str(result)
                         result = result[:max_tool_tokens]
                         messages.append(
                             {
