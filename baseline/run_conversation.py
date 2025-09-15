@@ -83,7 +83,8 @@ def parse_answer_tools(entry):
 def build_prompt_from_rag(tools_file: str, 
                         rag_tools: List[str],     # RAG 筛选出的工具名
                         answer_tools: List[str],
-                        insert_number: int = 0) -> str:
+                        insert_number: int = 0,
+                        task_index: int = 0) -> str:
     """
     根据 rag_tools 和 tools.json 生成 system prompt
     """
@@ -102,6 +103,9 @@ def build_prompt_from_rag(tools_file: str,
                 }
     #print(f"Ground-truth tools: {answer_tools}")
     #print(f"RAG selected tools: {rag_tools}")
+    # 写入日志文件
+    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+        f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: {rag_tools}" + "\n")
 
     # 先去重保持顺序
     rag_tools_unique = []
@@ -327,12 +331,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                     
                     messages_to_send.append({"role": "system", "content": new_prompt})
                     messages_to_send.append({"role": "user", "content": query})
-                    # 保留历史工具调用消息
-                    # for msg in messages:
-                    #     if msg.get("role") == "tool":
-                    #         messages_to_send.append(msg)
 
-                
                 request_payload = {
                     "messages": messages_to_send,
                     "tools": current_tools,
@@ -413,9 +412,9 @@ Note that you can only response to user once and only use the retrieval tool onc
                             if not routed:
                                 routed = True
                             #show_tools(result,"RAG")
-                            result=reorder_tools(result,answer_tools,insert_number)
+                            #result=reorder_tools(result,answer_tools,insert_number)
                             rag_tools=extract_tools(result)
-                            new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number)
+                            new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
                             #print("Answer tools:", answer_tools)
                             #show_tools(reorder_result,"Reordered")
 
