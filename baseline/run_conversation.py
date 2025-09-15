@@ -100,15 +100,25 @@ def build_prompt_from_rag(tools_file: str,
                     "description": tool.get("description", ""),
                     "inputSchema": tool.get("inputSchema", {"type":"object","properties":{}})
                 }
-    logger.info(f"Ground-truth tools: {answer_tools}")
-    logger.info(f"RAG selected tools: {rag_tools}")
+    #print(f"Ground-truth tools: {answer_tools}")
+    #print(f"RAG selected tools: {rag_tools}")
 
-    # 去重，避免重复
-    remaining_tools = [t for t in rag_tools if t not in answer_tools]
+    # 先去重保持顺序
+    rag_tools_unique = []
+    for t in rag_tools:
+        if t not in rag_tools_unique:
+            rag_tools_unique.append(t)
+    # RAG 命中正确答案的工具（交集部分）
+    hit_tools = [t for t in rag_tools_unique if t in answer_tools]  
+
+    # 剩余工具（rag_tools 里有但不在正确答案里的）
+    remaining_tools = [t for t in rag_tools_unique if t not in hit_tools]
+
     # 控制插入位置不越界
     insert_number = max(0, min(insert_number, len(remaining_tools)))
-    # 拼接后的最终工具列表
-    final_tools = remaining_tools[:insert_number] + answer_tools + remaining_tools[insert_number:]
+
+    # 拼接最终顺序
+    final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
 
     # 系统提示开头
     prompt_lines = [
@@ -124,7 +134,7 @@ def build_prompt_from_rag(tools_file: str,
         "Available MCP tools (choose from these, but always call via 'execute-tool'):\n"
     ]
 
-    # 遍历 RAG 给出的工具名，拼接到 prompt
+    # 遍历最终工具列表，拼接到 prompt
     for tool_name in final_tools:
         if tool_name in tools_map:
             t = tools_map[tool_name]
@@ -133,7 +143,6 @@ def build_prompt_from_rag(tools_file: str,
                 f"- {tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(input_props)}"
             )
         else:
-            # 如果 RAG 工具不在 tools.json 中，留个占位
             prompt_lines.append(
                 f"- {tool_name} (server: unknown): description missing. Input: {{}}"
             )
@@ -314,23 +323,21 @@ Note that you can only response to user once and only use the retrieval tool onc
                     messages_to_send = messages.copy()
                 else:
                     current_tools = available_tools_exec_only
-                    new_messages = []
-                    # 遍历原 messages
-                    for msg in messages:
-                        if "role" in msg:
-                            # 保留工具调用消息
-                            if msg["role"] in ("tool",):
-                                new_messages.append(msg)
-                            # 如果是 system，但原来的只是工具定义，保留可选
-                            elif msg["role"] == "system" and "Available MCP tools" in msg.get("content", ""):
-                                new_messages.append(msg)
+                    messages_to_send = []
+                    
+                    messages_to_send.append({"role": "system", "content": new_prompt})
+                    messages_to_send.append({"role": "user", "content": query})
+                    # 保留历史工具调用消息
+                    # for msg in messages:
+                    #     if msg.get("role") == "tool":
+                    #         messages_to_send.append(msg)
 
                 
                 request_payload = {
-                    "messages": messages,
+                    "messages": messages_to_send,
                     "tools": current_tools,
                 }
-                print("request_payload",request_payload)
+                #print("request_payload",request_payload)
                 response = self.chat_model.complete_with_retry(**request_payload)
                 if hasattr(response, "error"):
                     raise Exception(
@@ -424,6 +431,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                             break
                         except Exception as e:
                             logger.error(f"Error calling tool {tool_name}: {e}")
+                            error_traceback = traceback.format_exc()
+                            print(error_traceback)
                             result = f"Error: {str(e)}"
                             #写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
