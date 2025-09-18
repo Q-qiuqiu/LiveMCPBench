@@ -5,7 +5,7 @@ import os
 import pathlib
 import traceback
 from typing import List, Optional, Tuple
-
+import time
 import dotenv
 from mcp import ClientSession
 from tqdm import tqdm
@@ -284,9 +284,7 @@ Note that you can only response to user once and only use the retrieval tool onc
             messages = history.copy()
 
         messages.append({"role": "user", "content": query})
-       
         available_tools = []
-        available_tools_exec_only = []
         for server in self.sessions:
             session = self.sessions[server]
             assert isinstance(session, ClientSession), (
@@ -304,40 +302,25 @@ Note that you can only response to user once and only use the retrieval tool onc
                         },
                     }
                 ]
-                # 新增：仅包含 execute-tool 的工具列表 + 当前工具列表
-                if tool.name == "execute-tool":
-                    available_tools_exec_only += [
-                        {
-                            "type": "function",
-                            "function": {
-                                "name": tool.name,
-                                "description": tool.description,
-                                "parameters": tool.inputSchema,
-                            },
-                        }
-                    ]
-        routed = False
         final_text = []
         stop_flag = False
         try:
-            while not stop_flag:
-                #只使用一次route
-                if not routed:
-                    current_tools = available_tools
-                    messages_to_send = messages.copy()
-                else:
-                    current_tools = available_tools_exec_only
-                    messages_to_send = []
-                    
-                    messages_to_send.append({"role": "system", "content": new_prompt})
-                    messages_to_send.append({"role": "user", "content": query})
-
+            while not stop_flag:       
                 request_payload = {
-                    "messages": messages_to_send,
-                    "tools": current_tools,
+                    "messages": messages,
+                    "tools": available_tools,
                 }
                 #print("request_payload",request_payload)
+                # === 大模型思考时间 ===
+
+                llm_start = time.perf_counter()
                 response = self.chat_model.complete_with_retry(**request_payload)
+                llm_end = time.perf_counter()
+                logger.info(f"LLM response time: {llm_end - llm_start:.3f}s")
+                #写入日志文件
+                with open("./test_yzx/time_log.txt", "a", encoding="utf-8") as f:
+                    f.write(f"LLM response time: {llm_end - llm_start:.3f}s" + "\n")
+
                 if hasattr(response, "error"):
                     raise Exception(
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
@@ -360,10 +343,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                     and not response_message.function_call
                 ):
                     final_text.append(content)
-                    # 写入日志文件
-                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                        f.write(f"{task_index}.no chose" + "\n")
-                    logger.info(f"LLM is calling mcp-tool: no chose")
+
                     stop_flag = True
                 else:
                     tool_calls = response_message.tool_calls
@@ -374,6 +354,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                         break
                     for tool_call in tool_calls:
                         try:
+                            # === 工具调用时间 ===
+                            tool_start = time.perf_counter()
                             tool_name = tool_call.function.name
                             tool_args = json.loads(tool_call.function.arguments)
                             tool_id = tool_call.id
@@ -384,60 +366,38 @@ Note that you can only response to user once and only use the retrieval tool onc
 
                             logger.info(
                                 f"LLM is calling tool: {tool_name}({tool_args})"
-                            )
+                            )          
 
-                            if tool_name == "route" and routed:
-                                logger.info(f"LLM calling mcp-tool route twice")
-                                # 写入日志文件
-                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                        f.write(f"{task_index}.route twice" + "\n")
-                                result= "skip route twice"
-                                stop_flag = True
-                                break
-                            # timeout
-                            if tool_name == "execute-tool":
-                                print("skip tool execution")
-                                logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
-                                # 写入日志文件
-                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                        f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
-                                result= "skip tool execution"
-                                stop_flag = True
-                                break
-                            
                             result = await asyncio.wait_for(
-                                session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
+                                session.call_tool(tool_name, tool_args), timeout=300
                             )
-                            # 第一次标记 routed=True
-                            if not routed:
-                                routed = True
-                            #show_tools(result,"RAG")
-                            #result=reorder_tools(result,answer_tools,insert_number)
-                            rag_tools=extract_tools(result)
-                            new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
-                            #print("Answer tools:", answer_tools)
-                            #show_tools(reorder_result,"Reordered")
+                            tool_end = time.perf_counter()
+                            logger.info(f"MCP Tool {tool_name} execution time: {tool_end - tool_start:.3f}s")
+                            #写入日志文件
+                            with open("./test_yzx/time_log.txt", "a", encoding="utf-8") as f:
+                                f.write(f"MCP Tool {tool_name} execution time: {tool_end - tool_start:.3f}s" + "\n")
+
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
-                            # await self.cleanup_server("mcp-copilot")
-                            # await self.connect_copilot()
+                            await self.cleanup_server("mcp-copilot")
+                            await self.connect_copilot()
                             #写入日志文件
-                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                f.write(f"{task_index}.{tool_name}" + "\n")
-                            stop_flag = True
-                            break
+                            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                            #     f.write(f"{task_index}.{tool_name}" + "\n")
+                            # stop_flag = True
+                            # break
                         except Exception as e:
                             logger.error(f"Error calling tool {tool_name}: {e}")
-                            error_traceback = traceback.format_exc()
-                            print(error_traceback)
+                            # error_traceback = traceback.format_exc()
+                            # print(error_traceback)
                             result = f"Error: {str(e)}"
                             #写入日志文件
-                            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                f.write(f"{task_index}.{tool_name}" + "\n")
-                            stop_flag = True
-                            break
+                            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                            #     f.write(f"{task_index}.{tool_name}" + "\n")
+                            # stop_flag = True
+                            # break
                         result = str(result)
                         result = result[:max_tool_tokens]
                         messages.append(
@@ -448,8 +408,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                             }
                         )
         except Exception as e:
-            error_traceback = traceback.format_exc()
-            print(error_traceback)
+            # error_traceback = traceback.format_exc()
+            # print(error_traceback)
             logger.error(f"Error processing query '{query}': {e}")
             final_text.append(f"Error: {str(e)} ")
             messages.append({"role": "assistant", "content": str(e)})
@@ -486,13 +446,24 @@ async def main(args):
             logger.info(f"{query}")
             # 从 entry 解析出答案工具
             answer_tools = parse_answer_tools(entry)
+            #写入日志文件
+            with open("./test_yzx/time_log.txt", "a", encoding="utf-8") as f:
+                f.write(f"task {idx}" + "\n")
             try:
+                query_start = time.perf_counter()
                 response, messages = await client.process_query(query=query,
                                                                  answer_tools=answer_tools,
                                                                  tools_file=TOOLS_FILE,
                                                                  max_tools=args.max_tools,
                                                                  insert_number=args.insert_number,
                                                                  task_index=idx )
+                                
+                query_end = time.perf_counter()
+                logger.info(f"Total query processing time: {query_end - query_start:.3f}s")
+                #写入日志文件
+                with open("./test_yzx/time_log.txt", "a", encoding="utf-8") as f:
+                    f.write(f"Total query processing time: {query_end - query_start:.3f}s" + "\n")
+
                 logger.info(f"{response}")
                 entry["response"] = response
                 entry["messages"] = messages

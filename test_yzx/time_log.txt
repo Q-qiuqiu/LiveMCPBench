@@ -1,0 +1,12 @@
+LLM response time: 16.225s
+MCP Tool route execution time: 3.349s
+LLM response time: 1.079s
+MCP Tool route execution time: 8.245s
+LLM response time: 27.364s
+MCP Tool execute-tool execution time: 1.375s
+LLM response time: 27.398s
+MCP Tool execute-tool execution time: 0.663s
+LLM response time: 25.056s
+MCP Tool execute-tool execution time: 6.362s
+LLM response time: 24.586s
+Total query processing time: 143.503s
