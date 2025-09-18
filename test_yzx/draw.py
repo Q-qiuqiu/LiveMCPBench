@@ -1,6 +1,8 @@
 import re
 import matplotlib.pyplot as plt
-
+from datetime import datetime
+import os
+import argparse
 def parse_log(filename):
     """解析日志文件，返回事件列表"""
     events = []
@@ -31,7 +33,7 @@ def parse_log(filename):
 
     return events, total_time
 
-def plot_timeline(events):
+def plot_timeline(events,max_tools, insert_number):
     """绘制执行时间分布图"""
     colors = {
         "llm_call": "orange",
@@ -62,11 +64,17 @@ def plot_timeline(events):
     ax.set_title("Execution Trace Timeline by Phase Type")
     ax.grid(axis="x", linestyle="--", alpha=0.6)
     plt.tight_layout()
-    save_path="./test_yzx/execution_timeline.png"
+    filename = f"timeline_{max_tools}_{insert_number}.png"
+    save_dir="./test_yzx/"
+    save_path = os.path.join(save_dir, filename)
     plt.savefig(save_path, dpi=300, bbox_inches="tight")  # 保存图片
     print(f"图像已保存到: {save_path}")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Draw execution timeline from log file.")
+    parser.add_argument("--max_tools", type=int, required=True, help="最大工具数量")
+    parser.add_argument("--insert_number", type=int, required=True, help="插入次数")
+    args = parser.parse_args()
     log_file = "./test_yzx/time_log.txt"  # 你的日志文件路径
     events, total_time = parse_log(log_file)  #解包两个返回值
-    plot_timeline(events)  # 只传 events
+    plot_timeline(events,args.max_tools, args.insert_number,)  # 只传 events
