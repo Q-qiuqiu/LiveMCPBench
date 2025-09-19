@@ -16,7 +16,7 @@ import yaml
 from utils.clogger import _set_logger
 from utils.llm_api import ChatModel
 from utils.mcp_client import MCPClient
-
+from draw import draw_from_log
 _set_logger(
     exp_dir=pathlib.Path("./logs"),
     logging_level_stdout=logging.INFO,
@@ -91,11 +91,11 @@ def build_system_prompt(tools_file: str,
 
     # 系统提示开头
     prompt_lines = [
-        "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
+               "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
         "Important rules:\n"
         "1. You have access to a single execution tool called 'execute-tool'. You must always use this tool to invoke any of the available MCP tools.\n"
         "2. Never call MCP tools directly. Always select the appropriate tool and call it via 'execute-tool'.\n"
-        "3. Provide accurate and complete responses to the user. You can combine multiple tool calls if necessary, but respond to the user only once.\n"
+        "3. Provide accurate and complete responses to the user.\n"
         "4. For each tool call, specify:\n"
         "   - server_name: the MCP server hosting the target tool\n"
         "   - tool_name: the name of the target tool\n"
@@ -260,7 +260,13 @@ class LoggingMCPClient(MCPClient):
             messages = [
                 {
                     "role": "system",
-                    "content": build_system_prompt(tools_file,answer_tools,max_tools,task_index,insert_number),
+                    "content":build_system_prompt(
+                        tools_file=tools_file,
+                        answer_tools=answer_tools,
+                        max_tools=max_tools,
+                        insert_number=insert_number,
+                        task_index=task_index
+                    ),
                 }
             ]
         else:
@@ -425,6 +431,8 @@ async def main(args):
     error_queries = set()
     try:
         for idx, entry in tqdm(enumerate(data), total=len(data)):
+            if idx<82:
+                continue
             task_id = entry["task_id"]
             if task_id in exist_ids:
                 continue
@@ -454,6 +462,8 @@ async def main(args):
                 entry["response"] = response
                 entry["messages"] = messages
                 all_results.append(entry)
+                #绘图
+                draw_from_log("./test_yzx/time_log.txt", args.max_tools, args.insert_number, idx)
 
             except Exception:
                 error_queries.add(query)

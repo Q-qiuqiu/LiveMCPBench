@@ -1,0 +1,1749 @@
+task 0
+LLM response time: 1.950s
+MCP Tool execute-tool execution time: 0.666s
+LLM response time: 19.702s
+MCP Tool execute-tool execution time: 0.674s
+LLM response time: 1.288s
+MCP Tool execute-tool execution time: 0.699s
+LLM response time: 22.529s
+MCP Tool execute-tool execution time: 1.943s
+LLM response time: 20.338s
+Total query processing time: 69.815s
+task 1
+LLM response time: 23.335s
+MCP Tool execute-tool execution time: 159.241s
+LLM response time: 26.087s
+MCP Tool execute-tool execution time: 218.900s
+LLM response time: 9.605s
+LLM response time: 9.493s
+MCP Tool execute-tool execution time: 223.076s
+LLM response time: 21.182s
+MCP Tool execute-tool execution time: 252.039s
+LLM response time: 23.022s
+MCP Tool execute-tool execution time: 136.685s
+LLM response time: 82.449s
+Total query processing time: 1486.746s
+task 2
+LLM response time: 2.421s
+MCP Tool execute-tool execution time: 32.454s
+LLM response time: 18.655s
+MCP Tool execute-tool execution time: 31.341s
+LLM response time: 1.289s
+MCP Tool execute-tool execution time: 30.688s
+LLM response time: 23.249s
+MCP Tool execute-tool execution time: 0.587s
+LLM response time: 26.671s
+MCP Tool execute-tool execution time: 1.513s
+LLM response time: 1.296s
+MCP Tool execute-tool execution time: 6.492s
+LLM response time: 20.025s
+MCP Tool execute-tool execution time: 2.548s
+LLM response time: 26.532s
+MCP Tool execute-tool execution time: 1.776s
+LLM response time: 82.950s
+Total query processing time: 310.546s
+task 3
+LLM response time: 60.322s
+Total query processing time: 60.340s
+task 4
+LLM response time: 33.705s
+MCP Tool execute-tool execution time: 2.952s
+LLM response time: 3.247s
+MCP Tool execute-tool execution time: 2.342s
+LLM response time: 9.885s
+Total query processing time: 52.152s
+task 5
+LLM response time: 3.197s
+MCP Tool execute-tool execution time: 0.666s
+MCP Tool execute-tool execution time: 0.659s
+MCP Tool execute-tool execution time: 0.652s
+LLM response time: 1.479s
+MCP Tool execute-tool execution time: 0.679s
+LLM response time: 1.704s
+MCP Tool execute-tool execution time: 0.667s
+LLM response time: 1.739s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 3.012s
+Total query processing time: 15.168s
+task 6
+LLM response time: 2.510s
+MCP Tool execute-tool execution time: 2.190s
+LLM response time: 1.365s
+MCP Tool execute-tool execution time: 0.996s
+LLM response time: 1.207s
+MCP Tool execute-tool execution time: 1.143s
+LLM response time: 1.265s
+MCP Tool execute-tool execution time: 1.184s
+LLM response time: 1.235s
+MCP Tool execute-tool execution time: 1.136s
+LLM response time: 1.214s
+MCP Tool execute-tool execution time: 1.280s
+LLM response time: 1.232s
+MCP Tool execute-tool execution time: 1.249s
+LLM response time: 13.490s
+Total query processing time: 32.723s
+task 7
+LLM response time: 27.133s
+MCP Tool execute-tool execution time: 0.988s
+MCP Tool execute-tool execution time: 13.424s
+LLM response time: 11.268s
+MCP Tool execute-tool execution time: 8.891s
+LLM response time: 73.949s
+Total query processing time: 135.672s
+task 8
+LLM response time: 26.877s
+MCP Tool execute-tool execution time: 32.609s
+MCP Tool execute-tool execution time: 30.994s
+LLM response time: 20.925s
+MCP Tool execute-tool execution time: 31.095s
+LLM response time: 24.960s
+MCP Tool execute-tool execution time: 31.028s
+LLM response time: 27.080s
+MCP Tool execute-tool execution time: 2.113s
+LLM response time: 22.153s
+MCP Tool execute-tool execution time: 1.384s
+LLM response time: 6.025s
+MCP Tool execute-tool execution time: 32.213s
+LLM response time: 22.456s
+MCP Tool execute-tool execution time: 2.773s
+LLM response time: 24.616s
+MCP Tool execute-tool execution time: 1.791s
+LLM response time: 39.399s
+MCP Tool execute-tool execution time: 3.911s
+LLM response time: 90.231s
+Total query processing time: 474.681s
+task 9
+LLM response time: 25.868s
+MCP Tool execute-tool execution time: 5.732s
+LLM response time: 22.953s
+MCP Tool execute-tool execution time: 2.283s
+LLM response time: 24.060s
+MCP Tool execute-tool execution time: 27.474s
+LLM response time: 1.825s
+MCP Tool execute-tool execution time: 0.723s
+LLM response time: 1.718s
+MCP Tool execute-tool execution time: 0.714s
+LLM response time: 25.855s
+MCP Tool execute-tool execution time: 0.699s
+LLM response time: 1.313s
+MCP Tool execute-tool execution time: 0.715s
+LLM response time: 25.536s
+MCP Tool execute-tool execution time: 0.724s
+LLM response time: 25.900s
+MCP Tool execute-tool execution time: 0.997s
+LLM response time: 0.765s
+MCP Tool execute-tool execution time: 0.712s
+LLM response time: 1.511s
+MCP Tool execute-tool execution time: 0.725s
+LLM response time: 26.034s
+MCP Tool execute-tool execution time: 0.712s
+LLM response time: 2.104s
+MCP Tool execute-tool execution time: 0.727s
+LLM response time: 24.230s
+MCP Tool execute-tool execution time: 1.780s
+LLM response time: 27.974s
+Total query processing time: 282.394s
+task 10
+LLM response time: 1.464s
+Total query processing time: 1.481s
+task 11
+LLM response time: 2.157s
+Total query processing time: 2.173s
+task 12
+LLM response time: 1.439s
+MCP Tool execute-tool execution time: 0.774s
+LLM response time: 115.246s
+Total query processing time: 117.480s
+task 13
+LLM response time: 0.939s
+MCP Tool execute-tool execution time: 0.701s
+LLM response time: 12.969s
+MCP Tool execute-tool execution time: 0.838s
+LLM response time: 0.940s
+Total query processing time: 16.406s
+task 14
+LLM response time: 12.631s
+MCP Tool execute-tool execution time: 0.637s
+LLM response time: 1.695s
+MCP Tool execute-tool execution time: 0.595s
+LLM response time: 13.794s
+MCP Tool execute-tool execution time: 0.584s
+LLM response time: 1.460s
+MCP Tool execute-tool execution time: 0.589s
+LLM response time: 107.889s
+Total query processing time: 139.897s
+task 15
+LLM response time: 1.697s
+MCP Tool execute-tool execution time: 0.593s
+LLM response time: 43.336s
+MCP Tool execute-tool execution time: 0.639s
+LLM response time: 46.410s
+MCP Tool execute-tool execution time: 0.682s
+LLM response time: 45.721s
+MCP Tool execute-tool execution time: 0.663s
+LLM response time: 13.893s
+Total query processing time: 153.658s
+task 16
+LLM response time: 1.444s
+MCP Tool execute-tool execution time: 8.188s
+LLM response time: 5.463s
+MCP Tool execute-tool execution time: 7.354s
+LLM response time: 53.823s
+LLM response time: 19.931s
+LLM response time: 15.927s
+Total query processing time: 714.812s
+task 17
+LLM response time: 13.216s
+MCP Tool execute-tool execution time: 0.606s
+LLM response time: 2.546s
+MCP Tool execute-tool execution time: 1.349s
+LLM response time: 7.834s
+MCP Tool execute-tool execution time: 1.315s
+LLM response time: 10.986s
+MCP Tool execute-tool execution time: 1.332s
+LLM response time: 10.185s
+Total query processing time: 49.390s
+task 18
+LLM response time: 12.838s
+MCP Tool execute-tool execution time: 36.611s
+LLM response time: 7.178s
+MCP Tool execute-tool execution time: 37.888s
+LLM response time: 3.577s
+MCP Tool execute-tool execution time: 36.615s
+LLM response time: 92.601s
+LLM response time: 94.874s
+LLM response time: 7.679s
+LLM response time: 90.337s
+Total query processing time: 1324.400s
+task 19
+LLM response time: 17.698s
+MCP Tool execute-tool execution time: 5.487s
+LLM response time: 14.418s
+MCP Tool execute-tool execution time: 0.969s
+LLM response time: 12.642s
+MCP Tool execute-tool execution time: 0.979s
+LLM response time: 14.448s
+MCP Tool execute-tool execution time: 0.858s
+LLM response time: 15.700s
+MCP Tool execute-tool execution time: 0.932s
+LLM response time: 14.070s
+MCP Tool execute-tool execution time: 2.235s
+LLM response time: 14.954s
+MCP Tool execute-tool execution time: 0.943s
+LLM response time: 15.210s
+Total query processing time: 131.662s
+task 20
+LLM response time: 12.566s
+MCP Tool execute-tool execution time: 0.652s
+LLM response time: 0.750s
+MCP Tool execute-tool execution time: 0.630s
+LLM response time: 15.737s
+MCP Tool execute-tool execution time: 2.873s
+LLM response time: 11.889s
+MCP Tool execute-tool execution time: 0.792s
+LLM response time: 1.013s
+MCP Tool execute-tool execution time: 0.631s
+LLM response time: 14.124s
+Total query processing time: 61.684s
+task 21
+LLM response time: 12.820s
+MCP Tool execute-tool execution time: 0.609s
+LLM response time: 1.706s
+MCP Tool execute-tool execution time: 0.567s
+LLM response time: 15.029s
+MCP Tool execute-tool execution time: 0.796s
+LLM response time: 1.887s
+Total query processing time: 33.433s
+task 22
+LLM response time: 1.481s
+MCP Tool execute-tool execution time: 10.315s
+LLM response time: 234.547s
+Total query processing time: 246.366s
+task 23
+LLM response time: 18.078s
+MCP Tool execute-tool execution time: 4.179s
+LLM response time: 17.728s
+Total query processing time: 40.001s
+task 24
+LLM response time: 20.029s
+MCP Tool execute-tool execution time: 2.052s
+LLM response time: 19.214s
+MCP Tool execute-tool execution time: 0.621s
+LLM response time: 1.183s
+MCP Tool execute-tool execution time: 0.788s
+LLM response time: 15.318s
+MCP Tool execute-tool execution time: 0.706s
+LLM response time: 4.472s
+MCP Tool execute-tool execution time: 0.730s
+LLM response time: 0.898s
+MCP Tool execute-tool execution time: 0.714s
+LLM response time: 19.865s
+MCP Tool execute-tool execution time: 0.711s
+LLM response time: 19.318s
+MCP Tool execute-tool execution time: 0.710s
+LLM response time: 1.680s
+MCP Tool execute-tool execution time: 0.724s
+LLM response time: 18.422s
+MCP Tool execute-tool execution time: 0.688s
+LLM response time: 18.668s
+MCP Tool execute-tool execution time: 0.747s
+LLM response time: 12.987s
+MCP Tool execute-tool execution time: 0.710s
+LLM response time: 1.613s
+Total query processing time: 163.601s
+task 25
+LLM response time: 19.321s
+MCP Tool execute-tool execution time: 0.480s
+LLM response time: 1.309s
+MCP Tool execute-tool execution time: 0.408s
+LLM response time: 15.820s
+MCP Tool execute-tool execution time: 0.463s
+LLM response time: 1.338s
+MCP Tool execute-tool execution time: 0.483s
+LLM response time: 1.508s
+MCP Tool execute-tool execution time: 0.470s
+LLM response time: 19.223s
+MCP Tool execute-tool execution time: 0.462s
+LLM response time: 1.676s
+MCP Tool execute-tool execution time: 0.437s
+LLM response time: 1.773s
+Total query processing time: 65.195s
+task 26
+LLM response time: 17.921s
+MCP Tool execute-tool execution time: 2.527s
+LLM response time: 58.340s
+Total query processing time: 78.801s
+task 27
+LLM response time: 2.002s
+MCP Tool execute-tool execution time: 34.764s
+LLM response time: 3.981s
+MCP Tool execute-tool execution time: 151.620s
+LLM response time: 5.504s
+MCP Tool execute-tool execution time: 1.300s
+LLM response time: 22.371s
+MCP Tool execute-tool execution time: 1.402s
+LLM response time: 20.547s
+MCP Tool execute-tool execution time: 7.449s
+LLM response time: 15.061s
+MCP Tool execute-tool execution time: 1.454s
+LLM response time: 1.221s
+MCP Tool execute-tool execution time: 3.473s
+LLM response time: 16.416s
+MCP Tool execute-tool execution time: 3.208s
+LLM response time: 17.025s
+MCP Tool execute-tool execution time: 3.419s
+LLM response time: 17.077s
+MCP Tool execute-tool execution time: 3.743s
+LLM response time: 19.191s
+MCP Tool execute-tool execution time: 3.431s
+LLM response time: 15.312s
+MCP Tool execute-tool execution time: 1.945s
+LLM response time: 121.650s
+LLM response time: 11.858s
+LLM response time: 22.685s
+LLM response time: 11.999s
+Total query processing time: 1445.408s
+task 28
+LLM response time: 1.560s
+MCP Tool execute-tool execution time: 0.871s
+LLM response time: 17.745s
+MCP Tool execute-tool execution time: 0.869s
+LLM response time: 1.674s
+MCP Tool execute-tool execution time: 0.859s
+LLM response time: 1.061s
+Total query processing time: 24.656s
+task 29
+LLM response time: 1.604s
+MCP Tool execute-tool execution time: 6.795s
+LLM response time: 18.413s
+MCP Tool execute-tool execution time: 2.757s
+LLM response time: 20.012s
+MCP Tool execute-tool execution time: 2.708s
+LLM response time: 294.248s
+Total query processing time: 346.642s
+task 30
+LLM response time: 17.207s
+LLM response time: 10.056s
+LLM response time: 6.950s
+LLM response time: 7.293s
+LLM response time: 9.029s
+MCP Tool execute-tool execution time: 35.113s
+LLM response time: 45.402s
+Total query processing time: 1336.843s
+task 31
+LLM response time: 25.685s
+MCP Tool execute-tool execution time: 1.663s
+LLM response time: 0.490s
+MCP Tool execute-tool execution time: 1.583s
+LLM response time: 24.271s
+Total query processing time: 53.715s
+task 32
+LLM response time: 24.895s
+MCP Tool execute-tool execution time: 1.058s
+LLM response time: 1.458s
+MCP Tool execute-tool execution time: 0.936s
+LLM response time: 27.846s
+MCP Tool execute-tool execution time: 0.823s
+LLM response time: 1.649s
+MCP Tool execute-tool execution time: 0.740s
+LLM response time: 25.871s
+MCP Tool execute-tool execution time: 0.982s
+LLM response time: 24.152s
+MCP Tool execute-tool execution time: 0.766s
+LLM response time: 25.914s
+MCP Tool execute-tool execution time: 0.829s
+LLM response time: 27.846s
+MCP Tool execute-tool execution time: 1.328s
+LLM response time: 1.997s
+MCP Tool execute-tool execution time: 0.744s
+LLM response time: 27.750s
+MCP Tool execute-tool execution time: 0.823s
+LLM response time: 2.124s
+MCP Tool execute-tool execution time: 0.831s
+LLM response time: 27.008s
+MCP Tool execute-tool execution time: 0.890s
+LLM response time: 28.173s
+MCP Tool execute-tool execution time: 0.798s
+LLM response time: 2.819s
+MCP Tool execute-tool execution time: 0.821s
+LLM response time: 27.768s
+MCP Tool execute-tool execution time: 0.776s
+LLM response time: 2.853s
+MCP Tool execute-tool execution time: 0.828s
+LLM response time: 28.764s
+MCP Tool execute-tool execution time: 0.817s
+LLM response time: 28.165s
+MCP Tool execute-tool execution time: 0.825s
+LLM response time: 2.807s
+MCP Tool execute-tool execution time: 10.929s
+LLM response time: 18.136s
+MCP Tool execute-tool execution time: 5.816s
+LLM response time: 24.624s
+MCP Tool execute-tool execution time: 0.756s
+LLM response time: 28.456s
+MCP Tool execute-tool execution time: 0.762s
+LLM response time: 30.006s
+MCP Tool execute-tool execution time: 10.843s
+LLM response time: 25.771s
+MCP Tool execute-tool execution time: 0.819s
+LLM response time: 29.853s
+MCP Tool execute-tool execution time: 5.934s
+LLM response time: 26.718s
+MCP Tool execute-tool execution time: 0.767s
+LLM response time: 31.074s
+LLM response time: 157.149s
+Total query processing time: 1065.502s
+task 33
+LLM response time: 1.742s
+MCP Tool execute-tool execution time: 5.902s
+LLM response time: 1.845s
+MCP Tool execute-tool execution time: 0.828s
+LLM response time: 1.772s
+MCP Tool execute-tool execution time: 0.744s
+LLM response time: 1.783s
+MCP Tool execute-tool execution time: 0.753s
+LLM response time: 1.463s
+MCP Tool execute-tool execution time: 1.852s
+LLM response time: 25.052s
+Total query processing time: 43.758s
+task 34
+LLM response time: 3.043s
+MCP Tool execute-tool execution time: 2.123s
+LLM response time: 9.203s
+Total query processing time: 14.386s
+task 35
+LLM response time: 1.765s
+MCP Tool execute-tool execution time: 2.398s
+LLM response time: 26.869s
+MCP Tool execute-tool execution time: 2.458s
+LLM response time: 23.686s
+MCP Tool execute-tool execution time: 2.484s
+LLM response time: 22.825s
+MCP Tool execute-tool execution time: 2.093s
+LLM response time: 27.672s
+MCP Tool execute-tool execution time: 2.013s
+LLM response time: 25.823s
+MCP Tool execute-tool execution time: 2.020s
+LLM response time: 26.027s
+MCP Tool execute-tool execution time: 2.198s
+LLM response time: 26.362s
+MCP Tool execute-tool execution time: 2.320s
+LLM response time: 26.529s
+MCP Tool execute-tool execution time: 2.558s
+LLM response time: 28.619s
+MCP Tool execute-tool execution time: 2.087s
+LLM response time: 27.485s
+MCP Tool execute-tool execution time: 1.746s
+LLM response time: 145.974s
+Total query processing time: 434.043s
+task 36
+LLM response time: 25.142s
+MCP Tool execute-tool execution time: 2.547s
+LLM response time: 25.126s
+MCP Tool execute-tool execution time: 4.599s
+LLM response time: 81.047s
+Total query processing time: 138.483s
+task 37
+LLM response time: 25.978s
+MCP Tool execute-tool execution time: 0.888s
+LLM response time: 24.998s
+MCP Tool execute-tool execution time: 0.807s
+LLM response time: 26.020s
+MCP Tool execute-tool execution time: 0.816s
+LLM response time: 1.570s
+MCP Tool execute-tool execution time: 0.779s
+LLM response time: 25.974s
+MCP Tool execute-tool execution time: 0.874s
+LLM response time: 26.830s
+Total query processing time: 135.556s
+task 38
+LLM response time: 24.690s
+MCP Tool execute-tool execution time: 2.093s
+LLM response time: 26.399s
+MCP Tool execute-tool execution time: 2.651s
+LLM response time: 85.888s
+Total query processing time: 141.809s
+task 39
+LLM response time: 27.215s
+MCP Tool execute-tool execution time: 1.260s
+LLM response time: 19.531s
+MCP Tool execute-tool execution time: 1.286s
+LLM response time: 5.280s
+MCP Tool execute-tool execution time: 1.314s
+LLM response time: 0.855s
+MCP Tool execute-tool execution time: 1.463s
+LLM response time: 76.266s
+Total query processing time: 134.487s
+task 40
+LLM response time: 10.317s
+MCP Tool execute-tool execution time: 1.906s
+LLM response time: 15.627s
+MCP Tool execute-tool execution time: 0.713s
+LLM response time: 16.432s
+MCP Tool execute-tool execution time: 0.723s
+LLM response time: 1.801s
+MCP Tool execute-tool execution time: 0.706s
+LLM response time: 17.291s
+MCP Tool execute-tool execution time: 0.616s
+LLM response time: 0.971s
+MCP Tool execute-tool execution time: 0.628s
+LLM response time: 15.341s
+MCP Tool execute-tool execution time: 0.647s
+LLM response time: 14.698s
+MCP Tool execute-tool execution time: 0.727s
+LLM response time: 1.271s
+MCP Tool execute-tool execution time: 0.710s
+LLM response time: 16.600s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 16.496s
+MCP Tool execute-tool execution time: 0.724s
+LLM response time: 1.509s
+MCP Tool execute-tool execution time: 0.730s
+LLM response time: 17.526s
+MCP Tool execute-tool execution time: 0.746s
+LLM response time: 17.521s
+MCP Tool execute-tool execution time: 0.734s
+LLM response time: 18.447s
+Total query processing time: 192.918s
+task 41
+LLM response time: 28.946s
+MCP Tool execute-tool execution time: 0.648s
+MCP Tool execute-tool execution time: 3.796s
+MCP Tool execute-tool execution time: 2.722s
+MCP Tool execute-tool execution time: 2.479s
+MCP Tool execute-tool execution time: 2.469s
+LLM response time: 18.563s
+MCP Tool execute-tool execution time: 3.420s
+LLM response time: 12.874s
+MCP Tool execute-tool execution time: 4.543s
+LLM response time: 14.601s
+MCP Tool execute-tool execution time: 3.373s
+LLM response time: 13.858s
+MCP Tool execute-tool execution time: 2.657s
+LLM response time: 16.257s
+MCP Tool execute-tool execution time: 2.735s
+LLM response time: 14.545s
+MCP Tool execute-tool execution time: 2.980s
+LLM response time: 73.442s
+Total query processing time: 224.935s
+task 42
+LLM response time: 1.069s
+LLM response time: 3.386s
+LLM response time: 5.979s
+LLM response time: 5.615s
+Total query processing time: 920.630s
+task 43
+LLM response time: 12.376s
+MCP Tool execute-tool execution time: 1.492s
+LLM response time: 16.142s
+MCP Tool execute-tool execution time: 2.061s
+LLM response time: 28.180s
+Total query processing time: 60.274s
+task 44
+LLM response time: 1.334s
+MCP Tool execute-tool execution time: 1.610s
+LLM response time: 13.465s
+MCP Tool execute-tool execution time: 1.891s
+LLM response time: 35.669s
+Total query processing time: 53.984s
+task 45
+LLM response time: 17.341s
+MCP Tool execute-tool execution time: 0.770s
+LLM response time: 1.007s
+MCP Tool execute-tool execution time: 0.716s
+LLM response time: 16.923s
+MCP Tool execute-tool execution time: 0.716s
+LLM response time: 1.493s
+MCP Tool execute-tool execution time: 0.644s
+LLM response time: 18.534s
+MCP Tool execute-tool execution time: 0.664s
+LLM response time: 14.834s
+MCP Tool execute-tool execution time: 0.657s
+LLM response time: 18.522s
+Total query processing time: 92.842s
+task 46
+LLM response time: 1.688s
+MCP Tool execute-tool execution time: 7.690s
+LLM response time: 0.774s
+MCP Tool execute-tool execution time: 4.785s
+LLM response time: 14.861s
+MCP Tool execute-tool execution time: 0.868s
+LLM response time: 19.061s
+MCP Tool execute-tool execution time: 1.375s
+LLM response time: 0.748s
+MCP Tool execute-tool execution time: 3.062s
+LLM response time: 17.483s
+MCP Tool execute-tool execution time: 4.236s
+LLM response time: 17.664s
+MCP Tool execute-tool execution time: 2.696s
+LLM response time: 20.073s
+MCP Tool execute-tool execution time: 3.834s
+LLM response time: 20.531s
+MCP Tool execute-tool execution time: 3.873s
+LLM response time: 17.251s
+MCP Tool execute-tool execution time: 3.771s
+LLM response time: 17.488s
+MCP Tool execute-tool execution time: 2.824s
+LLM response time: 19.781s
+MCP Tool execute-tool execution time: 3.089s
+LLM response time: 19.111s
+MCP Tool execute-tool execution time: 7.471s
+LLM response time: 15.090s
+MCP Tool execute-tool execution time: 3.410s
+LLM response time: 20.651s
+MCP Tool execute-tool execution time: 3.455s
+LLM response time: 19.180s
+MCP Tool execute-tool execution time: 3.194s
+LLM response time: 17.652s
+MCP Tool execute-tool execution time: 2.741s
+LLM response time: 18.602s
+MCP Tool execute-tool execution time: 3.676s
+LLM response time: 11.554s
+MCP Tool execute-tool execution time: 3.711s
+LLM response time: 17.945s
+MCP Tool execute-tool execution time: 5.501s
+LLM response time: 15.268s
+MCP Tool execute-tool execution time: 3.140s
+LLM response time: 20.014s
+MCP Tool execute-tool execution time: 5.540s
+LLM response time: 16.557s
+MCP Tool execute-tool execution time: 3.347s
+LLM response time: 21.387s
+MCP Tool execute-tool execution time: 4.558s
+LLM response time: 16.762s
+MCP Tool execute-tool execution time: 2.807s
+LLM response time: 17.164s
+MCP Tool execute-tool execution time: 2.921s
+LLM response time: 18.042s
+MCP Tool execute-tool execution time: 4.762s
+LLM response time: 15.677s
+MCP Tool execute-tool execution time: 3.352s
+LLM response time: 16.327s
+MCP Tool execute-tool execution time: 2.896s
+LLM response time: 17.554s
+MCP Tool execute-tool execution time: 3.501s
+LLM response time: 18.321s
+MCP Tool execute-tool execution time: 3.552s
+LLM response time: 18.061s
+MCP Tool execute-tool execution time: 7.825s
+LLM response time: 11.365s
+MCP Tool execute-tool execution time: 3.169s
+LLM response time: 18.807s
+MCP Tool execute-tool execution time: 3.025s
+LLM response time: 19.501s
+MCP Tool execute-tool execution time: 5.575s
+LLM response time: 18.432s
+MCP Tool execute-tool execution time: 3.611s
+LLM response time: 20.647s
+MCP Tool execute-tool execution time: 3.946s
+LLM response time: 19.422s
+MCP Tool execute-tool execution time: 5.109s
+LLM response time: 19.073s
+MCP Tool execute-tool execution time: 3.577s
+LLM response time: 19.125s
+MCP Tool execute-tool execution time: 3.141s
+LLM response time: 18.832s
+MCP Tool execute-tool execution time: 2.620s
+LLM response time: 19.026s
+MCP Tool execute-tool execution time: 2.761s
+LLM response time: 19.075s
+MCP Tool execute-tool execution time: 2.835s
+LLM response time: 20.261s
+MCP Tool execute-tool execution time: 2.991s
+Total query processing time: 913.633s
+task 47
+LLM response time: 13.122s
+MCP Tool execute-tool execution time: 2.075s
+LLM response time: 1.107s
+Total query processing time: 16.326s
+task 48
+LLM response time: 11.102s
+MCP Tool execute-tool execution time: 0.007s
+LLM response time: 10.871s
+Total query processing time: 22.002s
+task 49
+LLM response time: 19.983s
+MCP Tool execute-tool execution time: 2.626s
+LLM response time: 15.152s
+MCP Tool execute-tool execution time: 1.368s
+LLM response time: 18.250s
+MCP Tool execute-tool execution time: 1.035s
+LLM response time: 57.316s
+Total query processing time: 115.750s
+task 50
+LLM response time: 1.335s
+LLM response time: 1.379s
+LLM response time: 16.659s
+LLM response time: 5.230s
+LLM response time: 16.475s
+Total query processing time: 1247.351s
+task 51
+LLM response time: 22.073s
+MCP Tool execute-tool execution time: 3.313s
+MCP Tool execute-tool execution time: 0.662s
+MCP Tool execute-tool execution time: 2.905s
+LLM response time: 12.829s
+MCP Tool execute-tool execution time: 1.571s
+LLM response time: 0.644s
+MCP Tool execute-tool execution time: 0.665s
+LLM response time: 22.782s
+Total query processing time: 67.464s
+task 52
+LLM response time: 28.436s
+MCP Tool execute-tool execution time: 9.637s
+MCP Tool execute-tool execution time: 1.633s
+MCP Tool execute-tool execution time: 6.470s
+MCP Tool execute-tool execution time: 6.616s
+LLM response time: 46.265s
+Total query processing time: 99.078s
+task 53
+LLM response time: 1.008s
+MCP Tool execute-tool execution time: 2.282s
+LLM response time: 20.175s
+MCP Tool execute-tool execution time: 0.495s
+LLM response time: 1.477s
+Total query processing time: 25.455s
+task 54
+LLM response time: 20.402s
+MCP Tool execute-tool execution time: 5.963s
+LLM response time: 17.162s
+MCP Tool execute-tool execution time: 2.215s
+LLM response time: 22.266s
+MCP Tool execute-tool execution time: 3.081s
+LLM response time: 18.877s
+MCP Tool execute-tool execution time: 1.901s
+LLM response time: 20.188s
+Total query processing time: 112.074s
+task 55
+LLM response time: 1.210s
+MCP Tool search_components execution time: 0.008s
+LLM response time: 0.464s
+MCP Tool search_components execution time: 0.007s
+LLM response time: 22.535s
+MCP Tool search_components execution time: 0.008s
+LLM response time: 1.104s
+MCP Tool get_component_details execution time: 0.009s
+LLM response time: 45.572s
+MCP Tool write_file execution time: 0.009s
+LLM response time: 72.764s
+Total query processing time: 143.713s
+task 56
+LLM response time: 24.439s
+MCP Tool execute-tool execution time: 0.657s
+LLM response time: 1.249s
+MCP Tool execute-tool execution time: 0.633s
+LLM response time: 23.926s
+MCP Tool execute-tool execution time: 0.676s
+LLM response time: 1.461s
+Total query processing time: 53.058s
+task 57
+LLM response time: 22.977s
+MCP Tool execute-tool execution time: 0.656s
+LLM response time: 1.274s
+MCP Tool execute-tool execution time: 0.660s
+LLM response time: 23.265s
+MCP Tool execute-tool execution time: 0.658s
+LLM response time: 22.157s
+MCP Tool execute-tool execution time: 0.638s
+LLM response time: 24.222s
+Total query processing time: 96.528s
+task 58
+LLM response time: 24.062s
+MCP Tool execute-tool execution time: 2.653s
+LLM response time: 20.597s
+MCP Tool execute-tool execution time: 14.283s
+LLM response time: 9.916s
+MCP Tool execute-tool execution time: 0.743s
+LLM response time: 1.510s
+MCP Tool execute-tool execution time: 0.529s
+LLM response time: 0.932s
+MCP Tool execute-tool execution time: 12.930s
+LLM response time: 11.819s
+MCP Tool execute-tool execution time: 0.531s
+LLM response time: 21.422s
+MCP Tool execute-tool execution time: 13.223s
+LLM response time: 34.932s
+Total query processing time: 170.113s
+task 59
+LLM response time: 23.356s
+Total query processing time: 23.372s
+task 60
+LLM response time: 320.751s
+Total query processing time: 320.767s
+task 61
+LLM response time: 2.350s
+MCP Tool execute-tool execution time: 32.408s
+LLM response time: 1.301s
+MCP Tool execute-tool execution time: 30.693s
+LLM response time: 17.677s
+MCP Tool execute-tool execution time: 31.323s
+LLM response time: 13.178s
+MCP Tool execute-tool execution time: 30.822s
+LLM response time: 13.347s
+MCP Tool execute-tool execution time: 30.651s
+LLM response time: 17.810s
+Total query processing time: 221.584s
+task 62
+LLM response time: 1.022s
+MCP Tool execute-tool execution time: 2.001s
+LLM response time: 23.468s
+Total query processing time: 26.511s
+task 63
+LLM response time: 23.032s
+MCP Tool execute-tool execution time: 1.400s
+LLM response time: 9.879s
+Total query processing time: 34.327s
+task 64
+LLM response time: 14.124s
+LLM response time: 4.711s
+LLM response time: 11.398s
+Total query processing time: 633.076s
+task 65
+LLM response time: 28.087s
+Total query processing time: 28.108s
+task 66
+LLM response time: 1.916s
+LLM response time: 4.043s
+LLM response time: 4.621s
+LLM response time: 5.840s
+LLM response time: 2.053s
+LLM response time: 5.236s
+LLM response time: 10.670s
+Total query processing time: 1842.918s
+task 67
+LLM response time: 26.283s
+MCP Tool execute-tool execution time: 5.288s
+LLM response time: 79.718s
+Total query processing time: 111.307s
+task 68
+LLM response time: 27.046s
+MCP Tool execute-tool execution time: 33.006s
+LLM response time: 20.969s
+MCP Tool execute-tool execution time: 31.022s
+LLM response time: 23.915s
+MCP Tool execute-tool execution time: 31.077s
+LLM response time: 22.742s
+MCP Tool execute-tool execution time: 32.268s
+LLM response time: 20.893s
+MCP Tool execute-tool execution time: 31.088s
+LLM response time: 24.697s
+Total query processing time: 298.747s
+task 69
+LLM response time: 24.957s
+MCP Tool execute-tool execution time: 32.043s
+LLM response time: 0.732s
+MCP Tool execute-tool execution time: 31.281s
+LLM response time: 24.127s
+MCP Tool execute-tool execution time: 30.866s
+LLM response time: 26.767s
+MCP Tool execute-tool execution time: 32.237s
+LLM response time: 24.199s
+MCP Tool execute-tool execution time: 30.780s
+LLM response time: 23.395s
+Total query processing time: 281.404s
+task 70
+LLM response time: 12.367s
+MCP Tool execute-tool execution time: 7.383s
+LLM response time: 15.119s
+MCP Tool execute-tool execution time: 8.234s
+LLM response time: 39.846s
+Total query processing time: 82.970s
+task 71
+LLM response time: 1.523s
+MCP Tool execute-tool execution time: 0.613s
+LLM response time: 17.786s
+MCP Tool execute-tool execution time: 0.697s
+LLM response time: 4.268s
+MCP Tool execute-tool execution time: 0.613s
+LLM response time: 15.893s
+MCP Tool execute-tool execution time: 0.628s
+LLM response time: 19.870s
+Total query processing time: 61.913s
+task 72
+LLM response time: 21.624s
+MCP Tool execute-tool execution time: 6.585s
+MCP Tool execute-tool execution time: 0.634s
+LLM response time: 13.696s
+MCP Tool execute-tool execution time: 0.585s
+LLM response time: 0.777s
+MCP Tool execute-tool execution time: 0.630s
+LLM response time: 41.972s
+Total query processing time: 86.523s
+task 73
+LLM response time: 18.813s
+MCP Tool execute-tool execution time: 2.667s
+MCP Tool execute-tool execution time: 0.639s
+LLM response time: 19.889s
+Total query processing time: 42.026s
+task 74
+LLM response time: 32.354s
+MCP Tool execute-tool execution time: 32.149s
+MCP Tool execute-tool execution time: 31.023s
+MCP Tool execute-tool execution time: 1.424s
+MCP Tool execute-tool execution time: 1.557s
+LLM response time: 21.522s
+MCP Tool execute-tool execution time: 32.501s
+LLM response time: 5.785s
+MCP Tool execute-tool execution time: 4.002s
+LLM response time: 16.510s
+MCP Tool execute-tool execution time: 1.107s
+LLM response time: 77.564s
+Total query processing time: 257.523s
+task 75
+LLM response time: 18.113s
+MCP Tool execute-tool execution time: 8.901s
+LLM response time: 9.683s
+MCP Tool execute-tool execution time: 1.696s
+LLM response time: 38.134s
+Total query processing time: 76.546s
+task 76
+LLM response time: 1.538s
+LLM response time: 6.487s
+LLM response time: 1.390s
+LLM response time: 1.216s
+Total query processing time: 914.911s
+task 77
+LLM response time: 17.574s
+MCP Tool execute-tool execution time: 0.638s
+LLM response time: 0.736s
+MCP Tool execute-tool execution time: 0.658s
+LLM response time: 15.258s
+MCP Tool execute-tool execution time: 0.618s
+LLM response time: 3.301s
+LLM response time: 19.347s
+MCP Tool execute-tool execution time: 3.175s
+LLM response time: 46.361s
+Total query processing time: 408.947s
+task 78
+LLM response time: 19.540s
+MCP Tool execute-tool execution time: 5.910s
+LLM response time: 22.641s
+MCP Tool execute-tool execution time: 3.726s
+LLM response time: 23.459s
+MCP Tool execute-tool execution time: 32.156s
+LLM response time: 15.189s
+MCP Tool execute-tool execution time: 49.696s
+LLM response time: 3.197s
+MCP Tool execute-tool execution time: 61.139s
+LLM response time: 80.695s
+Total query processing time: 317.974s
+task 79
+LLM response time: 21.965s
+MCP Tool execute-tool execution time: 2.448s
+LLM response time: 55.045s
+Total query processing time: 79.494s
+task 80
+LLM response time: 23.088s
+MCP Tool execute-tool execution time: 0.751s
+LLM response time: 1.279s
+MCP Tool execute-tool execution time: 0.656s
+LLM response time: 0.658s
+Total query processing time: 26.451s
+task 81
+LLM response time: 23.156s
+MCP Tool execute-tool execution time: 0.775s
+LLM response time: 22.763s
+MCP Tool execute-tool execution time: 0.858s
+LLM response time: 1.868s
+MCP Tool execute-tool execution time: 2.379s
+LLM response time: 19.696s
+MCP Tool execute-tool execution time: 0.843s
+LLM response time: 22.506s
+MCP Tool execute-tool execution time: 30.937s
+LLM response time: 15.224s
+MCP Tool execute-tool execution time: 46.058s
+LLM response time: 48.075s
+Total query processing time: 235.165s
+
+task 82
+LLM response time: 13.804s
+MCP Tool execute-tool execution time: 4.871s
+LLM response time: 184.427s
+LLM response time: 159.362s
+LLM response time: 143.606s
+LLM response time: 38.460s
+Total query processing time: 1448.658s
+task 83
+LLM response time: 22.383s
+MCP Tool execute-tool execution time: 3.422s
+LLM response time: 22.353s
+Total query processing time: 48.178s
+task 84
+LLM response time: 1.315s
+MCP Tool execute-tool execution time: 2.833s
+LLM response time: 17.380s
+MCP Tool execute-tool execution time: 0.844s
+LLM response time: 21.831s
+MCP Tool execute-tool execution time: 0.736s
+LLM response time: 1.112s
+MCP Tool execute-tool execution time: 0.771s
+LLM response time: 22.725s
+MCP Tool execute-tool execution time: 0.797s
+LLM response time: 0.932s
+MCP Tool execute-tool execution time: 0.781s
+LLM response time: 20.504s
+MCP Tool execute-tool execution time: 0.735s
+LLM response time: 5.133s
+MCP Tool execute-tool execution time: 0.774s
+LLM response time: 17.805s
+MCP Tool execute-tool execution time: 0.810s
+LLM response time: 19.285s
+MCP Tool execute-tool execution time: 0.804s
+LLM response time: 23.175s
+Total query processing time: 161.109s
+task 85
+LLM response time: 1.367s
+MCP Tool execute-tool execution time: 0.968s
+LLM response time: 45.306s
+Total query processing time: 47.661s
+task 86
+LLM response time: 21.626s
+MCP Tool execute-tool execution time: 1.157s
+LLM response time: 21.369s
+Total query processing time: 44.172s
+task 87
+LLM response time: 25.665s
+MCP Tool execute-tool execution time: 0.663s
+MCP Tool execute-tool execution time: 5.046s
+LLM response time: 21.726s
+MCP Tool execute-tool execution time: 0.653s
+LLM response time: 48.577s
+Total query processing time: 102.350s
+task 88
+LLM response time: 1.012s
+MCP Tool execute-tool execution time: 7.146s
+LLM response time: 20.450s
+Total query processing time: 28.627s
+task 89
+LLM response time: 18.859s
+MCP Tool execute-tool execution time: 3.477s
+LLM response time: 22.442s
+MCP Tool execute-tool execution time: 2.316s
+LLM response time: 0.708s
+MCP Tool execute-tool execution time: 2.948s
+LLM response time: 24.448s
+MCP Tool execute-tool execution time: 2.962s
+LLM response time: 23.875s
+MCP Tool execute-tool execution time: 4.565s
+LLM response time: 24.758s
+MCP Tool execute-tool execution time: 4.769s
+LLM response time: 23.440s
+MCP Tool execute-tool execution time: 3.253s
+LLM response time: 25.953s
+MCP Tool execute-tool execution time: 2.036s
+LLM response time: 19.287s
+MCP Tool execute-tool execution time: 32.146s
+LLM response time: 3.471s
+MCP Tool execute-tool execution time: 31.508s
+LLM response time: 84.250s
+MCP Tool execute-tool execution time: 31.747s
+LLM response time: 82.918s
+MCP Tool execute-tool execution time: 33.079s
+LLM response time: 55.043s
+Total query processing time: 564.298s
+task 90
+LLM response time: 26.976s
+LLM response time: 2.350s
+LLM response time: 4.141s
+LLM response time: 3.136s
+MCP Tool execute-tool execution time: 32.800s
+LLM response time: 23.529s
+LLM response time: 14.862s
+Total query processing time: 1313.579s
+task 91
+LLM response time: 24.350s
+MCP Tool execute-tool execution time: 0.637s
+MCP Tool execute-tool execution time: 0.623s
+LLM response time: 27.767s
+MCP Tool execute-tool execution time: 0.615s
+MCP Tool execute-tool execution time: 0.659s
+LLM response time: 26.162s
+MCP Tool execute-tool execution time: 0.684s
+MCP Tool execute-tool execution time: 0.584s
+LLM response time: 26.704s
+Total query processing time: 108.896s
+task 92
+LLM response time: 26.390s
+MCP Tool execute-tool execution time: 0.703s
+LLM response time: 0.735s
+MCP Tool execute-tool execution time: 0.646s
+LLM response time: 24.890s
+MCP Tool execute-tool execution time: 0.782s
+LLM response time: 0.868s
+MCP Tool execute-tool execution time: 0.691s
+LLM response time: 26.926s
+MCP Tool execute-tool execution time: 0.735s
+LLM response time: 0.778s
+MCP Tool execute-tool execution time: 0.655s
+LLM response time: 26.110s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 5.107s
+MCP Tool execute-tool execution time: 0.705s
+LLM response time: 20.727s
+MCP Tool execute-tool execution time: 0.842s
+LLM response time: 1.091s
+MCP Tool execute-tool execution time: 0.678s
+LLM response time: 26.691s
+MCP Tool execute-tool execution time: 0.773s
+LLM response time: 1.158s
+MCP Tool execute-tool execution time: 0.775s
+LLM response time: 0.918s
+MCP Tool execute-tool execution time: 0.688s
+LLM response time: 26.297s
+MCP Tool execute-tool execution time: 0.844s
+LLM response time: 1.315s
+MCP Tool execute-tool execution time: 0.710s
+LLM response time: 0.812s
+MCP Tool execute-tool execution time: 0.700s
+LLM response time: 25.423s
+MCP Tool execute-tool execution time: 0.762s
+LLM response time: 23.813s
+MCP Tool execute-tool execution time: 0.710s
+LLM response time: 0.848s
+MCP Tool execute-tool execution time: 0.693s
+LLM response time: 25.847s
+MCP Tool execute-tool execution time: 0.833s
+LLM response time: 2.845s
+MCP Tool execute-tool execution time: 0.699s
+LLM response time: 23.085s
+MCP Tool execute-tool execution time: 0.871s
+LLM response time: 0.888s
+MCP Tool execute-tool execution time: 0.682s
+LLM response time: 24.334s
+MCP Tool execute-tool execution time: 0.882s
+LLM response time: 3.769s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 22.425s
+MCP Tool execute-tool execution time: 0.767s
+LLM response time: 15.417s
+MCP Tool execute-tool execution time: 0.671s
+LLM response time: 9.678s
+MCP Tool execute-tool execution time: 0.707s
+LLM response time: 12.799s
+MCP Tool execute-tool execution time: 0.686s
+LLM response time: 12.588s
+MCP Tool execute-tool execution time: 0.698s
+LLM response time: 3.845s
+MCP Tool execute-tool execution time: 0.677s
+LLM response time: 22.227s
+MCP Tool execute-tool execution time: 0.853s
+LLM response time: 2.135s
+MCP Tool execute-tool execution time: 0.695s
+LLM response time: 23.474s
+MCP Tool execute-tool execution time: 0.814s
+LLM response time: 1.225s
+MCP Tool execute-tool execution time: 0.649s
+LLM response time: 24.880s
+MCP Tool execute-tool execution time: 0.725s
+LLM response time: 1.034s
+MCP Tool execute-tool execution time: 0.685s
+LLM response time: 24.979s
+MCP Tool execute-tool execution time: 0.822s
+LLM response time: 0.936s
+MCP Tool execute-tool execution time: 0.685s
+LLM response time: 26.009s
+MCP Tool execute-tool execution time: 0.860s
+LLM response time: 1.347s
+MCP Tool execute-tool execution time: 0.727s
+LLM response time: 25.743s
+MCP Tool execute-tool execution time: 0.856s
+LLM response time: 0.935s
+MCP Tool execute-tool execution time: 0.708s
+LLM response time: 26.008s
+MCP Tool execute-tool execution time: 0.881s
+LLM response time: 1.735s
+MCP Tool execute-tool execution time: 0.627s
+LLM response time: 25.125s
+MCP Tool execute-tool execution time: 0.875s
+LLM response time: 1.041s
+MCP Tool execute-tool execution time: 0.714s
+LLM response time: 1.058s
+MCP Tool execute-tool execution time: 0.711s
+LLM response time: 26.793s
+MCP Tool execute-tool execution time: 0.656s
+LLM response time: 1.020s
+MCP Tool execute-tool execution time: 0.678s
+LLM response time: 24.852s
+MCP Tool execute-tool execution time: 0.723s
+LLM response time: 1.294s
+MCP Tool execute-tool execution time: 0.611s
+LLM response time: 26.642s
+MCP Tool execute-tool execution time: 0.842s
+LLM response time: 1.044s
+MCP Tool execute-tool execution time: 0.696s
+LLM response time: 1.049s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 1.082s
+MCP Tool execute-tool execution time: 0.765s
+LLM response time: 1.057s
+MCP Tool execute-tool execution time: 0.680s
+LLM response time: 24.478s
+MCP Tool execute-tool execution time: 0.741s
+LLM response time: 1.378s
+MCP Tool execute-tool execution time: 0.679s
+LLM response time: 24.145s
+MCP Tool execute-tool execution time: 0.756s
+LLM response time: 1.140s
+MCP Tool execute-tool execution time: 0.739s
+LLM response time: 27.114s
+MCP Tool execute-tool execution time: 0.680s
+LLM response time: 12.165s
+MCP Tool execute-tool execution time: 0.704s
+LLM response time: 14.188s
+MCP Tool execute-tool execution time: 0.832s
+LLM response time: 4.126s
+MCP Tool execute-tool execution time: 0.715s
+LLM response time: 22.831s
+MCP Tool execute-tool execution time: 0.849s
+LLM response time: 1.367s
+MCP Tool execute-tool execution time: 0.668s
+LLM response time: 26.292s
+MCP Tool execute-tool execution time: 0.794s
+LLM response time: 1.718s
+MCP Tool execute-tool execution time: 0.847s
+LLM response time: 1.105s
+MCP Tool execute-tool execution time: 0.711s
+LLM response time: 26.072s
+MCP Tool execute-tool execution time: 0.914s
+LLM response time: 7.307s
+MCP Tool execute-tool execution time: 0.699s
+LLM response time: 19.155s
+MCP Tool execute-tool execution time: 0.736s
+LLM response time: 4.213s
+MCP Tool execute-tool execution time: 0.682s
+LLM response time: 23.122s
+MCP Tool execute-tool execution time: 0.748s
+LLM response time: 5.173s
+MCP Tool execute-tool execution time: 0.701s
+LLM response time: 21.934s
+MCP Tool execute-tool execution time: 0.844s
+LLM response time: 1.226s
+MCP Tool execute-tool execution time: 0.685s
+LLM response time: 26.034s
+MCP Tool execute-tool execution time: 0.682s
+LLM response time: 1.115s
+MCP Tool execute-tool execution time: 0.702s
+LLM response time: 26.486s
+MCP Tool execute-tool execution time: 0.771s
+LLM response time: 25.816s
+MCP Tool execute-tool execution time: 0.715s
+LLM response time: 1.448s
+MCP Tool execute-tool execution time: 0.741s
+LLM response time: 26.780s
+MCP Tool execute-tool execution time: 0.813s
+LLM response time: 1.314s
+MCP Tool execute-tool execution time: 0.681s
+LLM response time: 24.834s
+MCP Tool execute-tool execution time: 0.805s
+LLM response time: 23.334s
+MCP Tool execute-tool execution time: 0.934s
+LLM response time: 1.573s
+MCP Tool execute-tool execution time: 0.711s
+LLM response time: 26.143s
+MCP Tool execute-tool execution time: 0.829s
+LLM response time: 1.432s
+MCP Tool execute-tool execution time: 0.723s
+LLM response time: 26.715s
+MCP Tool execute-tool execution time: 0.794s
+LLM response time: 1.578s
+MCP Tool execute-tool execution time: 0.727s
+LLM response time: 26.296s
+MCP Tool execute-tool execution time: 0.757s
+LLM response time: 1.539s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 27.235s
+MCP Tool execute-tool execution time: 0.832s
+LLM response time: 1.203s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 26.741s
+MCP Tool execute-tool execution time: 0.748s
+LLM response time: 7.472s
+MCP Tool execute-tool execution time: 0.666s
+LLM response time: 18.788s
+MCP Tool execute-tool execution time: 0.734s
+LLM response time: 26.184s
+MCP Tool execute-tool execution time: 0.725s
+LLM response time: 1.586s
+MCP Tool execute-tool execution time: 0.709s
+LLM response time: 25.372s
+MCP Tool execute-tool execution time: 0.780s
+LLM response time: 1.235s
+MCP Tool execute-tool execution time: 0.733s
+LLM response time: 26.450s
+MCP Tool execute-tool execution time: 0.872s
+LLM response time: 1.547s
+MCP Tool execute-tool execution time: 0.853s
+LLM response time: 1.588s
+MCP Tool execute-tool execution time: 0.827s
+LLM response time: 7.048s
+MCP Tool execute-tool execution time: 0.657s
+LLM response time: 18.212s
+MCP Tool execute-tool execution time: 0.717s
+LLM response time: 19.351s
+MCP Tool execute-tool execution time: 0.693s
+LLM response time: 7.206s
+MCP Tool execute-tool execution time: 0.875s
+LLM response time: 5.554s
+MCP Tool execute-tool execution time: 0.712s
+LLM response time: 21.839s
+MCP Tool execute-tool execution time: 0.824s
+LLM response time: 1.315s
+MCP Tool execute-tool execution time: 0.715s
+LLM response time: 25.052s
+MCP Tool execute-tool execution time: 0.692s
+LLM response time: 1.501s
+MCP Tool execute-tool execution time: 0.678s
+LLM response time: 24.958s
+MCP Tool execute-tool execution time: 0.828s
+LLM response time: 26.591s
+MCP Tool execute-tool execution time: 0.730s
+LLM response time: 1.572s
+MCP Tool execute-tool execution time: 0.654s
+LLM response time: 27.371s
+MCP Tool execute-tool execution time: 0.833s
+LLM response time: 22.116s
+MCP Tool execute-tool execution time: 0.706s
+LLM response time: 5.577s
+MCP Tool execute-tool execution time: 0.713s
+LLM response time: 1.309s
+MCP Tool execute-tool execution time: 0.714s
+LLM response time: 26.567s
+MCP Tool execute-tool execution time: 0.738s
+LLM response time: 10.200s
+MCP Tool execute-tool execution time: 0.686s
+LLM response time: 17.696s
+MCP Tool execute-tool execution time: 0.838s
+LLM response time: 1.313s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 25.159s
+MCP Tool execute-tool execution time: 0.857s
+LLM response time: 19.743s
+MCP Tool execute-tool execution time: 0.675s
+LLM response time: 7.317s
+MCP Tool execute-tool execution time: 0.751s
+LLM response time: 26.599s
+MCP Tool execute-tool execution time: 0.820s
+LLM response time: 1.616s
+MCP Tool execute-tool execution time: 0.731s
+LLM response time: 26.275s
+MCP Tool execute-tool execution time: 0.722s
+LLM response time: 27.598s
+MCP Tool execute-tool execution time: 0.709s
+LLM response time: 1.388s
+MCP Tool execute-tool execution time: 0.668s
+LLM response time: 24.773s
+MCP Tool execute-tool execution time: 0.705s
+LLM response time: 26.929s
+MCP Tool execute-tool execution time: 0.791s
+LLM response time: 1.726s
+MCP Tool execute-tool execution time: 0.788s
+LLM response time: 27.721s
+MCP Tool execute-tool execution time: 0.817s
+LLM response time: 1.370s
+MCP Tool execute-tool execution time: 0.675s
+LLM response time: 25.752s
+MCP Tool execute-tool execution time: 0.726s
+LLM response time: 24.325s
+MCP Tool execute-tool execution time: 0.840s
+LLM response time: 1.503s
+MCP Tool execute-tool execution time: 0.698s
+LLM response time: 26.911s
+MCP Tool execute-tool execution time: 0.711s
+LLM response time: 12.464s
+MCP Tool execute-tool execution time: 0.696s
+LLM response time: 14.243s
+MCP Tool execute-tool execution time: 0.726s
+LLM response time: 24.253s
+MCP Tool execute-tool execution time: 0.691s
+LLM response time: 1.652s
+MCP Tool execute-tool execution time: 0.849s
+LLM response time: 21.616s
+MCP Tool execute-tool execution time: 0.709s
+LLM response time: 4.229s
+MCP Tool execute-tool execution time: 0.726s
+LLM response time: 1.792s
+MCP Tool execute-tool execution time: 0.737s
+LLM response time: 26.953s
+MCP Tool execute-tool execution time: 0.713s
+LLM response time: 1.684s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 1.618s
+MCP Tool execute-tool execution time: 0.694s
+LLM response time: 24.954s
+MCP Tool execute-tool execution time: 0.722s
+LLM response time: 1.623s
+MCP Tool execute-tool execution time: 0.668s
+LLM response time: 27.038s
+MCP Tool execute-tool execution time: 0.751s
+LLM response time: 1.709s
+MCP Tool execute-tool execution time: 0.722s
+LLM response time: 1.664s
+MCP Tool execute-tool execution time: 0.870s
+LLM response time: 1.627s
+MCP Tool execute-tool execution time: 0.749s
+LLM response time: 24.214s
+MCP Tool execute-tool execution time: 0.707s
+LLM response time: 26.247s
+MCP Tool execute-tool execution time: 0.699s
+LLM response time: 1.937s
+MCP Tool execute-tool execution time: 0.697s
+LLM response time: 1.437s
+MCP Tool execute-tool execution time: 0.720s
+LLM response time: 25.215s
+MCP Tool execute-tool execution time: 0.831s
+LLM response time: 1.504s
+MCP Tool execute-tool execution time: 0.695s
+LLM response time: 26.233s
+MCP Tool execute-tool execution time: 0.875s
+LLM response time: 27.126s
+MCP Tool execute-tool execution time: 0.819s
+LLM response time: 1.458s
+MCP Tool execute-tool execution time: 0.762s
+LLM response time: 26.542s
+MCP Tool execute-tool execution time: 0.745s
+LLM response time: 12.176s
+MCP Tool execute-tool execution time: 0.687s
+LLM response time: 15.297s
+MCP Tool execute-tool execution time: 0.778s
+LLM response time: 1.711s
+MCP Tool execute-tool execution time: 0.763s
+LLM response time: 3.650s
+MCP Tool execute-tool execution time: 0.717s
+LLM response time: 35.223s
+MCP Tool execute-tool execution time: 0.708s
+LLM response time: 1.811s
+MCP Tool execute-tool execution time: 0.702s
+LLM response time: 1.852s
+MCP Tool execute-tool execution time: 0.683s
+LLM response time: 1.824s
+MCP Tool execute-tool execution time: 0.703s
+LLM response time: 1.825s
+MCP Tool execute-tool execution time: 0.702s
+LLM response time: 1.831s
+MCP Tool execute-tool execution time: 0.716s
+LLM response time: 1.842s
+MCP Tool execute-tool execution time: 0.724s
+LLM response time: 1.859s
+MCP Tool execute-tool execution time: 0.735s
+LLM response time: 1.857s
+MCP Tool execute-tool execution time: 0.769s
+LLM response time: 1.871s
+MCP Tool execute-tool execution time: 0.880s
+LLM response time: 1.878s
+MCP Tool execute-tool execution time: 0.810s
+LLM response time: 2.177s
+MCP Tool execute-tool execution time: 0.742s
+LLM response time: 1.857s
+MCP Tool execute-tool execution time: 0.942s
+LLM response time: 1.859s
+MCP Tool execute-tool execution time: 0.805s
+LLM response time: 1.881s
+MCP Tool execute-tool execution time: 0.833s
+LLM response time: 1.877s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 1.867s
+MCP Tool execute-tool execution time: 0.763s
+LLM response time: 1.881s
+MCP Tool execute-tool execution time: 0.815s
+LLM response time: 1.889s
+MCP Tool execute-tool execution time: 0.716s
+LLM response time: 1.889s
+MCP Tool execute-tool execution time: 0.723s
+LLM response time: 1.870s
+MCP Tool execute-tool execution time: 0.706s
+LLM response time: 1.885s
+MCP Tool execute-tool execution time: 0.809s
+LLM response time: 1.878s
+MCP Tool execute-tool execution time: 0.760s
+LLM response time: 1.901s
+MCP Tool execute-tool execution time: 0.809s
+LLM response time: 1.887s
+MCP Tool execute-tool execution time: 0.727s
+LLM response time: 1.905s
+MCP Tool execute-tool execution time: 0.725s
+LLM response time: 1.884s
+MCP Tool execute-tool execution time: 0.703s
+LLM response time: 1.893s
+MCP Tool execute-tool execution time: 0.737s
+LLM response time: 1.865s
+MCP Tool execute-tool execution time: 0.748s
+LLM response time: 1.561s
+MCP Tool execute-tool execution time: 0.763s
+LLM response time: 26.287s
+MCP Tool execute-tool execution time: 0.812s
+LLM response time: 25.157s
+MCP Tool execute-tool execution time: 0.841s
+LLM response time: 23.140s
+MCP Tool execute-tool execution time: 0.702s
+LLM response time: 2.731s
+MCP Tool execute-tool execution time: 0.773s
+LLM response time: 28.933s
+MCP Tool execute-tool execution time: 0.709s
+LLM response time: 14.215s
+MCP Tool execute-tool execution time: 0.667s
+LLM response time: 14.204s
+MCP Tool execute-tool execution time: 0.758s
+LLM response time: 24.510s
+MCP Tool execute-tool execution time: 0.665s
+LLM response time: 3.562s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 1.622s
+MCP Tool execute-tool execution time: 0.730s
+LLM response time: 25.527s
+MCP Tool execute-tool execution time: 0.613s
+LLM response time: 28.895s
+MCP Tool execute-tool execution time: 0.697s
+LLM response time: 2.248s
+MCP Tool execute-tool execution time: 0.683s
+LLM response time: 29.160s
+MCP Tool execute-tool execution time: 0.719s
+LLM response time: 1.702s
+MCP Tool execute-tool execution time: 0.681s
+LLM response time: 27.249s
+MCP Tool execute-tool execution time: 0.737s
+LLM response time: 28.104s
+MCP Tool execute-tool execution time: 0.708s
+LLM response time: 16.590s
+MCP Tool execute-tool execution time: 0.680s
+LLM response time: 13.795s
+MCP Tool execute-tool execution time: 0.719s
+LLM response time: 1.896s
+MCP Tool execute-tool execution time: 0.709s
+LLM response time: 27.955s
+MCP Tool execute-tool execution time: 0.718s
+LLM response time: 2.003s
+MCP Tool execute-tool execution time: 0.666s
+LLM response time: 28.594s
+MCP Tool execute-tool execution time: 0.712s
+LLM response time: 26.595s
+MCP Tool execute-tool execution time: 0.720s
+LLM response time: 20.628s
+MCP Tool execute-tool execution time: 0.685s
+LLM response time: 8.424s
+MCP Tool execute-tool execution time: 0.784s
+LLM response time: 28.382s
+MCP Tool execute-tool execution time: 0.725s
+LLM response time: 1.686s
+MCP Tool execute-tool execution time: 0.694s
+LLM response time: 25.691s
+MCP Tool execute-tool execution time: 0.705s
+LLM response time: 28.277s
+MCP Tool execute-tool execution time: 0.722s
+LLM response time: 22.387s
+MCP Tool execute-tool execution time: 0.677s
+LLM response time: 5.812s
+MCP Tool execute-tool execution time: 0.738s
+LLM response time: 27.448s
+MCP Tool execute-tool execution time: 0.701s
+LLM response time: 1.707s
+MCP Tool execute-tool execution time: 0.649s
+LLM response time: 26.250s
+MCP Tool execute-tool execution time: 0.733s
+LLM response time: 28.395s
+MCP Tool execute-tool execution time: 0.734s
+LLM response time: 2.105s
+MCP Tool execute-tool execution time: 0.674s
+LLM response time: 28.177s
+MCP Tool execute-tool execution time: 0.686s
+LLM response time: 15.539s
+MCP Tool execute-tool execution time: 0.678s
+LLM response time: 12.939s
+MCP Tool execute-tool execution time: 0.698s
+LLM response time: 1.786s
+MCP Tool execute-tool execution time: 0.770s
+LLM response time: 27.249s
+MCP Tool execute-tool execution time: 0.713s
+LLM response time: 2.045s
+MCP Tool execute-tool execution time: 0.703s
+LLM response time: 27.687s
+MCP Tool execute-tool execution time: 0.688s
+LLM response time: 29.567s
+MCP Tool execute-tool execution time: 0.736s
+LLM response time: 1.752s
+MCP Tool execute-tool execution time: 0.703s
+LLM response time: 26.770s
+MCP Tool execute-tool execution time: 0.715s
+LLM response time: 1.747s
+MCP Tool execute-tool execution time: 0.751s
+LLM response time: 29.840s
+MCP Tool execute-tool execution time: 0.705s
+LLM response time: 1.953s
+MCP Tool execute-tool execution time: 0.700s
+LLM response time: 1.991s
+MCP Tool execute-tool execution time: 0.755s
+LLM response time: 2.459s
+MCP Tool execute-tool execution time: 0.676s
+LLM response time: 25.343s
+MCP Tool execute-tool execution time: 0.690s
+LLM response time: 2.198s
+MCP Tool execute-tool execution time: 0.708s
+LLM response time: 28.528s
+MCP Tool execute-tool execution time: 0.728s
+LLM response time: 1.759s
+MCP Tool execute-tool execution time: 0.691s
+LLM response time: 1.761s
+MCP Tool execute-tool execution time: 0.677s
+LLM response time: 1.760s
+MCP Tool execute-tool execution time: 0.689s
+LLM response time: 1.765s
+MCP Tool execute-tool execution time: 0.804s
+LLM response time: 1.864s
+MCP Tool execute-tool execution time: 0.774s
+LLM response time: 1.862s
+MCP Tool execute-tool execution time: 0.801s
+LLM response time: 1.823s
+MCP Tool execute-tool execution time: 0.799s
+LLM response time: 1.870s
+MCP Tool execute-tool execution time: 0.785s
+LLM response time: 1.883s
+MCP Tool execute-tool execution time: 0.800s
+LLM response time: 1.881s
+MCP Tool execute-tool execution time: 0.793s
+LLM response time: 1.877s
+MCP Tool execute-tool execution time: 0.786s
+LLM response time: 1.882s
+MCP Tool execute-tool execution time: 0.785s
+LLM response time: 2.277s
+MCP Tool execute-tool execution time: 0.795s
+LLM response time: 1.888s
+MCP Tool execute-tool execution time: 0.776s
+LLM response time: 1.897s
+MCP Tool execute-tool execution time: 0.774s
+LLM response time: 1.896s
+MCP Tool execute-tool execution time: 0.803s
+LLM response time: 1.795s
+MCP Tool execute-tool execution time: 0.780s
+LLM response time: 1.909s
+MCP Tool execute-tool execution time: 0.791s
+LLM response time: 1.918s
+MCP Tool execute-tool execution time: 0.797s
+LLM response time: 1.904s
+MCP Tool execute-tool execution time: 0.808s
+LLM response time: 1.911s
+MCP Tool execute-tool execution time: 0.791s
+LLM response time: 1.953s
+MCP Tool execute-tool execution time: 0.771s
+LLM response time: 1.952s
+MCP Tool execute-tool execution time: 0.785s
+LLM response time: 1.893s
+MCP Tool execute-tool execution time: 0.781s
+LLM response time: 1.997s
+MCP Tool execute-tool execution time: 0.790s
+LLM response time: 1.957s
+MCP Tool execute-tool execution time: 0.797s
+LLM response time: 1.963s
+MCP Tool execute-tool execution time: 0.782s
+LLM response time: 1.969s
+MCP Tool execute-tool execution time: 0.790s
+LLM response time: 1.990s
+MCP Tool execute-tool execution time: 0.797s
+LLM response time: 1.972s
+MCP Tool execute-tool execution time: 0.817s
+LLM response time: 1.977s
+MCP Tool execute-tool execution time: 0.777s
+LLM response time: 1.978s
+MCP Tool execute-tool execution time: 0.774s
+LLM response time: 2.386s
+MCP Tool execute-tool execution time: 0.775s
+LLM response time: 1.951s
+MCP Tool execute-tool execution time: 0.759s
+LLM response time: 1.979s
+MCP Tool execute-tool execution time: 0.781s
+LLM response time: 1.958s
+MCP Tool execute-tool execution time: 0.777s
+LLM response time: 1.861s
+MCP Tool execute-tool execution time: 0.735s
+LLM response time: 1.870s
+MCP Tool execute-tool execution time: 0.802s
+LLM response time: 1.881s
+MCP Tool execute-tool execution time: 0.780s
+LLM response time: 1.900s
+MCP Tool execute-tool execution time: 0.797s
+LLM response time: 1.903s
+MCP Tool execute-tool execution time: 0.803s
+LLM response time: 1.886s
+MCP Tool execute-tool execution time: 0.753s
+LLM response time: 1.884s
+MCP Tool execute-tool execution time: 0.752s
+LLM response time: 1.903s
+MCP Tool execute-tool execution time: 0.780s
+LLM response time: 1.906s
+MCP Tool execute-tool execution time: 0.782s
+LLM response time: 2.006s
+MCP Tool execute-tool execution time: 0.783s
+LLM response time: 2.023s
+MCP Tool execute-tool execution time: 0.804s
+LLM response time: 2.026s
+MCP Tool execute-tool execution time: 0.779s
+LLM response time: 2.026s
+MCP Tool execute-tool execution time: 0.733s
+LLM response time: 1.926s
+MCP Tool execute-tool execution time: 0.807s
+LLM response time: 2.293s
+MCP Tool execute-tool execution time: 0.762s
+LLM response time: 1.909s
+MCP Tool execute-tool execution time: 0.817s
+Total query processing time: 3651.207s
+task 93
+LLM response time: 1.811s
+MCP Tool execute-tool execution time: 4.955s
+LLM response time: 0.699s
+MCP Tool execute-tool execution time: 2.795s
+LLM response time: 0.797s
+MCP Tool execute-tool execution time: 1.175s
+LLM response time: 1.785s
+Total query processing time: 14.040s
+task 94
+LLM response time: 1.496s
+MCP Tool execute-tool execution time: 7.380s
+LLM response time: 2.364s
+MCP Tool execute-tool execution time: 3.000s
+LLM response time: 1.347s
+MCP Tool execute-tool execution time: 2.428s
+LLM response time: 1.653s
+MCP Tool execute-tool execution time: 1.685s
+LLM response time: 0.804s
+MCP Tool execute-tool execution time: 1.675s
+LLM response time: 11.976s
+Total query processing time: 35.827s
+baseline执行完成
