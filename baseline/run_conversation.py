@@ -104,8 +104,8 @@ def build_prompt_from_rag(tools_file: str,
     #print(f"Ground-truth tools: {answer_tools}")
     #print(f"RAG selected tools: {rag_tools}")
     # 写入日志文件
-    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-        f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: {rag_tools}" + "\n")
+    # with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+    #     f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: {rag_tools}" + "\n")
 
     # 先去重保持顺序
     rag_tools_unique = []
@@ -223,6 +223,7 @@ def extract_tools(response) -> list:
 
     # 提取 matched_tools 部分
     if "matched_tools:" not in text:
+        #print("response text:", text)
         raise ValueError("response.text 中没有找到 'matched_tools:' 段落")
 
     matched_tools_yaml = "\n".join(text.split("matched_tools:")[1].splitlines())
@@ -511,3 +512,4 @@ async def main(args):
 if __name__ == "__main__":
     args = parse_args()
     asyncio.run(main(args))
+

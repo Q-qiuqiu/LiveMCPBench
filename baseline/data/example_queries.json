@@ -1,7 +1,7 @@
 [
   {
     "task_id": "99d7541a-73c0-4ea1-8002-a70a041f3ffc",
-    "Question": "Please perform a comprehensive analysis of the audio file located at /root/music/mixkit-retro-game-emergency-alarm-1000.wav. The analysis should include beat tracking, MFCC extraction, and chroma CQT calculation. Upon completion, please provide the resulting data along with a brief summary of the findings.",
+    "Question": "Please perform a comprehensive analysis of the audio file located at /data/home/yzx/LiveMCPBench/annotated_data/music/mixkit-retro-game-emergency-alarm-1000.wav. The analysis should include beat tracking, MFCC extraction, and chroma CQT calculation. Upon completion, please provide the resulting data along with a brief summary of the findings.",
     "answers": "",
     "category": "Leisure",
     "file_name": "/root/music/mixkit-retro-game-emergency-alarm-1000.wav",
