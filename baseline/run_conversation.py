@@ -5,7 +5,8 @@ import os
 import pathlib
 import traceback
 from typing import List, Optional, Tuple
-
+import pickle
+import pathlib
 import dotenv
 from mcp import ClientSession
 from tqdm import tqdm
@@ -29,7 +30,6 @@ logger = logging.getLogger(__name__)
 INPUT_QUERIES_FILE = "./baseline/data/example_queries.json"
 CONVERSATION_RESULTS_FILE = f"./baseline/output/{os.getenv('MODEL', 'None').replace('/', '_')}_{os.getenv('EMBEDDING_MODEL', 'None').replace('/', '_')}.json"
 TOOLS_FILE = "./tools/LiveMCPTool/tools.json"
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -62,7 +62,13 @@ def parse_args():
         type=int,
         default=None,
         help="Maximum number of tools to load from tools.json. If None, load all.",
-)
+    )
+    parser.add_argument(
+        "--top_tools",
+        type=int,
+        default=5,
+        help="Maximum number of rag",
+    )
     return parser.parse_args()
 
 def parse_answer_tools(entry):
@@ -84,11 +90,12 @@ def build_prompt_from_rag(tools_file: str,
                         rag_tools: List[str],     # RAG 筛选出的工具名
                         answer_tools: List[str],
                         insert_number: int = 0,
-                        task_index: int = 0) -> str:
+                        task_index: int = 0,
+                        query: Optional[str] = None,  # 新增参数
+                        top_tools: Optional[int] = None) -> str:
     """
     根据 rag_tools 和 tools.json 生成 system prompt
     """
-
     with open(tools_file, "r", encoding="utf-8") as f:
         tools_data = json.load(f)
     # 构建工具映射: tool_name -> 工具对象
@@ -104,8 +111,8 @@ def build_prompt_from_rag(tools_file: str,
     #print(f"Ground-truth tools: {answer_tools}")
     #print(f"RAG selected tools: {rag_tools}")
     # 写入日志文件
-    # with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-    #     f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: {rag_tools}" + "\n")
+    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+        f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: {rag_tools}" + "\n")
 
     # 先去重保持顺序
     rag_tools_unique = []
@@ -123,7 +130,6 @@ def build_prompt_from_rag(tools_file: str,
 
     # 拼接最终顺序
     final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
-
     # 系统提示开头
     prompt_lines = [
         "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
@@ -220,12 +226,10 @@ def extract_tools(response) -> list:
         text = response.content[0].text
     else:
         raise ValueError("CallToolResult 对象中没有 content 或为空") 
-
-    # 提取 matched_tools 部分
+    #提取 matched_tools 部分
     if "matched_tools:" not in text:
-        #print("response text:", text)
         raise ValueError("response.text 中没有找到 'matched_tools:' 段落")
-
+        
     matched_tools_yaml = "\n".join(text.split("matched_tools:")[1].splitlines())
 
     # 加载为 Python 对象
@@ -234,6 +238,22 @@ def extract_tools(response) -> list:
     # 提取 tool_name
     rag_tools = [tool["tool_name"] for tool in tools_list if "tool_name" in tool]
     return rag_tools
+
+# 在外层维护一个缓存字典、
+RAG_CACHE_FILE  = pathlib.Path("./test_yzx/rag_cache.pkl")
+
+def save_rag_cache(rag_number, rag_cache):
+    """保存完整对象到文件"""
+    with open(RAG_CACHE_FILE, "wb") as f:
+        pickle.dump({"rag_number": rag_number, "rag_cache": rag_cache}, f)
+
+def load_rag_cache():
+    """加载缓存，如果文件不存在返回 None"""
+    if RAG_CACHE_FILE.exists():
+        with open(RAG_CACHE_FILE, "rb") as f:
+            data = pickle.load(f)
+            return data["rag_number"], data["rag_cache"]
+    return None, None
 
 
 class LoggingMCPClient(MCPClient):
@@ -244,7 +264,10 @@ class LoggingMCPClient(MCPClient):
             api_key=os.getenv("OPENAI_API_KEY"),
             model_url=os.getenv("BASE_URL"),
         )
-
+        # 初始化缓存
+        self.rag_number, self.rag_cache = load_rag_cache()
+        if self.rag_cache is None:
+            self.rag_cache = [None] * 95  # 根据任务数初始化
     async def connect_copilot(self):
         if "mcp-copilot" not in self.sessions:
             await self.config_connect(
@@ -265,6 +288,7 @@ class LoggingMCPClient(MCPClient):
         answer_tools: list,
         tools_file: str = TOOLS_FILE,
         max_tools: Optional[int] = None,
+        top_tools: Optional[int] = None,
         insert_number: int = 0,
         task_index: int = 0,
         history: Optional[list] = None,
@@ -364,6 +388,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                     # 写入日志文件
                     with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                         f.write(f"{task_index}.no chose" + "\n")
+                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                        f.write(f"LLM chose no chose" + "\n")
                     logger.info(f"LLM is calling mcp-tool: no chose")
                     stop_flag = True
                 else:
@@ -391,7 +417,9 @@ Note that you can only response to user once and only use the retrieval tool onc
                                 logger.info(f"LLM calling mcp-tool route twice")
                                 # 写入日志文件
                                 with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                        f.write(f"{task_index}.route twice" + "\n")
+                                    f.write(f"{task_index}.route twice" + "\n")
+                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                    f.write(f"LLM chose route twice" + "\n")
                                 result= "skip route twice"
                                 stop_flag = True
                                 break
@@ -403,21 +431,64 @@ Note that you can only response to user once and only use the retrieval tool onc
                                 with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                         f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
                                 result= "skip tool execution"
+                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                    f.write(f"LLM chose {tool_args['tool_name']}" + "\n")
                                 stop_flag = True
                                 break
-                            
-                            result = await asyncio.wait_for(
-                                session.call_tool(tool_name, tool_args), timeout=300 #调用的是谁的call_tool
-                            )
-                            # 第一次标记 routed=True
+                            # 未使用execution工具，直接调用MCP工具
+                            if tool_name != 'route' and tool_name != 'execute-tool':
+                                logger.info(f"LLM is directly calling : {tool_name}")
+                                # 写入日志文件
+                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.{tool_name}" + "\n")
+                                result= "skip tool execution"
+                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                    f.write(f"LLM chose {tool_name}" + "\n")
+                                stop_flag = True
+                                break
+                            # top_tools相同时保证rag筛选结果也相同
+
+                            print("rag_number",self.rag_number,"top_tools",top_tools)
+                            if self.rag_number is None:
+                                print("第一次执行")
+                                # 第一次执行
+                                result = await asyncio.wait_for(
+                                    session.call_tool(tool_name, tool_args),
+                                    timeout=300
+                                )
+                                self.rag_number = top_tools
+                                self.rag_cache[task_index] = result
+                                save_rag_cache(self.rag_number, self.rag_cache)
+                            elif self.rag_number == top_tools:
+                                # 缓存命中
+                                if task_index < len(self.rag_cache) and self.rag_cache[task_index] is not None:
+                                    result = self.rag_cache[task_index]
+                                    logger.info(f"复用缓存RAG CACHE")
+                                else:
+                                    # 缓存未命中，重新算
+                                    print("缓存未命中")
+                                    result = await asyncio.wait_for(
+                                        session.call_tool(tool_name, tool_args),
+                                        timeout=300
+                                    )
+                                    self.rag_cache[task_index] = result
+                                    save_rag_cache(self.rag_number, self.rag_cache)
+                            else:
+                                # 和上一次不同，重新查询并更新缓存
+                                print("新一轮计算")
+                                result = await asyncio.wait_for(
+                                    session.call_tool(tool_name, tool_args),
+                                    timeout=300
+                                )
+                                self.rag_number = top_tools
+                                self.rag_cache = [None] * 95
+                                self.rag_cache[task_index] = result
+                                save_rag_cache(self.rag_number, self.rag_cache)
                             if not routed:
                                 routed = True
-                            #show_tools(result,"RAG")
-                            #result=reorder_tools(result,answer_tools,insert_number)
                             rag_tools=extract_tools(result)
+                           
                             new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
-                            #print("Answer tools:", answer_tools)
-                            #show_tools(reorder_result,"Reordered")
 
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
@@ -427,6 +498,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                             #写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                 f.write(f"{task_index}.{tool_name}" + "\n")
+                            with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                f.write(f"LLM chose {tool_name}" + "\n")
                             stop_flag = True
                             break
                         except Exception as e:
@@ -437,6 +510,8 @@ Note that you can only response to user once and only use the retrieval tool onc
                             #写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                 f.write(f"{task_index}.{tool_name}" + "\n")
+                            with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                f.write(f"LLM chose {tool_name}" + "\n")
                             stop_flag = True
                             break
                         result = str(result)
@@ -492,6 +567,7 @@ async def main(args):
                                                                  answer_tools=answer_tools,
                                                                  tools_file=TOOLS_FILE,
                                                                  max_tools=args.max_tools,
+                                                                 top_tools=args.top_tools,
                                                                  insert_number=args.insert_number,
                                                                  task_index=idx )
                 logger.info(f"{response}")

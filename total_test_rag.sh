@@ -193,90 +193,8 @@
 #     "500:450"
 #     "500:495"
 test_combinations=(
-    "150:25"
-    "200:25"
-    "250:25"
-    "300:25"
-    "350:25"
-    "400:25"
-    "450:25"
-    "35:30"
-    "40:30"
-    "45:30"
-    "50:30"
-    "100:30"
-    "150:30"
-    "200:30"
-    "250:30"
-    "300:30"
-    "350:30"
-    "400:30"
-    "450:30"
-    "45:40"
-    "50:40"  
-    "100:40"
-    "150:40"
-    "200:40"
-    "250:40"
-    "300:40"
-    "350:40"
-    "400:40"
-    "450:40"
-    "45:40"
-    "50:45"
-    "100:45"
-    "150:45"
-    "200:45"
-    "250:45"
-    "300:45"
-    "350:45"
-    "400:45"
-    "450:45"
-    "50:45"
-    "100:50"
-    "150:50"
-    "200:50"
-    "250:50"
-    "300:50"
-    "350:50"
-    "400:50"
-    "450:50"
-    "100:95"
-    "150:100"
-    "200:100"
-    "250:100"
-    "300:100"
-    "350:100"
-    "400:100"
-    "450:100"
-    "150:145"
-    "200:150"
-    "250:150"
-    "300:150"
-    "350:150"
-    "400:150"
-    "450:150"
-    "200:195"
-    "250:200"
-    "300:200"
-    "350:200"
-    "400:200"
-    "450:200"
-    "250:245"
-    "300:250"
-    "350:250"
-    "400:250"
-    "450:250"
-    "300:295"
-    "350:300"
-    "400:300"
-    "450:300"
-    "350:345"
-    "400:350"
-    "450:350"
-    "400:395"
-    "450:400"
-    "450:445"
+    "10:2"
+    "10:5"
 )
 
 # 计数器
@@ -295,8 +213,6 @@ if [ ! -f .env ]; then
     echo "错误: .env 文件不存在，请先创建 .env 文件"
     exit 1
 fi
-
-
 
 for combo in "${test_combinations[@]}"; do
     #拆分参数
@@ -323,9 +239,9 @@ for combo in "${test_combinations[@]}"; do
     sed -i "s/^TOP_TOOLS=.*/TOP_TOOLS=$top_tools/" .env
     echo "修改 .env 文件: TOP_TOOLS=$top_tools"
 
-    # 调用 env_reset.sh 更新环境
-    echo "调用 env_reset.sh 更新环境..."
-    bash ./scripts/env_reset.sh
+    # # 调用 env_reset.sh 更新环境
+    # echo "调用 env_reset.sh 更新环境..."
+    # bash ./scripts/env_reset.sh
 
     # 显示当前 .env 中的 TOP_TOOLS 值以确认修改成功
     current_top_tools=$(grep "^TOP_TOOLS=" .env | cut -d'=' -f2)
@@ -334,7 +250,8 @@ for combo in "${test_combinations[@]}"; do
     uv run -m baseline.run_conversation \
         --input_path ./annotated_data/all_annotations.json \
         --output_path ./baseline/output/baseline_results.json \
-        --insert_number $insert_number
+        --insert_number $insert_number \
+        --top_tools $top_tools
 
     if [ $? -eq 0 ]; then
         echo "baseline执行完成" | tee -a "$LOG_FILE"
