@@ -18,3 +18,5 @@ test/*
 not_use/
 ./annotated_data/git/
 ./test_yzx/rag_gt_20250920.txt
+./test_yzx/rag_gt.txt
+./test_yzx/rag_gt.json
