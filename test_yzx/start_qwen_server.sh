@@ -12,5 +12,5 @@ python -m vllm.entrypoints.openai.api_server \
     --tensor-parallel-size 4 \
     --tool-call-parser hermes \
     --enable-auto-tool-choice \
-    --max-model-len 131072 \
+    --max-model-len 196608 \
     --port 7001

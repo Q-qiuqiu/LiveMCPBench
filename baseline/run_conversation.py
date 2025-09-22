@@ -368,6 +368,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
                     )
                 response_message = response.choices[0].message
+                #print("response",response_message)
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -385,13 +386,21 @@ Note that you can only response to user once and only use the retrieval tool onc
                     and not response_message.function_call
                 ):
                     final_text.append(content)
-                    # 写入日志文件
-                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                        f.write(f"{task_index}.no chose" + "\n")
-                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-                        f.write(f"LLM chose no chose" + "\n")
-                    logger.info(f"LLM is calling mcp-tool: no chose")
-                    stop_flag = True
+                    if not routed:
+                        # 写入日志文件
+                        with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                            f.write(f"{task_index}.no chose" + "\n")
+                        with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                            f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: ['NO ROUTE']" + "\n"+ "LLM chose no chose" + "\n")
+                        logger.info(f"LLM is calling mcp-tool: no chose")
+                        stop_flag = True
+                    else:
+                        with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                            f.write(f"LLM chose no chose" + "\n")
+                        with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                            f.write(f"{task_index}.no chose" + "\n")
+                        logger.info(f"LLM is calling mcp-tool: no chose")
+                        stop_flag = True
                 else:
                     tool_calls = response_message.tool_calls
                     if not tool_calls:
@@ -412,84 +421,113 @@ Note that you can only response to user once and only use the retrieval tool onc
                             logger.info(
                                 f"LLM is calling tool: {tool_name}({tool_args})"
                             )
-
-                            if tool_name == "route" and routed:
-                                logger.info(f"LLM calling mcp-tool route twice")
-                                # 写入日志文件
-                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                    f.write(f"{task_index}.route twice" + "\n")
-                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-                                    f.write(f"LLM chose route twice" + "\n")
-                                result= "skip route twice"
-                                stop_flag = True
-                                break
-                            # timeout
-                            if tool_name == "execute-tool":
-                                print("skip tool execution")
-                                logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
-                                # 写入日志文件
-                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                            # 已查询
+                            if routed:
+                                #执行execution
+                                if tool_name == "execute-tool":
+                                    print("skip tool execution")
+                                    logger.info(f"LLM is calling mcp-tool: {tool_args['tool_name']}")
+                                    # 写入日志文件
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
                                         f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
-                                result= "skip tool execution"
-                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-                                    f.write(f"LLM chose {tool_args['tool_name']}" + "\n")
-                                stop_flag = True
-                                break
-                            # 未使用execution工具，直接调用MCP工具
-                            if tool_name != 'route' and tool_name != 'execute-tool':
-                                logger.info(f"LLM is directly calling : {tool_name}")
-                                # 写入日志文件
-                                with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                                        f.write(f"{task_index}.{tool_name}" + "\n")
-                                result= "skip tool execution"
-                                with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
-                                    f.write(f"LLM chose {tool_name}" + "\n")
-                                stop_flag = True
-                                break
-                            # top_tools相同时保证rag筛选结果也相同
-
-                            print("rag_number",self.rag_number,"top_tools",top_tools)
-                            if self.rag_number is None:
-                                print("第一次执行")
-                                # 第一次执行
-                                result = await asyncio.wait_for(
-                                    session.call_tool(tool_name, tool_args),
-                                    timeout=300
-                                )
-                                self.rag_number = top_tools
-                                self.rag_cache[task_index] = result
-                                save_rag_cache(self.rag_number, self.rag_cache)
-                            elif self.rag_number == top_tools:
-                                # 缓存命中
-                                if task_index < len(self.rag_cache) and self.rag_cache[task_index] is not None:
-                                    result = self.rag_cache[task_index]
-                                    logger.info(f"复用缓存RAG CACHE")
+                                    result= "skip tool execution"
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose {tool_args['tool_name']}" + "\n")
+                                    stop_flag = True
+                                    break
+                                # 重复调用查询
+                                elif tool_name == "route":
+                                    logger.info(f"LLM calling mcp-tool route twice")
+                                    # 写入日志文件
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.route twice" + "\n")
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose route twice" + "\n")
+                                    result= "skip route twice"
+                                    stop_flag = True
+                                    break
                                 else:
-                                    # 缓存未命中，重新算
-                                    print("缓存未命中")
-                                    result = await asyncio.wait_for(
-                                        session.call_tool(tool_name, tool_args),
-                                        timeout=300
-                                    )
-                                    self.rag_cache[task_index] = result
-                                    save_rag_cache(self.rag_number, self.rag_cache)
+                                    #直接调用
+                                    logger.info(f"LLM is directly calling :{tool_name}")
+                                    # 写入日志文件
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.{tool_name}" + "\n")
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose {tool_name}" + "\n")
+                                    result= "skip route twice"
+                                    stop_flag = True
+                                    break
+                            # 未查询
                             else:
-                                # 和上一次不同，重新查询并更新缓存
-                                print("新一轮计算")
-                                result = await asyncio.wait_for(
-                                    session.call_tool(tool_name, tool_args),
-                                    timeout=300
-                                )
-                                self.rag_number = top_tools
-                                self.rag_cache = [None] * 95
-                                self.rag_cache[task_index] = result
-                                save_rag_cache(self.rag_number, self.rag_cache)
-                            if not routed:
-                                routed = True
-                            rag_tools=extract_tools(result)
-                           
-                            new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
-
+                                #未查询直接调用
+                                if tool_name == 'execute-tool':
+                                    logger.info(f"LLM is directly calling : {tool_args['tool_name']}")
+                                    # 写入日志文件
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.Ground-truth tools: {answer_tools}"+ "\n" + f"RAG selected tools: ['NO ROUTE']" + "\n")
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                            f.write(f"{task_index}.{tool_args['tool_name']}" + "\n")
+                                    result= "skip tool execution"
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose {tool_args['tool_name']}" + "\n")
+                                    stop_flag = True
+                                    break
+                                elif tool_name!='execute-tool' and tool_name !='route':
+                                    #直接调用
+                                    logger.info(f"LLM is directly calling :{tool_name}")
+                                    # 写入日志文件
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.{tool_name}" + "\n")
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose {tool_name}" + "\n")
+                                    result= "skip route twice"
+                                    stop_flag = True
+                                    break
+                                else:
+                                    # timeout
+                                    # top_tools相同时保证rag筛选结果也相同
+                                    #print("rag_number",self.rag_number,"top_tools",top_tools)
+                                    if self.rag_number is None:
+                                        #print("第一次执行")
+                                        # 第一次执行
+                                        result = await asyncio.wait_for(
+                                            session.call_tool(tool_name, tool_args),
+                                            timeout=300
+                                        )
+                                        self.rag_number = top_tools
+                                        self.rag_cache[task_index] = result
+                                        save_rag_cache(self.rag_number, self.rag_cache)
+                                    elif self.rag_number == top_tools:
+                                        # 缓存命中
+                                        if task_index < len(self.rag_cache) and self.rag_cache[task_index] is not None:
+                                            result = self.rag_cache[task_index]
+                                            #logger.info(f"复用缓存RAG CACHE")
+                                        else:
+                                            # 缓存未命中，重新算
+                                            #print("缓存未命中")
+                                            result = await asyncio.wait_for(
+                                                session.call_tool(tool_name, tool_args),
+                                                timeout=300
+                                            )
+                                            self.rag_cache[task_index] = result
+                                            save_rag_cache(self.rag_number, self.rag_cache)
+                                    else:
+                                        # 和上一次不同，重新查询并更新缓存
+                                        #print("新一轮计算")
+                                        result = await asyncio.wait_for(
+                                            session.call_tool(tool_name, tool_args),
+                                            timeout=300
+                                        )
+                                        self.rag_number = top_tools
+                                        self.rag_cache = [None] * 95
+                                        self.rag_cache[task_index] = result
+                                        save_rag_cache(self.rag_number, self.rag_cache)
+                                    if not routed:
+                                        routed = True
+                                    rag_tools=extract_tools(result)
+                                
+                                    new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
+                                    
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
@@ -529,9 +567,11 @@ Note that you can only response to user once and only use the retrieval tool onc
             logger.error(f"Error processing query '{query}': {e}")
             final_text.append(f"Error: {str(e)} ")
             messages.append({"role": "assistant", "content": str(e)})
-            # 写入日志文件
-            # with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-            #     f.write(f"{task_index}.error content: {str(e)}" + "\n")
+            #写入日志文件
+            with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                f.write(f"{task_index}.error content: {str(e)}" + "\n")
+            with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                f.write(f"LLM chose error" + "\n")
         self.history = messages
         return "\n".join(final_text), messages
 
