@@ -1,21 +1,95 @@
-0.no chose
-1.beat_track
-2.find_parking_facilities
-3.valorant-leaderboard
-4.no chose
+0.get-weread-rank
+1.load
+2.geocode_address
+3.valorant-meta-characters
+4.suggest_meeting_point
 5.get-gcores-new
 6.search_papers
-7.no chose
+7.whois_domain
 8.get_route_directions
-9.get_ticker_data
+9.get_historical_stock_prices
 10.trial_getter
 11.get-current-date
-12.no chose
-13.search
-14.write_file
+12.buildBaziFromSolarDatetime
+13.duckduckgo_web_search
+14.create_directory
 15.excel_describe_sheets
 16.get_github_trending_repositories
 17.no chose
-18.deepwiki_fetch
-19.no chose
-20.search
+18.get_article
+19.search_notes
+20.get-toutiao-trending
+21.get-36kr-trending
+22.deepwiki_fetch
+23.drawing_generateCanvas
+24.create_presentation
+25.excel_describe_sheets
+26.get_paper_data
+27.no chose
+28.get_transcript
+29.fetch_html
+30.get-current-date
+31.get_current_stock_price
+32.mcp_howtocook_recommendMeals
+33.mcp_howtocook_recommendMeals
+34.airbnb_search
+35.lol-champion-positions-data
+36.search-museum-objects
+37.duckduckgo_web_search
+38.read_pdf
+39.search_papers
+40.get-9to5mac-news
+41.get-nytimes-news
+42.get-crypto-price
+43.search_cards
+44.resolve-library-id
+45.package_search
+46.fetch
+47.read_file
+48.get_latest_release
+49.npmInfo
+50.list_directory
+51.route twice
+52.get_current_stock_price
+53.list_allowed_directories
+54.tft-meta-trend-deck-list
+55.get_component_details
+56.get-douban-rank
+57.get-36kr-trending
+58.list_categories
+59.npmSearch
+60.no chose
+61.geocode_address
+62.document_reader
+63.read_file
+64.get-crypto-price
+65.search
+66.read_file
+67.get_summary
+68.geocode_address
+69.geocode_address
+70.get_stock_fundamental
+71.get-toutiao-trending
+72.get_crypto_fear_greed_index
+73.get-9to5mac-news
+74.geocode_address
+75.get_weather
+76.list_directory
+77.get-36kr-trending
+78.get_weather_by_city
+79.getStoryWithComments
+80.get-bbc-news
+81.search
+82.read_file
+83.random_sample
+84.create_document
+85.whois_domain
+86.read_file
+87.calculate
+88.get_current_stock_price
+89.search_wikipedia
+90.get-current-date
+91.route twice
+92.getChineseCalendar
+93.docx_to_pdf
+94.get_current_stock_price

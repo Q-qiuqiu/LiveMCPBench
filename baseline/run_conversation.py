@@ -527,7 +527,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                                     rag_tools=extract_tools(result)
                                 
                                     new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
-                                    
+                            #print("result",result)
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
