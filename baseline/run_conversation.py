@@ -119,77 +119,121 @@ def build_system_prompt(tools_file: str,
     total_count = 0
     answers_number = len(answer_tools)
     inserted = False
-    max_other_tools = None
+    inserted_answer_count = 0
+    # 计算实际可以插入的答案工具数量
     if max_tools is not None:
-        max_other_tools = max_tools - answers_number
-        if max_other_tools < 0:
-            raise ValueError(
-                f"max_tools={max_tools} 太小，不够容纳标准答案 {answers_number} 个"
-            )
-        
+        if max_tools < answers_number:
+            logger.warning(f"max_tools={max_tools} 小于答案工具数 {answers_number}，将只插入 {max_tools} 个答案工具")
+            actual_answer_count = max_tools
+            max_other_tools = 0
+        else:
+            actual_answer_count = answers_number
+            max_other_tools = max_tools - answers_number
+    else:
+        actual_answer_count = answers_number
+        max_other_tools = None
+
     for tool_entry in tools_data:
         for server_id, server in tool_entry.get("tools", {}).items():
             for tool in server.get("tools", []):
                 tool_name = tool["name"]
-                if tool_name in answer_tools:  # 过滤掉“正确答案”
-                    logger.info(f"Skipping tool {tool_name} (marked as correct answer)")
+                if tool_name in answer_tools:  # 过滤掉"正确答案"
+                    #logger.info(f"Skipping tool {tool_name} (marked as correct answer)")
                     continue
 
                 # 插入标准答案工具
                 if not inserted and total_count >= insert_number:
+                    # 插入尽可能多的答案工具
                     for i, ans_tool_name in enumerate(answer_tools):
+                        if inserted_answer_count >= actual_answer_count:
+                            break
+                            
                         if ans_tool_name in tools_map:
                             t = tools_map[ans_tool_name]
-                            t_props = t.get("inputSchema", {}).get("properties", {})#防止格式异常，有些工具的inputSchema选项为空
+                            t_props = t.get("inputSchema", {}).get("properties", {})
                             prompt_lines.append(
                                 f"- {ans_tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(t_props)}"
                             )
-                            #logger.info(f"insert tool {ans_tool_name} ")
-
-                           # 只记录第一个标准答案工具
-                            # if i == 0:
-                            #     with open("answer_tools.txt", "a", encoding="utf-8") as f:
-                            #         f.write(f"{task_index}."+f"{ans_tool_name}\n")
+                            inserted_answer_count += 1
+                            logger.info(f"Inserted answer tool {ans_tool_name} ({inserted_answer_count}/{actual_answer_count})")
                         else:
                             # 万一找不到对应工具，用占位
                             prompt_lines.append(f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}")
+                            inserted_answer_count += 1
+                    
                     inserted = True
-                if max_other_tools is not None and total_count >= max_other_tools:
+                    logger.info(f"Inserted {inserted_answer_count} answer tools")
+                
+                # 检查是否已达到最大工具限制（考虑已插入的答案工具）
+                current_max = None
+                if max_tools is not None:
+                    current_max = max_tools
+                
+                if current_max is not None and total_count >= current_max:
                     # 如果还没插入过答案，则现在必须插
                     if not inserted:
-                        for ans_tool_name in answer_tools:
-                            if ans_tool_name in tools_map:
-                                t = tools_map[ans_tool_name]
-                                prompt_lines.append(
-                                    f"- {ans_tool_name} (server: {t['server_id']}): "
-                                    f"{t['description']}. Input: {json.dumps(t['inputSchema']['properties'])}"
-                                )
-                                #logger.info(f"insert tool {ans_tool_name} ")
-                            else:
-                                prompt_lines.append(
-                                    f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}"
-                                )
-                        inserted = True
+                        remaining_slots = current_max - total_count
+                        if remaining_slots > 0:
+                            for i, ans_tool_name in enumerate(answer_tools):
+                                if inserted_answer_count >= remaining_slots:
+                                    break
+                                    
+                                if ans_tool_name in tools_map:
+                                    t = tools_map[ans_tool_name]
+                                    prompt_lines.append(
+                                        f"- {ans_tool_name} (server: {t['server_id']}): "
+                                        f"{t['description']}. Input: {json.dumps(t['inputSchema']['properties'])}"
+                                    )
+                                    inserted_answer_count += 1
+                                else:
+                                    prompt_lines.append(
+                                        f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}"
+                                    )
+                                    inserted_answer_count += 1
+                            inserted = True
+                            logger.info(f"Force inserted {inserted_answer_count} answer tools at the end")
+                    
+                    logger.info(f"Loaded {total_count + inserted_answer_count} tools from {tools_file}")  
                     return "\n".join(prompt_lines)
             
-                #插入备选工具
+                # 插入备选工具
                 input_props = tool.get("inputSchema", {}).get("properties", {})
                 line = f"- {tool['name']} (server: {server_id}): {tool['description']}. Input: {json.dumps(input_props)}"
 
                 prompt_lines.append(line)
                 total_count += 1
-                #logger.info(f"insert tool {tool_name} ")
-                
 
-                if max_tools is not None and total_count >= max_tools:
-                    logger.info(f"Loaded {total_count} tools from {tools_file}")
+                if max_tools is not None and total_count >= max_other_tools and inserted:
+                    # 已经插入了答案工具，并且达到了其他工具的上限
+                    logger.info(f"Loaded {total_count + inserted_answer_count} tools from {tools_file}")
                     return "\n".join(prompt_lines)
-                
-     # 如果正确答案未插入，警报
+    
+    # 如果循环结束但正确答案未插入，尝试在最后插入
     if not inserted and answer_tools:
-        logger.error(f"Please attention the answer position and the tools number!")
+        remaining_slots = float('inf') if max_tools is None else max_tools - total_count
+        if remaining_slots > 0:
+            for i, ans_tool_name in enumerate(answer_tools):
+                if inserted_answer_count >= remaining_slots:
+                    break
+                    
+                if ans_tool_name in tools_map:
+                    t = tools_map[ans_tool_name]
+                    t_props = t.get("inputSchema", {}).get("properties", {})
+                    prompt_lines.append(
+                        f"- {ans_tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(t_props)}"
+                    )
+                    inserted_answer_count += 1
+                else:
+                    prompt_lines.append(f"- {ans_tool_name} (server: unknown): description missing. Input: {{}}")
+                    inserted_answer_count += 1
+            inserted = True
+            logger.info(f"Inserted {inserted_answer_count} answer tools at the end")
+        else:
+            logger.error(f"No space to insert answer tools! Total slots: {max_tools}, Used: {total_count}")
 
-    logger.info(f"Loaded {total_count} tools from {tools_file}")
+    logger.info(f"Loaded {total_count + inserted_answer_count} tools from {tools_file}")
+    logger.info(f"Successfully inserted {inserted_answer_count}/{answers_number} answer tools")
+
     return "\n".join(prompt_lines)
 
 
@@ -345,7 +389,7 @@ class LoggingMCPClient(MCPClient):
                             stop_flag = True
                             break
                         except Exception as e:
-                            logger.error(f"Error calling tool {tool_name}: {e}")
+                            logger.error(f"Error calling tool {tool_name}")
                             result = f"Error: {str(e)}"
                             # 写入日志文件
                             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
@@ -369,7 +413,7 @@ class LoggingMCPClient(MCPClient):
             messages.append({"role": "assistant", "content": str(e)})
             # 写入日志文件
             with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
-                f.write(f"{task_index}.error content: {str(e)}" + "\n")
+                f.write(f"{task_index}.error" + "\n")
         #self.history = messages
         return "\n".join(final_text), messages
 

@@ -1,110 +1,13 @@
 开始批量执行baseline实验
-总共 3 个参数组合
+总共 102 个参数
 
 ============================================================
-第 1/3 次执行
-参数: max_tools=350, insert_number=250
-============================================================
+第 1/102 次执行
+参数:MAX_TOOLS=20, insert_number=5
 baseline执行完成
-0: get-weread-rank | get-weread-rank | ✔
-1: load | load | ✔
-2: geocode_address | geocode_address | ✔
-3: valorant-characters-statistics | valorant-meta-characters | ✘
-4: geocode_address | suggest_meeting_point | ✘
-5: get-bilibili-rank | get-9to5mac-news | ✘
-6: search_papers | search_papers | ✔
-7: whois_domain | whois_domain | ✔
-8: geocode_address | get_route_directions | ✘
-9: get_historical_stock_prices | get_price_history | ✘
-10: trial_references | trial_getter | ✘
-11: get_current_time | get-station-code-of-citys | ✘
-12: getBaziDetail | buildBaziFromSolarDatetime | ✘
-13: get-daily-challenge | get-daily-challenge | ✔
-14: list-components | list-components | ✔
-15: excel_read_sheet | excel_read | ✘
-16: get_github_trending_repositories | get-github_trending_repositories | ✘
-17: validateMermaid | validateMermaid | ✔
-18: research-with-keywords | get-crypto-price | ✘
-19: fetch | search | ✘
-20: getStories | duckduckgo_web_search | ✘
-21: get-smzdm-rank | get-smzdm-rank | ✔
-22: deepwiki_fetch | deepwiki_fetch | ✔
-23: drawing_generateCanvas | drawing_generateCanvas | ✔
-24: ddg-search | create_presentation | ✘
-25: excel_read_sheet | excel_read | ✘
-26: get_paper_data | get_paper_info | ✘
-27: article_searcher | no chose | ✘
-28: get_transcript | get_transcript | ✔
-29: summarize_article_for_query | get_text_file_contents | ✘
-30: get-current-date | geocode_address | ✘
-31: get_current_time | get_crypto_fear_greed_index | ✘
-32: mcp_howtocook_recommendMeals | mcp_howtocook_recommendMeals | ✔
-33: mcp_howtocook_whatToEat | mcp_howtocook_recommendMeals | ✘
-34: get_current_time | airbnb_search | ✘
-35: lol-champion-positions-data | lol-champion-leader-board | ✘
-36: search-museum-objects | search-museum-objects | ✔
-37: playwright_navigate | duckduckgo_web_search | ✘
-38: document_reader | read_pdf | ✘
-39: search_papers | search_papers | ✔
-40: get-9to5mac-news | get-9to5mac-news | ✔
-41: get-36kr-trending | get-tencent-news-trending | ✘
-42: get_asset_price | get_asset_price | ✔
-43: search_cards | search_cards | ✔
-44: resolve-library-id | resolve-library-id | ✔
-45: package_search | package_search | ✔
-46: fetch | fetch | ✔
-47: get_text_file_contents | get_text_file_contents | ✔
-48: get_maven_latest_version | get_latest_release | ✘
-49: npmDeps | npmVulnerabilities | ✘
-50: list_directory | list_directory | ✔
-51: search_wikipedia | get_summary | ✘
-52: get_current_time | load_all_tickers | ✘
-53: git_status | git_status | ✔
-54: get_character_info | get_character_info | ✔
-55: search_components | list-components | ✘
-56: get-douban-rank | get-douban-rank | ✔
-57: get-ifanr-news | get-36kr-trending | ✘
-58: search_papers | search_papers | ✔
-59: search_wikipedia | get-crypto-price | ✘
-60: extract_image_from_base64 | no chose | ✘
-61: geocode_address | geocode_address | ✔
-62: get_document_text | get_document_text | ✔
-63: document_reader | document_reader | ✔
-64: get_asset_price | get-crypto-price | ✘
-65: playwright_navigate | duckduckgo_web_search | ✘
-66: read_file | read_file | ✔
-67: search_wikipedia | get_summary | ✘
-68: geocode_address | geocode_address | ✔
-69: geocode_address | geocode_address | ✔
-70: load_all_tickers | get_ticker_info | ✘
-71: get-36kr-trending | get_ticker_news | ✘
-72: get_cnn_fear_greed_index | get_cnn_fear_greed_index | ✔
-73: get-bbc-news | bing_search | ✘
-74: geocode_address | geocode_address | ✔
-75: get_weather | get_weather_by_city | ✘
-76: list_directory | list_directory | ✔
-77: get-juejin-article-rank | duckduckgo_web_search | ✘
-78: get_weather_by_city | get_weather | ✘
-79: getStoryWithComments | getStoryWithComments | ✔
-80: get-bbc-news | get-bbc-news | ✔
-81: playwright_navigate | duckduckgo_web_search | ✘
-82: get_article | get_article | ✔
-83: random_sample | random_sample | ✔
-84: create_document | create_document | ✔
-85: whois_domain | whois_domain | ✔
-86: text_diff | text_diff | ✔
-87: generate_pie_chart | calculate | ✘
-88: get_ticker_info | get_current_stock_price | ✘
-89: duckduckgo_web_search | search | ✘
-90: get-station-code-by-names | get-station-code-by-names | ✔
-91: get-bilibili-rank | get-zhihu-trending | ✘
-92: get_current_time | getChineseCalendar | ✘
-93: docx_to_pdf | docx_to_pdf | ✔
-94: get_stock_price_date_range | get_ticker_data | ✘
-Accuracy: 47.37%(45/95)
-参数max_tools=350, insert_number=250 judge完成
+Accuracy: 72.63%(69/95)
+参数MAX_TOOLS=20 ,insert_number=5 judge完成
 
 ============================================================
-第 2/3 次执行
-参数: max_tools=350, insert_number=300
-============================================================
+第 2/102 次执行
+参数:MAX_TOOLS=20, insert_number=10

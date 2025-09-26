@@ -1,9 +1,9 @@
 0.get-weread-rank
 1.load
 2.geocode_address
-3.valorant-meta-characters
+3.valorant-characters-statistics
 4.suggest_meeting_point
-5.get-gcores-new
+5.get-douyin-trending
 6.search_papers
 7.whois_domain
-8.get_route_directions
+8.geocode_address
