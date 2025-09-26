@@ -4,6 +4,12 @@
 # 定义 TOP_TOOLS 与 insert_number 的组合数组，格式为 "TOP_TOOLS:insert_number"
 
 test_combinations=(
+    "5:0"
+    "5:5"
+    "10:0"
+    "10:5"
+    "10:10"
+    "20:0"
     "20:5"
     "20:10"
     "20:15"
