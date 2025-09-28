@@ -17,3 +17,9 @@ readme/
 test/*
 not_use/
 ./annotated_data/git/
+./test_yzx/rag_gt.txt
+./test_yzx/rag_gt_result.txt
+./test_yzx/experiment_result.txt
+./test_yzx/selected_tools.txt
+./test_yzx/rag_cache.pkl
+*.xlsx
