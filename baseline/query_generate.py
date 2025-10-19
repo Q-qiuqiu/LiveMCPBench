@@ -239,21 +239,7 @@ def extract_tools(response) -> list:
     rag_tools = [tool["tool_name"] for tool in tools_list if "tool_name" in tool]
     return rag_tools
 
-# 在外层维护一个缓存字典、
-RAG_CACHE_FILE  = pathlib.Path("./test_yzx/rag_cache.pkl")
 
-def save_rag_cache(rag_number, rag_cache):
-    """保存完整对象到文件"""
-    with open(RAG_CACHE_FILE, "wb") as f:
-        pickle.dump({"rag_number": rag_number, "rag_cache": rag_cache}, f)
-
-def load_rag_cache():
-    """加载缓存，如果文件不存在返回 None"""
-    if RAG_CACHE_FILE.exists():
-        with open(RAG_CACHE_FILE, "rb") as f:
-            data = pickle.load(f)
-            return data["rag_number"], data["rag_cache"]
-    return None, None
 
 def extract_query_from_message(message):
     # tool_calls 是一个列表
@@ -426,7 +412,6 @@ class LoggingMCPClient(MCPClient):
                             result = await asyncio.wait_for(
                                 session.call_tool(tool_name, tool_args), timeout=300
                             )
-                            print("result:", result)
                             if tool_name=='route':
                                 llm_query= extract_query_from_message(response_message)
                                 print(f"LLM query: {llm_query}")

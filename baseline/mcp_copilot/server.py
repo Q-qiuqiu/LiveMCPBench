@@ -31,18 +31,7 @@ def serve(config: dict[str, Any] | Path = Router._default_config_path) -> None:
         name="route",
         description=(
             """
-    This is a tool used to find MCP servers and tools that can solve user needs    
-    When to use this tool:
-        -When faced with user needs, you (LLM) are unable to solve them on your own and do not have the tools to solve the problem.
-        -When a user proposes a new task and you (LLM) are unsure which specific tool to use to complete it.
-        -When the user's request is vague or complex, and feasible tool options need to be explored first.
-        -This is the first step in executing unknown tasks, known as the "discovery" phase, aimed at finding the correct tool.
-    **Parameter Description**
-    Query (string, required): The input query must contain a <tool_assistant> tag with server and tool descriptions, for example: 
-        <tool_assistant>
-        server: ... # Platform/permission domain
-        tool: ... # Operation type + target
-        </tool_assistant>
+    Tool Discovery Tool — used to find tools that can fulfill user needs.You can call this tool to 'search for the right tool'. Its purpose is to help you enter the 'Discovery Phase' before executing a task, by describing the desired functionality to retrieve and match the most suitable tools.",
     """
         ),
     )
