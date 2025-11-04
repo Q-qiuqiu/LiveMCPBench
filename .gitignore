@@ -23,4 +23,5 @@ not_use/
 ./test_yzx/experiment_result.txt
 ./test_yzx/selected_tools.txt
 ./test_yzx/rag_cache.pkl
+./test_yzx/*.json
 *.xlsx
