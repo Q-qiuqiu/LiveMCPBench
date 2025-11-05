@@ -143,19 +143,59 @@ class ToolMatcher:
                 )
         tool_scores.sort(key=lambda x: x["final_score"], reverse=True)
         return tool_scores[: self.top_tools]
+    
 
+    def match_all_tools(self, tool_desc: str) -> List[Dict[str, Any]]:
+        """
+        直接在所有 server.tools 上匹配，不再先匹配 server。
+        """
+        if not self.servers_data:
+            raise ValueError("No server data loaded. Call load_data first.")
+        query_embedding = self.get_embedding(tool_desc)
+        if not query_embedding:
+            raise ValueError("Failed to get embedding for tool description")
+        tool_scores = []
+        for server in self.servers_data:
+            server_name = server.get("server_name", server.get("name", ""))
+            tools = server.get("tools", []) or []
+            for tool in tools:
+                if "description_embedding" not in tool:
+                    continue
+                tool_similarity = self.cosine_similarity(
+                    query_embedding, tool["description_embedding"]
+                )
+                tool_scores.append(
+                    {
+                        "server_name": server_name,
+                        "tool_name": tool.get("name", ""),
+                        "tool_description": tool.get("description", ""),
+                        "inputschema": tool.get("parameter", {}),
+                        "tool_score": tool_similarity,
+                        "final_score": tool_similarity,  # 只用工具相似度作为最终分数
+                    }
+                )
+        tool_scores.sort(key=lambda x: x["final_score"], reverse=True)
+        return tool_scores[: self.top_tools]
+    
     def match(self, input_text: str) -> Dict[str, Any]:
         server_desc, tool_desc = self.extract_tool_assistant(input_text)
-        if not server_desc or not tool_desc:
+        if tool_desc is None:
+            tool_desc = input_text.strip()
+
+        if not tool_desc:
             return {
                 "success": False,
-                "error": "No tool_assistant tag found or invalid format",
+                "error": "No tool description provided",
                 "matched_servers": [],
                 "matched_tools": [],
             }
+
+        
         try:
-            matched_servers = self.match_servers(server_desc)
-            matched_tools = self.match_tools(matched_servers, tool_desc)
+            #修改为单次匹配，取消二层匹配
+            #matched_servers = self.match_servers(server_desc)
+            #matched_tools = self.match_tools(matched_servers, tool_desc)
+            matched_tools = self.match_all_tools(tool_desc)
             simplified_tools = []
             for tool in matched_tools:
                 simplified_tools.append(
@@ -177,3 +217,4 @@ class ToolMatcher:
                 "matched_servers": [],
                 "matched_tools": [],
             }
+        
