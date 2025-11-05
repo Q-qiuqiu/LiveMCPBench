@@ -30,6 +30,7 @@ logger = logging.getLogger(__name__)
 INPUT_QUERIES_FILE = "./baseline/data/example_queries.json"
 CONVERSATION_RESULTS_FILE = f"./baseline/output/{os.getenv('MODEL', 'None').replace('/', '_')}_{os.getenv('EMBEDDING_MODEL', 'None').replace('/', '_')}.json"
 TOOLS_FILE = "./tools/LiveMCPTool/tools.json"
+TASK_LOG_FILE = "./test_yzx/query_generate.json"
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -239,7 +240,21 @@ def extract_tools(response) -> list:
     rag_tools = [tool["tool_name"] for tool in tools_list if "tool_name" in tool]
     return rag_tools
 
+# 在外层维护一个缓存字典、
+RAG_CACHE_FILE  = pathlib.Path("./test_yzx/rag_cache.pkl")
 
+def save_rag_cache(rag_number, rag_cache):
+    """保存完整对象到文件"""
+    with open(RAG_CACHE_FILE, "wb") as f:
+        pickle.dump({"rag_number": rag_number, "rag_cache": rag_cache}, f)
+
+def load_rag_cache():
+    """加载缓存，如果文件不存在返回 None"""
+    if RAG_CACHE_FILE.exists():
+        with open(RAG_CACHE_FILE, "rb") as f:
+            data = pickle.load(f)
+            return data["rag_number"], data["rag_cache"]
+    return None, None
 
 def extract_query_from_message(message):
     # tool_calls 是一个列表
@@ -309,148 +324,65 @@ class LoggingMCPClient(MCPClient):
         max_tool_tokens: int = 10000,
         task_logs: Optional[list] = None,
     ) -> Tuple[str, List[dict]]:
-        if history is None:
-            messages = [
-                {
-                "role": "system",
-                "content": """
-                    You are an AI reasoning and task execution model. \n
-                    Before you attempt to solve or complete any user request, you MUST first enter a 'Tool Discovery Phase'.\n
-                    In this phase, you must call the function 'route' to search for an appropriate tool that could fulfill the user's need.\n
-                    You are strictly forbidden to execute, reason about, or answer the user's request directly before calling 'route'.\n
-                """
-                }
-            ]
-        else:
-            messages = history.copy()
 
-        messages.append({"role": "user", "content": query})
-       
-        available_tools = []
-
-        for server in self.sessions:
-            session = self.sessions[server]
-            assert isinstance(session, ClientSession), (
-                "Session must be an instance of ClientSession"
-            )
-            response = await session.list_tools()
-            for tool in response.tools:
-                available_tools += [
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": tool.name,
-                            "description": tool.description,
-                            "parameters": tool.inputSchema,
-                        },
-                    }
-                ]
-        final_text = []
-        stop_flag = False
         try:
-            while not stop_flag:
-                request_payload = {
-                    "messages": messages,
-                    "tools": available_tools,
-                }
-                # 写入日志文件
-                #log_event(task_logs,"request_payload", payload=request_payload)
+            with open(TASK_LOG_FILE, "r", encoding="utf-8") as f:
+                tasks_data = json.load(f)
+            # 找到对应的 task
+            target_task = next(
+                (t for t in tasks_data if t["task_number"] == task_index), None
+            )
+            if not target_task:
+                raise ValueError(f"Task index {task_index} not found in {TASK_LOG_FILE}")
+            # 提取 llm_query
+            llm_query_entry = next(
+                (l for l in target_task["logs"] if l["type"] == "LLM query"), None
+            )
 
-                response = self.chat_model.complete_with_retry(**request_payload)
-        
-                # 写入日志文件
-                #log_event(task_logs,"llm_response", response=response.model_dump())
-
-                if hasattr(response, "error"):
-                    raise Exception(
-                        f"Error in OpenAI response: {response.error['metadata']['raw']}"
-                    )
-                response_message = response.choices[0].message
-
-                if response_message.tool_calls:
-                    tool_call_list = []
-                    for tool_call in response_message.tool_calls:
-                        if not tool_call.id:
-                            tool_call.id = str(uuid.uuid4())
-                        tool_call_list.append(tool_call)
-                    response_message.tool_calls = tool_call_list
-
-                messages.append(response_message.model_dump(exclude_none=True))
-
-                content = response_message.content
-                if (
-                    content
-                    and not response_message.tool_calls
-                    and not response_message.function_call
-                ):
-                    final_text.append(content)
-                    
-                    stop_flag = True
-                else:
-                    tool_calls = response_message.tool_calls
-                    if not tool_calls:
-                        logger.warning(
-                            "Received empty response from LLM without content or tool calls."
-                        )
-                        break
-                    for tool_call in tool_calls:
-                        try:
-                            tool_name = tool_call.function.name
-                            tool_args = json.loads(tool_call.function.arguments)
-                            tool_id = tool_call.id
-                            # There is only one server in our method
-                            # We use mcp-copilot to route the servers
-                            server_id = "mcp-copilot"
-                            session = self.sessions[server_id]
-
-                            logger.info(
-                                f"LLM is calling tool: {tool_name}({tool_args})"
-                            )
-                            # 写入日志文件
-                            #log_event(task_logs,"tool_call", tool_name=tool_name, tool_args=tool_args)
-
-                            result = await asyncio.wait_for(
-                                session.call_tool(tool_name, tool_args), timeout=300
-                            )
-                            if tool_name=='route':
-                                llm_query= extract_query_from_message(response_message)
-                                print(f"LLM query: {llm_query}")
-                                # rag_tools=extract_tools(result)
-                                # log_event(task_logs,"rag_select_tools", tools=rag_tools)      
-                            # else:
-                            #     # 写入日志文件
-                            #     log_event(task_logs,"tool_result", tool_name=tool_name, result=str(result))
-
-                        except asyncio.TimeoutError:
-                            logger.error(f"Tool call {tool_name} timed out.")
-                            result = "Tool call timed out."
-                            # 写入日志文件
-                            #log_event(task_logs,"tool_call_time_out",tool_name=tool_name)
-
-                            await self.cleanup_server("mcp-copilot")
-                            await self.connect_copilot()
-                        except Exception as e:
-                            logger.error(f"Error calling tool {tool_name}: {e}")
-                            result = f"Error: {str(e)}"
-                            # 写入日志文件
-                            #log_event(task_logs,"error_calling_tool",tool_name=tool_name,error=str(e))
-                        result = str(result)
-                        result = result[:max_tool_tokens]
-                        messages.append(
-                            {
-                                "role": "tool",
-                                "tool_call_id": tool_id,
-                                "content": str(result),
-                            }
-                        )
+            if not llm_query_entry:
+                raise ValueError(f"No LLM query found for task index {task_index}")
+            llm_query_text = llm_query_entry["llm_query"]
         except Exception as e:
-            logger.error(f"Error processing query '{query}': {e}")
-            final_text.append(f"Error: {str(e)} ")
-            messages.append({"role": "assistant", "content": str(e)})
-            # 写入日志文件
-            #log_event(task_logs,"error_processing_query", error=str(e))
-        self.history = messages
-        return "\n".join(final_text), messages
+            logger.error(f"Error loading LLM query: {e}")
+            return f"Error loading LLM query: {str(e)}", []
+                
+        tool_name = "route"
+        tool_args = {"query": llm_query_text}
+        log_event(task_logs,"LLM query", llm_query=llm_query_text)  
+        # There is only one server in our method
+        # We use mcp-copilot to route the servers
+        server_id = "mcp-copilot"
+        session = self.sessions[server_id]
+
+        logger.info(
+            f"LLM is calling tool: {tool_name}({tool_args})"
+        )
+
+
+        result = await asyncio.wait_for(
+            session.call_tool(tool_name, tool_args), timeout=300
+        )
+        # 假设 result 是你拿到的返回对象
+
+        if not result.isError and result.content:
+            # 提取纯文本内容
+            result_text = result.content[0].text
+
+            # 用正则提取所有 tool_name
+            tool_names = re.findall(r"tool_name:\s*([^\n]+)", result_text)
+
+            if tool_names:
+                tool_names = [t.strip() for t in tool_names]
+                log_event(task_logs, "tool_result", tool_names=tool_names)
+            else:
+                print("⚠️ No tool_name found in result text")
+        else:
+            print("⚠️ result is empty or has error")
+
+        
+
+
+                
 
 
 
@@ -488,20 +420,15 @@ async def main(args):
 
 
             try:
-                response, messages = await client.process_query(query=query,
-                                                                 answer_tools=answer_tools,
-                                                                 tools_file=TOOLS_FILE,
-                                                                 max_tools=args.max_tools,
-                                                                 top_tools=args.top_tools,
-                                                                 insert_number=args.insert_number,
-                                                                 task_index=idx,
-                                                                 task_logs=task_logs)
-                logger.info(f"{response}")
-                entry["response"] = response
-                entry["messages"] = messages
-                all_results.append(entry)
-                 # 写入日志文件
-                log_event(task_logs, "final_response", response=response)
+                await client.process_query(query=query,
+                                            answer_tools=answer_tools,
+                                            tools_file=TOOLS_FILE,
+                                            max_tools=args.max_tools,
+                                            top_tools=args.top_tools,
+                                            insert_number=args.insert_number,
+                                            task_index=idx,
+                                            task_logs=task_logs)
+
 
             except Exception:
                 error_queries.add(query)
@@ -515,9 +442,10 @@ async def main(args):
     finally:
         await client.cleanup()
         os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
-        with open(args.output_path, "w", encoding="utf-8") as f:
-            json.dump(all_results, f, indent=4, ensure_ascii=False)
 
+        # 保存日志（带格式缩进）
+        with open("./test_yzx/query_gt.json", "w", encoding="utf-8") as f:
+            json.dump(all_logs, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     args = parse_args()

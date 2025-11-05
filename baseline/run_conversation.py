@@ -366,6 +366,7 @@ class LoggingMCPClient(MCPClient):
                 request_payload = {
                     "messages": messages,
                     "tools": available_tools,
+                    "temperature": 1, 
                 }
                 # 写入日志文件
                 #log_event(task_logs,"request_payload", payload=request_payload)
@@ -426,12 +427,15 @@ class LoggingMCPClient(MCPClient):
                             result = await asyncio.wait_for(
                                 session.call_tool(tool_name, tool_args), timeout=300
                             )
-                            print("result:", result)
+                            #print("result:", result)
                             if tool_name=='route':
                                 llm_query= extract_query_from_message(response_message)
                                 print(f"LLM query: {llm_query}")
+                                log_event(task_logs,"LLM query", llm_query=llm_query)  
+                                stop_flag=True
+                                break
                                 # rag_tools=extract_tools(result)
-                                # log_event(task_logs,"rag_select_tools", tools=rag_tools)      
+                                    
                             # else:
                             #     # 写入日志文件
                             #     log_event(task_logs,"tool_result", tool_name=tool_name, result=str(result))
@@ -516,7 +520,7 @@ async def main(args):
                 entry["messages"] = messages
                 all_results.append(entry)
                  # 写入日志文件
-                log_event(task_logs, "final_response", response=response)
+                #log_event(task_logs, "final_response", response=response)
 
             except Exception:
                 error_queries.add(query)
@@ -532,7 +536,9 @@ async def main(args):
         os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
         with open(args.output_path, "w", encoding="utf-8") as f:
             json.dump(all_results, f, indent=4, ensure_ascii=False)
-
+        # 保存日志（带格式缩进）
+        with open("./test_yzx/rag_gt.json", "w", encoding="utf-8") as f:
+            json.dump(all_logs, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     args = parse_args()

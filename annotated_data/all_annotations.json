@@ -138,7 +138,7 @@
         "Annotator Metadata": {
             "Steps": "1. Retrieves publications and other references associated with a single clinical trial identified by its NCT ID\n2. Generate a markdown report\n3. Write it to the path",
             "Number of steps": "3",
-            "Tools": "1. trial_references\n2. write_file",
+            "Tools": "1. trial_references_getter\n2. write_file",
             "Number of tools": "2"
         }
     },
@@ -320,7 +320,7 @@
         "Annotator Metadata": {
             "Steps": "1. Find materials related to making PPT\n2. make a ppt and save it to the path",
             "Number of steps": "2",
-            "Tools": "1. ddg-search\n2. create_presentation\n3. add_slide\n4. save_presentation",
+            "Tools": "1. duckduckgo_web_search\n2. create_presentation\n3. add_slide\n4. save_presentation",
             "Number of tools": "4"
         }
     },
@@ -632,7 +632,7 @@
         "Annotator Metadata": {
             "Steps": "1. check the versions",
             "Number of steps": "1",
-            "Tools": "1. get_maven_latest_version",
+            "Tools": "1. list_maven_versions",
             "Number of tools": "1"
         }
     },

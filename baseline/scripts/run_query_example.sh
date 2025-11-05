@@ -1,0 +1,9 @@
+if [ ! -d "./annotated_data/git" ]; then
+  echo "unzip git data..."
+  bash ./utils/get_git_dir.sh
+fi
+
+# 删除文件
+rm -f ./baseline/output/example_results.json
+
+uv run -m baseline.run_query --input_path ./baseline/data/example_queries.json --output_path ./baseline/output/example_results.json --insert_number 25 --top_tools 50
