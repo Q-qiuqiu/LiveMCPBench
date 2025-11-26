@@ -119,17 +119,18 @@ def build_prompt_from_rag(tools_file: str,
     for t in rag_tools:
         if t not in rag_tools_unique:
             rag_tools_unique.append(t)
-    # RAG 命中正确答案的工具（交集部分）
-    hit_tools = [t for t in rag_tools_unique if t in answer_tools]  
+    # # RAG 命中正确答案的工具（交集部分）
+    # hit_tools = [t for t in rag_tools_unique if t in answer_tools]  
 
-    # 剩余工具（rag_tools 里有但不在正确答案里的）
-    remaining_tools = [t for t in rag_tools_unique if t not in hit_tools]
+    # # 剩余工具（rag_tools 里有但不在正确答案里的）
+    # remaining_tools = [t for t in rag_tools_unique if t not in hit_tools]
 
-    # 控制插入位置不越界
-    insert_number = max(0, min(insert_number, len(remaining_tools)))
+    # # 控制插入位置不越界
+    # insert_number = max(0, min(insert_number, len(remaining_tools)))
 
     # 拼接最终顺序
-    final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
+    #final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
+    final_tools=rag_tools_unique
     # 系统提示开头
     prompt_lines = [
         "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
