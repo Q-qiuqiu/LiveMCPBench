@@ -19,3 +19,6 @@ not_use/
 ./annotated_data/git/
 ./test_yzx/rag_gt_20250920.txt
 ./baseline/baseline/mcp_copilot/config/*
+*.pkl
+*.json
+*.txt

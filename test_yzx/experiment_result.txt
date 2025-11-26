@@ -1,6 +1,9 @@
 开始批量执行baseline实验
-总共 13 个参数
+总共 1 个参数
 
 ============================================================
-第 1/13 次执行
-参数:TOP_TOOLS=20, insert_number=10
+第 1/1 次执行
+参数:TOP_TOOLS=10, insert_number=0
+baseline执行完成
+Accuracy: 24.21%(23/95)
+参数TOP_TOOLS=10 ,insert_number=0 judge完成

@@ -6,7 +6,7 @@ import torch
 import uvicorn
 
 # 模型路径
-model_path= "/data/labshare/Param/ToolRet/ToolRet-trained-bge-large-en-v1.5"
+model_path = "/data/labshare/Param/Qwen/Qwen3-Embedding-0.6B"
 
 # 加载模型
 tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -36,7 +36,7 @@ async def create_embeddings(request: EmbeddingRequest):
             }
             for i, emb in enumerate(embeddings)
         ],
-        "model": "ToolRet-trained-bge-large-en-v1.5",
+        "model": "qwen3-embedding-0.6b",
         "usage": {
             "prompt_tokens": int(inputs.input_ids.numel()),
             "total_tokens": int(inputs.input_ids.numel())
@@ -44,4 +44,4 @@ async def create_embeddings(request: EmbeddingRequest):
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=7003)
+    uvicorn.run(app, host="0.0.0.0", port=7002)
