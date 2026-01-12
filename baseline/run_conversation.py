@@ -119,43 +119,30 @@ def build_prompt_from_rag(tools_file: str,
     for t in rag_tools:
         if t not in rag_tools_unique:
             rag_tools_unique.append(t)
-    # # RAG 命中正确答案的工具（交集部分）
-    # hit_tools = [t for t in rag_tools_unique if t in answer_tools]  
-
-    # # 剩余工具（rag_tools 里有但不在正确答案里的）
-    # remaining_tools = [t for t in rag_tools_unique if t not in hit_tools]
-
-    # # 控制插入位置不越界
-    # insert_number = max(0, min(insert_number, len(remaining_tools)))
+    # RAG 命中正确答案的工具（交集部分）
+    hit_tools = [t for t in rag_tools_unique if t in answer_tools]  
+    # 剩余工具（rag_tools 里有但不在正确答案里的）
+    remaining_tools = [t for t in rag_tools_unique if t not in hit_tools]
+    # 控制插入位置不越界
+    insert_number = max(0, min(insert_number, len(remaining_tools)))
 
     # 拼接最终顺序
-    #final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
-    final_tools=rag_tools_unique
+    final_tools = remaining_tools[:insert_number] + hit_tools + remaining_tools[insert_number:]
     # 系统提示开头
     prompt_lines = [
-        "You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.\n",
-        "Important rules:\n"
-        "1. You have access to a single execution tool called 'execute-tool'. You must always use this tool to invoke any of the available MCP tools.\n"
-        "2. Never call MCP tools directly. Always select the appropriate tool and call it via 'execute-tool'.\n"
-        "3. Provide accurate and complete responses to the user. You can combine multiple tool calls if necessary, but respond to the user only once.\n"
-        "4. For each tool call, specify:\n"
-        "   - server_name: the MCP server hosting the target tool\n"
-        "   - tool_name: the name of the target tool\n"
-        "   - params: a dictionary of input parameters for the tool\n\n"
-        "Available MCP tools (choose from these, but always call via 'execute-tool'):\n"
+        "Available MCP tools (choose from these):\n"
     ]
-
     # 遍历最终工具列表，拼接到 prompt
     for tool_name in final_tools:
         if tool_name in tools_map:
             t = tools_map[tool_name]
             input_props = t["inputSchema"].get("properties", {})
             prompt_lines.append(
-                f"- {tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(input_props)}"
+                f"\ntool_name:{tool_name} (server: {t['server_id']}): {t['description']}. Input: {json.dumps(input_props)}"
             )
         else:
             prompt_lines.append(
-                f"- {tool_name} (server: unknown): description missing. Input: {{}}"
+                f"\ntool_name:{tool_name} (server: unknown): description missing. Input: {{}}"
             )
             logger.warning(f"RAG tool {tool_name} not found in tools.json")
 
@@ -300,7 +287,7 @@ class LoggingMCPClient(MCPClient):
                 {
                     "role": "system",
                     "content": """\
-You are an agent designed to assist users with daily tasks by using external tools. You have access to two tools: a retrieval tool and an execution tool. The retrieval tool allows you to search a large toolset for relevant tools, and the execution tool lets you invoke the tools you retrieved. Whenever possible, you should use these tools to get accurate, up-to-date information and to perform file operations.
+You are an agent designed to assist users with daily tasks by using external tools. You have access to a retrieval tool. The retrieval tool allows you to search a large toolset for relevant tools. Whenever possible, you should use the tools to get accurate, up-to-date information and to perform file operations.
 
 Note that you can only response to user once and only use the retrieval tool once, so you should try to provide a complete answer in your response.
 """,
@@ -320,16 +307,17 @@ Note that you can only response to user once and only use the retrieval tool onc
             )
             response = await session.list_tools()
             for tool in response.tools:
-                available_tools += [
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": tool.name,
-                            "description": tool.description,
-                            "parameters": tool.inputSchema,
-                        },
-                    }
-                ]
+                if tool.name != "execute-tool":
+                    available_tools += [
+                        {
+                            "type": "function",
+                            "function": {
+                                "name": tool.name,
+                                "description": tool.description,
+                                "parameters": tool.inputSchema,
+                            },
+                        }
+                    ]
                 # 新增：仅包含 execute-tool 的工具列表 + 当前工具列表
                 if tool.name == "execute-tool":
                     available_tools_exec_only += [
@@ -369,7 +357,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                         f"Error in OpenAI response: {response.error['metadata']['raw']}"
                     )
                 response_message = response.choices[0].message
-                #print("response",response_message)
+
                 if response_message.tool_calls:
                     tool_call_list = []
                     for tool_call in response_message.tool_calls:
@@ -525,12 +513,42 @@ Note that you can only response to user once and only use the retrieval tool onc
                                         save_rag_cache(self.rag_number, self.rag_cache)
                                     if not routed:
                                         routed = True
+
                                     rag_tools=extract_tools(result)
                                 
                                     new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
-                                
-                                #print("result",result)
-                     
+                                    sys_prompt = '''You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.You MUST choose from the provided MCP tools list.
+Your task is to select the single best matching MCP tool for the user's request.
+Wrap the output strictly with <ANSWER> and </ANSWER>,If no tool is appropriate, output <ANSWER>no chose</ANSWER>.
+                                    '''
+                                    messages_to_send = []
+                                    messages_to_send.append({"role": "system", "content": new_prompt})
+                                    messages_to_send.append({"role": "user", "content": query+"\n"+sys_prompt})
+
+                                    #print("messages_to_send",messages_to_send)
+                                    import openai
+                                    client = openai.OpenAI(
+                                    api_key="empty",  # Replace with your AIHubMix generated key
+                                    base_url="http://localhost:7001/v1"
+                                    )
+                                    response = client.chat.completions.create(
+                                    model="/home/yzx/models_weight/Fast_dLLM_v2_7B",
+                                    messages=messages_to_send,
+                                    temperature=0.0,
+                                    )
+                                    final_answer = response.choices[0].message.content
+                                    print(final_answer)
+                                    import re
+                                    m = re.search(r"<ANSWER>\s*([^<\n]+)", final_answer, re.I)
+                                    tool_name = m.group(1).strip() if m else "no chose"
+                                    print("tool_name:", tool_name)
+                                    with open("./test_yzx/selected_tools.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"{task_index}.{tool_name}" + "\n")
+                                    with open("./test_yzx/rag_gt.txt", "a", encoding="utf-8") as f:
+                                        f.write(f"LLM chose {tool_name}" + "\n")
+                                    stop_flag = True
+                                    break
+                            #print("result",result)
                         except asyncio.TimeoutError:
                             logger.error(f"Tool call {tool_name} timed out.")
                             result = "Tool call timed out."
@@ -631,4 +649,3 @@ async def main(args):
 if __name__ == "__main__":
     args = parse_args()
     asyncio.run(main(args))
-

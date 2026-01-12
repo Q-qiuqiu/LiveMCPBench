@@ -15,7 +15,7 @@
         "messages": [
             {
                 "role": "system",
-                "content": "You are an agent designed to assist users with daily tasks by using external tools. You have access to two tools: a retrieval tool and an execution tool. The retrieval tool allows you to search a large toolset for relevant tools, and the execution tool lets you invoke the tools you retrieved. Whenever possible, you should use these tools to get accurate, up-to-date information and to perform file operations.\n\nNote that you can only response to user once and only use the retrieval tool once, so you should try to provide a complete answer in your response.\n"
+                "content": "You are an agent designed to assist users with daily tasks by using external tools. You have access to a retrieval tool. The retrieval tool allows you to search a large toolset for relevant tools. Whenever possible, you should use the tools to get accurate, up-to-date information and to perform file operations.\n\nNote that you can only response to user once and only use the retrieval tool once, so you should try to provide a complete answer in your response.\n"
             },
             {
                 "role": "user",
@@ -25,28 +25,10 @@
                 "role": "assistant",
                 "tool_calls": [
                     {
-                        "id": "chatcmpl-tool-2d7608d20ea84eaf8d897b186dd10194",
+                        "id": "chatcmpl-tool-a2545f47d5da4f9da399c204f20d5845",
                         "function": {
-                            "arguments": "{\"query\": \"<tool_assistant>\\nserver: map_service\\ntool: find_attractions_and_parking\\n</tool_assistant>\"}",
+                            "arguments": "{\"query\": \"<tool_assistant>\\nserver: Beijing Tourism and Transportation Information System\\ntool: Find parking locations and nearby attractions within 1km of the Forbidden City\\n</tool_assistant>\"}",
                             "name": "route"
-                        },
-                        "type": "function"
-                    }
-                ]
-            },
-            {
-                "role": "tool",
-                "tool_call_id": "chatcmpl-tool-2d7608d20ea84eaf8d897b186dd10194",
-                "content": "meta=None content=[TextContent(type='text', text='success: false\\nerror: Failed to get embedding for server description\\nserver_description: travel_assistant\\ntool_description: find_attractions_and_parking\\nmatched_servers: []\\nmatched_tools: []\\n', annotations=None)] isError=False"
-            },
-            {
-                "role": "assistant",
-                "tool_calls": [
-                    {
-                        "id": "chatcmpl-tool-d833a5d2498c42a08733d76c104488bb",
-                        "function": {
-                            "arguments": "{\"server_name\": \"maps_server\", \"tool_name\": \"search_location\", \"params\": {\"query\": \"Forbidden City Beijing\", \"radius\": 1000}}",
-                            "name": "execute-tool"
                         },
                         "type": "function"
                     }

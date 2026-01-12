@@ -1,3 +1,3 @@
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=0
 
-python3 test_yzx/qwen_embeding.py
+python3 qwen_embeding.py

@@ -6,7 +6,7 @@ import torch
 import uvicorn
 
 # 模型路径
-model_path = "/data/labshare/Param/Qwen/Qwen3-Embedding-0.6B"
+model_path = "/home/yzx/models_weight/Qwen3-Embedding-0.6B"
 
 # 加载模型
 tokenizer = AutoTokenizer.from_pretrained(model_path)

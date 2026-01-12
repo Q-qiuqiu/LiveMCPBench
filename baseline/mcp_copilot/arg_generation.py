@@ -53,7 +53,7 @@ class McpArgGenerator:
             api_key=embedding_api_key, base_url=embedding_api_url
         )
         self.summary_client = openai.AsyncOpenAI(
-            api_key=abstract_api_key, base_url=abstract_api_url
+            api_key=abstract_api_key, base_url=abstract_api_url, timeout=300.0
         )
 
     async def _get_embedding(
@@ -97,6 +97,7 @@ You are an expert AI technical writer. Based on the following information about 
 Please return only the generated summary text, without any additional titles or preambles.
 """
         try:
+            #print("当前摘要模型：",model)
             response = await self.summary_client.chat.completions.create(
                 model=model,
                 messages=[
@@ -108,6 +109,7 @@ Please return only the generated summary text, without any additional titles or 
                 ],
                 temperature=0.2,
             )
+            #print("摘要响应：",response)
             return response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"Summary Generation Error for '{server_name}': {e}")
