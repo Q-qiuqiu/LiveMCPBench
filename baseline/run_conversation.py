@@ -518,7 +518,7 @@ Note that you can only response to user once and only use the retrieval tool onc
                                 
                                     new_prompt = build_prompt_from_rag(tools_file,rag_tools,answer_tools,insert_number,task_index)
                                     sys_prompt = '''You are an intelligent assistant designed to help users accomplish tasks using a set of MCP tools.You MUST choose from the provided MCP tools list.
-Your task is to select the single best matching MCP tool for the user's request.
+Your task is to select the best matching MCP tool for the user's request.Just answer with the tool name,don't explain anything else.
 Wrap the output strictly with <ANSWER> and </ANSWER>,If no tool is appropriate, output <ANSWER>no chose</ANSWER>.
                                     '''
                                     messages_to_send = []
@@ -532,7 +532,8 @@ Wrap the output strictly with <ANSWER> and </ANSWER>,If no tool is appropriate, 
                                     base_url="http://localhost:7001/v1"
                                     )
                                     response = client.chat.completions.create(
-                                    model="/home/yzx/models_weight/Fast_dLLM_v2_7B",
+                                    #model="/home/yzx/models_weight/Fast_dLLM_v2_7B",
+                                    model="/home/yzx/models_weight/Qwen2.5-7B-Instruct",
                                     messages=messages_to_send,
                                     temperature=0.0,
                                     )

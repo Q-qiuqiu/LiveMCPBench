@@ -6,7 +6,7 @@ client = openai.OpenAI(
 )
 prompt='''You are an AI assistant that helps people find information.'''
 response = client.chat.completions.create(
-  model="qwen2.5-72b-instruct",
+  model="qwen3-30b-a3b-instruct-2507",
   messages=[
       {"role": "user", "content": prompt}
   ],

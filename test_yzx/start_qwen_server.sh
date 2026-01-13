@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=4,5,6,7
+export CUDA_VISIBLE_DEVICES=0
 
 # python -m vllm.entrypoints.openai.api_server \
 #     --model /data/labshare/Param/Qwen/qwen3-30b \
@@ -8,10 +8,10 @@ export CUDA_VISIBLE_DEVICES=4,5,6,7
 #     --port 7001
 
 python -m vllm.entrypoints.openai.api_server \
-    --model /data/labshare/Param/Qwen/Qwen3-30B-A3B-Instruct-2507 \
-    --tensor-parallel-size 4 \
+    --model /home/yzx/models_weight/Qwen2.5-7B-Instruct \
+    --tensor-parallel-size 1 \
     --tool-call-parser hermes \
     --enable-auto-tool-choice \
-    --max-model-len 131072 \
+    --max-model-len 32768 \
     --gpu-memory-utilization 0.8 \
     --port 7001

@@ -1,1 +1,95 @@
-0.find_nearby_places
+0.no chose
+1.beat_track
+2.find_parking_facilities
+3.valorant-characters-statistics
+4.suggest_meeting_point
+5.no chose
+6.search_papers
+7.no chose
+8.find_ev_charging_stations
+9.get_historical_stock_prices
+10.trial_getter
+11.get-tickets
+12.buildBaziFromSolarDatetime
+13.no chose
+14.write_file
+15.generate_bar_chart
+16.get_github_trending_repositories
+17.no chose
+18.deepwiki_fetch
+19.no chose
+20.no chose
+21.duckduckgo_web_search
+22.deepwiki_fetch
+23.no chose
+24.create_presentation
+25.excel_read_sheet
+26.get_paper_data
+27.no chose
+28.no chose
+29.read_content
+30.get-tickets
+31.get-crypto-price
+32.mcp_howtocook_recommendMeals
+33.mcp_howtocook_recommendMeals
+34.airbnb_search
+35.lol-champion-analysis
+36.search-museum-objects
+37.no chose
+38.no chose
+39.read_paper
+40.no chose
+41.get_news
+42.get_asset_price
+43.search_cards
+44.no chose
+45.no chose
+46.no chose
+47.read_file
+48.get_latest_release
+49.npmScore
+50.no chose
+51.get_document_info
+52.get_current_stock_price
+53.list_directory_with_sizes
+54.no chose
+55.get_component_examples
+56.no chose
+57.get-smzdm-rank
+58.search_papers
+59.no chose
+60.no chose
+61.get_route_directions
+62.read_file
+63.read_file
+64.get_asset_price
+65.no chose
+66.no chose
+67.no chose
+68.analyze_commute
+69.analyze_neighborhood
+70.get_ticker_data
+71.no chose
+72.get_crypto_fear_greed_index
+73.get_ticker_news
+74.find_nearby_places
+75.get_weather_by_city
+76.list_files
+77.no chose
+78.no chose
+79.getComments
+80.no chose
+81.no chose
+82.read_content
+83.no chose
+84.create_document
+85.no chose
+86.text_diff
+87.no chose
+88.get_current_stock_price
+89.no chose
+90.no chose
+91.get-zhihu-trending
+92.getChineseCalendar
+93.docx_to_pdf
+94.get_cashflow

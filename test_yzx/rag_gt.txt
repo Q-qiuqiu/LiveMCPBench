@@ -1,3 +1,281 @@
-0.Ground-truth tools: ['geocode_address', 'find_parking_facilities', 'find_nearby_places', 'reverse_geocode']
+0.Ground-truth tools: ['get-weread-rank', 'generate_word_cloud_chart', 'create_document', 'add_paragraph', 'add_picture', 'convert_to_pdf']
+RAG selected tools: ['convert_to_pdf', 'docx_to_pdf', 'create_document', 'get_document_info', 'pdf_merger', 'get_document_outline', 'copy_document', 'docx_to_html', 'playwright_save_as_pdf', 'create_presentation_from_template']
+LLM chose no chose
+1.Ground-truth tools: ['load', 'beat_track', 'mfcc', 'chroma_cqt']
+RAG selected tools: ['mfcc', 'chroma_cqt', 'beat_track', 'tempo', 'getSpecialEffects', 'getComponents', 'get_duration', 'tft-play-style-comment', 'tft-champion-item-build', 'load']
+LLM chose beat_track
+2.Ground-truth tools: ['geocode_address', 'find_parking_facilities', 'find_nearby_places', 'reverse_geocode']
 RAG selected tools: ['find_parking_facilities', 'find_nearby_places', 'find_ev_charging_stations', 'suggest_meeting_point', 'search_category', 'explore_area', 'find_schools_nearby', 'analyze_commute', 'generate_pin_map', 'analyze_neighborhood']
+LLM chose find_parking_facilities
+3.Ground-truth tools: ['valorant-characters-statistics']
+RAG selected tools: ['lol-champion-positions-data', 'lol-champion-analysis', 'tft-recommend-champion-for-item', 'tft-play-style-comment', 'lol-brawl-champion-tier-rank', 'valorant-leaderboard', 'valorant-characters-statistics', 'lol-champion-leader-board', 'tft-champion-item-build', 'valorant-meta-characters']
+LLM chose valorant-characters-statistics
+4.Ground-truth tools: ['geocode_address', 'suggest_meeting_point', 'find_nearby_places', 'reverse_geocode']
+RAG selected tools: ['suggest_meeting_point', 'find_nearby_places', 'find_parking_facilities', 'search_category', 'generate_pin_map', 'explore_area', 'analyze_commute', 'generate_path_map', 'airbnb_listing_details', 'geocode_address']
+LLM chose suggest_meeting_point
+5.Ground-truth tools: ['get-bilibili-rank', 'get-gcores-new', 'get-weibo-trending', 'get-douyin-trending']
+RAG selected tools: ['get_github_trending_developers', 'get_github_trending_repositories', 'get_related_topics', 'npmTrends', 'search', 'duckduckgo_web_search', 'get-sspai-rank', 'get-theverge-news', 'get-tencent-news-trending', 'get_ticker_news']
+LLM chose no chose
+6.Ground-truth tools: ['search_papers', 'get_paper_data']
+RAG selected tools: ['search_papers', 'search_papers', 'search_wikipedia', 'search_notes', 'article_searcher', 'get_server_info', 'get_paper_data', 'search', 'duckduckgo_web_search', 'search']
+LLM chose search_papers
+7.Ground-truth tools: ['whois_domain', 'get_sitemap_tree', 'write_file']
+RAG selected tools: ['get_component_details', 'tft-meta-item-combinations', 'get_platform_usage', 'read_graph', 'search_components', 'git_checkout', 'list_icons', 'list_shadcn_components', 'get_codegen_session', 'tft-play-style-comment']
+LLM chose no chose
+8.Ground-truth tools: ['geocode_address', 'get_route_directions', 'find_ev_charging_stations', 'reverse_geocode']
+RAG selected tools: ['find_ev_charging_stations', 'generate_path_map', 'find_parking_facilities', 'get_route_directions', 'analyze_commute', 'generate_pin_map', 'get_codegen_session', 'open_nodes', 'tft-meta-item-combinations', 'git_checkout']
+LLM chose find_ev_charging_stations
+9.Ground-truth tools: ['get_historical_stock_prices', 'get_news', 'get_recommendations', 'create_presentation', 'save_presentation']
+RAG selected tools: ['get_recommendations', 'get_ticker_info', 'get_ticker_data', 'search', 'get-historical-analysis', 'get_current_stock_price', 'get_news', 'get-market-analysis', 'get_historical_stock_prices', 'get_income_statement']
+LLM chose get_historical_stock_prices
+10.Ground-truth tools: ['trial_references', 'write_file']
+RAG selected tools: ['trial_getter', 'trial_searcher', 'trial_outcomes_getter', 'fetch', 'search', 'trial_references_getter', 'trial_protocol_getter', 'trial_locations_getter', 'article_searcher', 'get_component_details']
+LLM chose trial_getter
+11.Ground-truth tools: ['get_current_time', 'get-station-code-of-citys', 'get-tickets']
+RAG selected tools: ['get-interline-tickets', 'get-train-route-stations', 'get-tickets', 'get-station-code-by-names', 'analyze_commute', 'get_cnn_fear_greed_index', 'get-station-by-telecode', 'get_route_directions', 'get-crypto-price', 'get_asset_price']
+LLM chose get-tickets
+12.Ground-truth tools: ['getBaziDetail']
+RAG selected tools: ['getBaziDetail', 'buildBaziFromSolarDatetime', 'get_cnn_fear_greed_index', 'search_components', 'get_component_details', 'buildBaziFromLunarDatetime', 'getSpecialEffects', 'get_platform_usage', 'tft-play-style-comment', 'get_document_outline']
+LLM chose buildBaziFromSolarDatetime
+13.Ground-truth tools: ['get-daily-challenge', 'write_file']
+RAG selected tools: ['getUserSubmissions', 'get_cnn_fear_greed_index', 'search', 'get-crypto-price', 'valorant-leaderboard', 'get_earning_dates', 'getStoryWithComments', 'get_github_trending_developers', 'get_slide_info', 'getComments']
+LLM chose no chose
+14.Ground-truth tools: ['list-components', 'list-component-examples', 'get-component-docs', 'write_file']
+RAG selected tools: ['git_add', 'write_file', 'create_document', 'copy_document', 'excel_create_table', 'playwright_fill', 'save_presentation', 'playwright_upload_file', 'get_document_info', 'list_files']
+LLM chose write_file
+15.Ground-truth tools: ['excel_read_sheet', 'generate_bar_chart']
+RAG selected tools: ['excel_read', 'excel_describe_sheets', 'excel_read_sheet', 'excel_create_table', 'add_chart', 'excel_write_to_sheet', 'excel_copy_sheet', 'generate_bar_chart', 'read_paper', 'document_reader']
+LLM chose generate_bar_chart
+16.Ground-truth tools: ['get_github_trending_repositories', 'deepwiki_fetch', 'write_file']
+RAG selected tools: ['get_github_trending_repositories', 'get_github_trending_developers', 'git_branch', 'npmRepoStats', 'npmTrends', 'git_checkout', 'tag_list', 'search', 'get_related_topics', 'git_diff']
+LLM chose get_github_trending_repositories
+17.Ground-truth tools: ['validateMermaid']
+RAG selected tools: ['NO ROUTE']
+LLM chose no chose
+18.Ground-truth tools: ['research-with-keywords', 'write_file']
+RAG selected tools: ['get_component_details', 'get_codegen_session', 'deepwiki_fetch', 'get_summary', 'get_paper_data', 'read_graph', 'tft-play-style-comment', 'valorant-agents-composition-with-map', 'get_presentation_info', 'create_entities']
+LLM chose deepwiki_fetch
+19.Ground-truth tools: ['fetch', 'write_file']
+RAG selected tools: ['search', 'get_paper_data', 'search_notes', 'get_component_details', 'get_slide_info', 'tft-play-style-comment', 'summarize_article_section', 'extract_key_facts', 'get_summary', 'search_papers']
+LLM chose no chose
+20.Ground-truth tools: ['getStories', 'get-36kr-trending', 'get-bbc-news', 'get-theverge-news']
+RAG selected tools: ['get_ticker_news', 'getStories', 'get_news', 'search', 'search', 'get_github_trending_developers', 'npmTrends', 'get_github_trending_repositories', 'tag_list', 'getStoryWithComments']
+LLM chose no chose
+21.Ground-truth tools: ['get-smzdm-rank', 'excel_write_to_sheet']
+RAG selected tools: ['get_asset_price', 'npmAlternatives', 'duckduckgo_web_search', 'tft-meta-item-combinations', 'airbnb_search', 'search_components', 'search', 'airbnb_listing_details', 'search_notes', 'search_wikipedia']
+LLM chose duckduckgo_web_search
+22.Ground-truth tools: ['deepwiki_fetch', 'convert_markdown_to_mindmap']
+RAG selected tools: ['get_article', 'deepwiki_fetch', 'fetch_markdown', 'get_codegen_session', 'summarize_article_section', 'canvas', 'get_document_info', 'get_document_outline', 'get_sections', 'search_notes']
+LLM chose deepwiki_fetch
+23.Ground-truth tools: ['drawing_generateCanvas', 'drawing_fillRectangle', 'drawing_getCanvasPng']
+RAG selected tools: ['git_checkout', 'tft-play-style-comment', 'get_component_details', 'tft-recommend-champion-for-item', 'get_platform_usage', 'tft-champion-item-build', 'tft-meta-item-combinations', 'get_slide_info', 'search_components', 'whois_domain']
+LLM chose no chose
+24.Ground-truth tools: ['ddg-search', 'create_presentation', 'add_slide', 'save_presentation']
+RAG selected tools: ['create_presentation', 'get_presentation_info', 'create_presentation_from_template', 'auto_generate_presentation', 'save_presentation', 'add_slide', 'switch_presentation', 'list_presentations', 'get_slide_info', 'add_slide_with_layout']
+LLM chose create_presentation
+25.Ground-truth tools: ['excel_read_sheet', 'calculate']
+RAG selected tools: ['excel_read', 'excel_read_sheet', 'excel_describe_sheets', 'excel_create_table', 'excel_write_to_sheet', 'excel_copy_sheet', 'get_document_outline', 'document_reader', 'get_document_text', 'docx_to_pdf']
+LLM chose excel_read_sheet
+26.Ground-truth tools: ['get_paper_data', 'fetch']
+RAG selected tools: ['getStory', 'getStoryWithComments', 'getComment', 'fetch_webpage', 'get_article', 'getUser', 'get_paper_data', 'package_show', 'get_slide_info', 'get_summary']
+LLM chose get_paper_data
+27.Ground-truth tools: ['article_searcher', 'trial_searcher', 'variant_searcher', 'write_file']
+RAG selected tools: ['search', 'getComponents', 'search_components', 'tft-meta-item-combinations', 'article_searcher', 'fetch', 'getSpecialEffects', 'list_shadcn_components', 'get_component_details', 'get_options']
+LLM chose no chose
+28.Ground-truth tools: ['get_transcript', 'convert_markdown_to_mindmap']
+RAG selected tools: ['get_transcript', 'summarize_article_section', 'extract_key_facts', 'get_document_text', 'get_presentation_info', 'get_summary', 'html_extract_resources', 'summarize_article_for_query', 'get_paragraph_text_from_document', 'get_slide_info']
+LLM chose no chose
+29.Ground-truth tools: ['summarize_article_for_query', 'write_file']
+RAG selected tools: ['read_content', 'read_paper', 'read_graph', 'read_file', 'read_pdf', 'excel_read_sheet', 'git_add', 'get_document_info', 'fetch_json', 'get_document_outline']
+LLM chose read_content
+30.Ground-truth tools: ['get-current-date', 'get-station-code-of-citys', 'get-tickets', 'geocode_address', 'find_nearby_places', 'get_route_directions', 'reverse_geocode']
+RAG selected tools: ['get-train-route-stations', 'get-interline-tickets', 'get_route_directions', 'generate_path_map', 'analyze_commute', 'get-tickets', 'get-station-code-by-names', 'get-station-code-of-citys', 'get-station-by-telecode', 'get_cnn_fear_greed_index']
+LLM chose get-tickets
+31.Ground-truth tools: ['get_current_time', 'get-crypto-price', 'get-market-analysis']
+RAG selected tools: ['get-crypto-price', 'get_crypto_fear_greed_index', 'get_cashflow', 'get-market-analysis', 'exchange_rate', 'get_asset_price', 'search', 'get-historical-analysis', 'get_price_history', 'get_news']
+LLM chose get-crypto-price
+32.Ground-truth tools: ['mcp_howtocook_recommendMeals']
+RAG selected tools: ['mcp_howtocook_recommendMeals', 'tft-meta-item-combinations', 'mcp_howtocook_getAllRecipes', 'generate_path_map', 'mcp_howtocook_whatToEat', 'mcp_howtocook_getRecipeById', 'npmAlternatives', 'getUIComponents', 'tft-play-style-comment', 'search']
+LLM chose mcp_howtocook_recommendMeals
+33.Ground-truth tools: ['mcp_howtocook_whatToEat', 'mcp_howtocook_getRecipeById']
+RAG selected tools: ['mcp_howtocook_recommendMeals', 'mcp_howtocook_whatToEat', 'suggest_meeting_point', 'mcp_howtocook_getRecipeById', 'mcp_howtocook_getRecipesByCategory', 'tft-meta-item-combinations', 'generate_venn_chart', 'tft-play-style-comment', 'lol-champion-analysis', 'mcp_howtocook_getAllRecipes']
+LLM chose mcp_howtocook_recommendMeals
+34.Ground-truth tools: ['get_current_time', 'airbnb_search']
+RAG selected tools: ['airbnb_listing_details', 'airbnb_search', 'whois_ip', 'whois_domain', 'search_components', 'getUserSubmissions', 'get_component_details', 'valorant-agents-composition-with-map', 'search', 'search_notes']
+LLM chose airbnb_search
+35.Ground-truth tools: ['lol-champion-positions-data', 'lol-champion-analysis']
+RAG selected tools: ['tft-recommend-champion-for-item', 'lol-champion-positions-data', 'lol-champion-analysis', 'tft-champion-item-build', 'tft-play-style-comment', 'lol-brawl-champion-tier-rank', 'lol-champion-leader-board', 'lol-champion-skin-sale', 'valorant-meta-characters', 'valorant-characters-statistics']
+LLM chose lol-champion-analysis
+36.Ground-truth tools: ['search-museum-objects', 'get-museum-object']
+RAG selected tools: ['get_slide_info', 'search-museum-objects', 'package_show', 'tft-meta-item-combinations', 'get_paper_data', 'get_presentation_info', 'search_notes', 'get_component_details', 'search', 'search_components']
+LLM chose search-museum-objects
+37.Ground-truth tools: ['playwright_navigate', 'playwright_screenshot', 'playwright_get_visible_html', 'playwright_fill', 'playwright_click']
+RAG selected tools: ['getDeviceMocks', 'get-9to5mac-news', 'get_asset_price', 'generate_radar_chart', 'get_platform_usage', 'tft-meta-item-combinations', 'get-crypto-price', 'tft-champion-item-build', 'get_cnn_fear_greed_index', 'whois_ip']
+LLM chose no chose
+38.Ground-truth tools: ['document_reader', 'search_papers']
+RAG selected tools: ['search_papers', 'search_papers', 'article_searcher', 'search', 'search_wikipedia', 'list_categories', 'search_notes', 'get_paper_data', 'get_related_topics', 'list_papers']
+LLM chose no chose
+39.Ground-truth tools: ['search_papers', 'get_paper_data', 'write_file']
+RAG selected tools: ['get_paper_data', 'download_paper', 'read_graph', 'search_papers', 'read_paper', 'get_document_info', 'list_papers', 'getStoryWithComments', 'get_document_outline', 'git_checkout']
+LLM chose read_paper
+40.Ground-truth tools: ['get-9to5mac-news', 'create_presentation', 'add_slide', 'save_presentation']
+RAG selected tools: ['get_slide_info', 'get_presentation_info', 'get_codegen_session', 'package_show', 'get_server_info', 'update_categories', 'get_component_details', 'tft-meta-item-combinations', 'npmLatest', 'getUserSubmissions']
+LLM chose no chose
+41.Ground-truth tools: ['get-36kr-trending', 'get-netease-news-trending', 'get-nytimes-news', 'get_news', 'get_current_stock_price', 'write_file']
+RAG selected tools: ['get_ticker_data', 'search', 'get_ticker_info', 'get_cashflow', 'get_news', 'get-historical-analysis', 'get_income_statement', 'get_historical_stock_prices', 'get_ticker_news', 'get-crypto-price']
+LLM chose get_news
+42.Ground-truth tools: ['get_asset_price', 'calculate']
+RAG selected tools: ['get_asset_price', 'get-crypto-price', 'get_earning_dates', 'valorant-leaderboard', 'tft-champion-item-build', 'get_current_stock_price', 'tft-recommend-champion-for-item', 'tft-meta-item-combinations', 'valorant-agents-composition-with-map', 'get_component_details']
+LLM chose get_asset_price
+43.Ground-truth tools: ['search_cards', 'get_card_image']
+RAG selected tools: ['get_card_by_id', 'get_card_image', 'get_slide_info', 'search_cards', 'search_components', 'search_icons', 'getStory', 'tft-meta-trend-deck-list', 'tft-meta-item-combinations', 'package_show']
+LLM chose search_cards
+44.Ground-truth tools: ['resolve-library-id', 'get-library-docs', 'write_file']
+RAG selected tools: ['git_add', 'write_file', 'create_document', 'copy_document', 'excel_create_table', 'playwright_fill', 'save_presentation', 'playwright_upload_file', 'get_document_info', 'list_files']
+LLM chose no chose
+45.Ground-truth tools: ['package_search', 'package_show', 'execute_command']
+RAG selected tools: ['get_cnn_fear_greed_index', 'get_weather_by_city', 'valorant-agents-composition-with-map', 'package_show', 'get_weather', 'npmQuality', 'get_component_details', 'get_asset_price', 'get_paper_data', 'package_search']
+LLM chose no chose
+46.Ground-truth tools: ['fetch', 'extract_image_from_url', 'write_file']
+RAG selected tools: ['npmMaintenance', 'npmQuality', 'analyze_presentation_layouts', 'canvas', 'tft-meta-item-combinations', 'getComponents', 'generate_radar_chart', 'tag_list', 'tft-play-style-comment', 'valorant-agents-composition-with-map']
+LLM chose no chose
+47.Ground-truth tools: ['get_text_file_contents']
+RAG selected tools: ['read_content', 'read_graph', 'get_text_file_contents', 'read_paper', 'read_file', 'text_splitter', 'read_file', 'excel_read_sheet', 'read_pdf', 'edit_text_file_contents']
+LLM chose read_file
+48.Ground-truth tools: ['get_maven_latest_version']
+RAG selected tools: ['npmLatest', 'npmVersions', 'get_latest_release', 'npmAlternatives', 'npmSearch', 'check_maven_version_exists', 'npmChangelogAnalysis', 'package_search', 'npmDeprecated', 'npmVulnerabilities']
+LLM chose get_latest_release
+49.Ground-truth tools: ['npmDeps', 'npmSize', 'npmCompare', 'write_file']
+RAG selected tools: ['npmQuality', 'npmMaintenance', 'tft-play-style-comment', 'npmScore', 'npmChangelogAnalysis', 'get_codegen_session', 'git_diff', 'get_platform_usage', 'analyze_presentation_layouts', 'getComments']
+LLM chose npmScore
+50.Ground-truth tools: ['list_directory', 'read_pdf', 'write_file']
+RAG selected tools: ['read_graph', 'read_pdf', 'list_papers', 'read_paper', 'excel_read_sheet', 'excel_describe_sheets', 'get_text_file_contents', 'group_list', 'tag_list', 'git_checkout']
+LLM chose no chose
+51.Ground-truth tools: ['search_wikipedia', 'get-36kr-trending', 'create_document', 'add_paragraph']
+RAG selected tools: ['get_presentation_info', 'get_slide_info', 'package_show', 'get_summary', 'valorant-agents-composition-with-map', 'get_paper_data', 'get_codegen_session', 'get_component_details', 'get_document_info', 'get_server_info']
+LLM chose get_document_info
+52.Ground-truth tools: ['get_current_time', 'get_stock_ohlcv', 'get_stock_market_cap', 'calculate']
+RAG selected tools: ['get_ticker_info', 'get_historical_stock_prices', 'get_current_stock_price', 'get_stock_price_date_range', 'get-crypto-price', 'get_stock_price_by_date', 'get_ticker_data', 'search', 'get-market-analysis', 'get-historical-analysis']
+LLM chose get_current_stock_price
+53.Ground-truth tools: ['git_status', 'git_log']
+RAG selected tools: ['list_directory', 'list_directory', 'list_directory_with_sizes', 'list_files', 'group_list', 'list_available_documents', 'tag_list', 'list_papers', 'list_shadcn_components', 'git_status']
+LLM chose list_directory_with_sizes
+54.Ground-truth tools: ['get_character_info', 'get_artifact_info']
+RAG selected tools: ['valorant-agents-composition-with-map', 'tft-play-style-comment', 'tft-meta-item-combinations', 'get_component_details', 'tft-recommend-champion-for-item', 'get_recommendations', 'generate_organization_chart', 'list_shadcn_components', 'getUIComponents', 'npmQuality']
+LLM chose no chose
+55.Ground-truth tools: ['search_components', 'get_component_details', 'write_file']
+RAG selected tools: ['get_codegen_session', 'get_platform_usage', 'git_checkout', 'html_formatter', 'end_codegen_session', 'start_codegen_session', 'tft-meta-item-combinations', 'get_component_examples', 'tft-play-style-comment', 'getUserSubmissions']
+LLM chose get_component_examples
+56.Ground-truth tools: ['get-douban-rank', 'create_document', 'add_paragraph', 'convert_to_pdf']
+RAG selected tools: ['npmTrends', 'get_github_trending_repositories', 'get_github_trending_developers', 'get_summary', 'search', 'summarize_article_for_query', 'get_ticker_news', 'get-historical-analysis', 'tag_list', 'get_related_topics']
+LLM chose no chose
+57.Ground-truth tools: ['get-ifanr-news', 'get-smzdm-rank']
+RAG selected tools: ['generate_radar_chart', 'get-market-analysis', 'get_github_trending_developers', 'generate_line_chart', 'duckduckgo_web_search', 'get_asset_price', 'get-sspai-rank', 'get-smzdm-rank', 'get_recommendations', 'generate_word_cloud_chart']
+LLM chose get-smzdm-rank
+58.Ground-truth tools: ['search_papers', 'download_paper', 'read_paper']
+RAG selected tools: ['get_paper_data', 'search_papers', 'download_paper', 'list_papers', 'article_searcher', 'trial_references_getter', 'search_papers', 'get_ticker_news', 'getUserSubmissions', 'get_summary']
+LLM chose search_papers
+59.Ground-truth tools: ['search_wikipedia', 'playwright_navigate', 'playwright_get_visible_html', 'playwright_fill', 'playwright_click']
+RAG selected tools: ['tft-play-style-comment', 'get_platform_usage', 'tft-recommend-champion-for-item', 'generate_radar_chart', 'tft-champion-item-build', 'valorant-agents-composition-with-map', 'tft-meta-item-combinations', 'valorant-leaderboard', 'get_server_info', 'get_cnn_fear_greed_index']
+LLM chose no chose
+60.Ground-truth tools: ['extract_image_from_base64']
+RAG selected tools: ['extract_image_from_base64', 'drawing_getCanvasPng', 'text_encoding_converter', 'drawing_getCanvasData', 'add_picture', 'save_svg_code', 'list_icons', 'fetch_json', 'extract_image_from_url', 'read_content']
+LLM chose no chose
+61.Ground-truth tools: ['geocode_address', 'get_route_directions', 'reverse_geocode']
+RAG selected tools: ['find_schools_nearby', 'get_route_directions', 'generate_path_map', 'analyze_commute', 'find_parking_facilities', 'list-departments', 'suggest_meeting_point', 'find_ev_charging_stations', 'get-station-code-of-citys', 'get_component_details']
+LLM chose get_route_directions
+LLM chose read_file
+63.Ground-truth tools: ['document_reader']
+RAG selected tools: ['read_graph', 'read_paper', 'read_content', 'get_document_info', 'get_document_outline', 'getUserSubmissions', 'git_show', 'read_pdf', 'get_article', 'read_file']
+LLM chose read_file
+64.Ground-truth tools: ['get_asset_price', 'calculate']
+RAG selected tools: ['get_asset_price', 'get-crypto-price', 'valorant-leaderboard', 'get_current_stock_price', 'lol-champion-skin-sale', 'tft-champion-item-build', 'get_component_details', 'valorant-agents-composition-with-map', 'get_cnn_fear_greed_index', 'tft-recommend-champion-for-item']
+LLM chose get_asset_price
+65.Ground-truth tools: ['playwright_navigate', 'playwright_screenshot', 'playwright_get_visible_html', 'playwright_fill', 'playwright_click']
+RAG selected tools: ['get_asset_price', 'tft-recommend-champion-for-item', 'generate_radar_chart', 'get_github_trending_developers', 'get_platform_usage', 'get-crypto-price', 'tft-meta-item-combinations', 'tft-play-style-comment', 'get-market-analysis', 'search']
+LLM chose no chose
+66.Ground-truth tools: ['read_file', 'create_document', 'open_document', 'add_paragraph']
+RAG selected tools: ['get_document_outline', 'get_document_info', 'convert_to_pdf', 'get_paper_data', 'download_paper', 'format_convert', 'search_papers', 'copy_document', 'read_graph', 'get_document_text']
+LLM chose no chose
+67.Ground-truth tools: ['search_wikipedia', 'write_file']
+RAG selected tools: ['get_codegen_session', 'list_icons', 'get_server_info', 'extract_image_from_file', 'get_component_details', 'tft-meta-item-combinations', 'get_document_info', 'list_shadcn_components', 'get_paper_data', 'get_platform_usage']
+LLM chose no chose
+68.Ground-truth tools: ['geocode_address', 'analyze_commute']
+RAG selected tools: ['analyze_commute', 'generate_path_map', 'get_route_directions', 'git_checkout', 'find_parking_facilities', 'get_cnn_fear_greed_index', 'find_ev_charging_stations', 'valorant-agents-composition-with-map', 'analyze_neighborhood', 'git_diff']
+LLM chose analyze_commute
+69.Ground-truth tools: ['geocode_address', 'analyze_neighborhood']
+RAG selected tools: ['analyze_neighborhood', 'explore_area', 'find_parking_facilities', 'find_nearby_places', 'find_schools_nearby', 'search_category', 'geocode_address', 'analyze_commute', 'find_ev_charging_stations', 'suggest_meeting_point']
+LLM chose analyze_neighborhood
+70.Ground-truth tools: ['load_all_tickers', 'get_stock_fundamental']
+RAG selected tools: ['get_cashflow', 'get_income_statement', 'get_ticker_info', 'valorant-agents-composition-with-map', 'get_earning_dates', 'get_ticker_data', 'get_component_details', 'package_show', 'whois_ip', 'search']
+LLM chose get_ticker_data
+71.Ground-truth tools: ['get-36kr-trending', 'get-bbc-news', 'get-nytimes-news']
+RAG selected tools: ['get_ticker_news', 'search', 'get_ticker_data', 'generate_word_cloud_chart', 'extract_key_facts', 'get_news', 'get_recommendations', 'get_ticker_info', 'duckduckgo_web_search', 'get_related_topics']
+LLM chose no chose
+72.Ground-truth tools: ['get_cnn_fear_greed_index', 'get-bbc-news']
+RAG selected tools: ['get_crypto_fear_greed_index', 'search', 'valorant-leaderboard', 'getComponents', 'valorant-agents-composition-with-map', 'search_components', 'getSpecialEffects', 'getUserSubmissions', 'tft-play-style-comment', 'list_shadcn_components']
+LLM chose get_crypto_fear_greed_index
+73.Ground-truth tools: ['get-bbc-news', 'get_crypto_fear_greed_index']
+RAG selected tools: ['get_news', 'get_ticker_news', 'search', 'getStories', 'get_github_trending_repositories', 'getComments', 'getUserSubmissions', 'get_github_trending_developers', 'getStoryWithComments', 'search']
+LLM chose get_ticker_news
+74.Ground-truth tools: ['geocode_address', 'search_category', 'get_route_directions', 'reverse_geocode']
+RAG selected tools: ['generate_path_map', 'get_route_directions', 'analyze_commute', 'find_parking_facilities', 'find_nearby_places', 'geocode_address', 'getComponents', 'list-departments', 'suggest_meeting_point', 'search_components']
 LLM chose find_nearby_places
+75.Ground-truth tools: ['get_weather']
+RAG selected tools: ['get_weather', 'get_weather_by_city', 'get-crypto-price', 'tft-meta-item-combinations', 'tag_list', 'get_summary', 'package_show', 'package_search', 'group_list', 'getUserSubmissions']
+LLM chose get_weather_by_city
+LLM chose list_files
+77.Ground-truth tools: ['get-juejin-article-rank', 'getStories', 'get-infoq-news']
+RAG selected tools: ['get_news', 'get_ticker_news', 'get_platform_usage', 'getUserSubmissions', 'search', 'valorant-agents-composition-with-map', 'get_github_trending_developers', 'getStories', 'get_github_trending_repositories', 'getStoryWithComments']
+LLM chose no chose
+78.Ground-truth tools: ['get_weather_by_city', 'geocode_address', 'find_nearby_places', 'reverse_geocode']
+RAG selected tools: ['generate_path_map', 'analyze_commute', 'get_route_directions', 'suggest_meeting_point', 'airbnb_search', 'get_cnn_fear_greed_index', 'airbnb_listing_details', 'find_nearby_places', 'generate_pin_map', 'explore_area']
+LLM chose no chose
+79.Ground-truth tools: ['getStoryWithComments']
+RAG selected tools: ['getComments', 'getStoryWithComments', 'search', 'getCommentTree', 'getStories', 'getStory', 'tft-play-style-comment', 'get_component_details', 'summarize_article_section', 'search_notes']
+LLM chose getComments
+80.Ground-truth tools: ['get-bbc-news']
+RAG selected tools: ['get_ticker_news', 'get_news', 'search', 'get_ticker_data', 'get_cashflow', 'get_income_statement', 'get_ticker_info', 'get-crypto-price', 'get-market-analysis', 'get_recommendations']
+LLM chose no chose
+81.Ground-truth tools: ['playwright_navigate', 'playwright_click', 'playwright_fill', 'playwright_get_visible_html']
+RAG selected tools: ['tft-meta-item-combinations', 'search_components', 'search_notes', 'search_wikipedia', 'airbnb_search', 'group_list', 'git_checkout', 'search', 'package_search', 'get_asset_price']
+LLM chose no chose
+82.Ground-truth tools: ['get_article', 'write_file']
+RAG selected tools: ['read_content', 'read_paper', 'read_graph', 'read_file', 'read_pdf', 'excel_read_sheet', 'git_add', 'get_document_info', 'fetch_json', 'get_document_outline']
+LLM chose read_content
+83.Ground-truth tools: ['random_sample']
+RAG selected tools: ['tft-recommend-champion-for-item', 'valorant-leaderboard', 'tft-play-style-comment', 'git_checkout', 'search_components', 'get_turn', 'playwright_select', 'puppeteer_select', 'tft-meta-item-combinations', 'getUserSubmissions']
+LLM chose no chose
+84.Ground-truth tools: ['create_document', 'add_heading', 'add_table', 'add_paragraph', 'add_footnote_to_document', 'add_picture']
+RAG selected tools: ['add_heading', 'add_table', 'add_table', 'format_table', 'customize_footnote_style', 'create_document', 'get_document_outline', 'add_paragraph', 'apply_slide_template', 'excel_create_table']
+LLM chose create_document
+85.Ground-truth tools: ['whois_domain']
+RAG selected tools: ['npmVulnerabilities', 'get_sitemap_stats', 'fetch_markdown', 'fetch_html', 'whois_domain', 'whois_ip', 'npmLicenseCompatibility', 'fetch', 'npmQuality', 'fetch_txt']
+LLM chose no chose
+86.Ground-truth tools: ['text_diff']
+RAG selected tools: ['text_diff', 'git_diff', 'git_branch', 'git_checkout', 'npmLicenseCompatibility', 'npmAlternatives', 'git_log', 'npmChangelogAnalysis', 'git_status', 'npmDeprecated']
+LLM chose text_diff
+87.Ground-truth tools: ['generate_pie_chart', 'exchange_rate']
+RAG selected tools: ['get-historical-analysis', 'get_ticker_data', 'get_recommendations', 'npmQuality', 'get_income_statement', 'npmMaintenance', 'get_cashflow', 'generate_bar_chart', 'search', 'generate_radar_chart']
+LLM chose no chose
+88.Ground-truth tools: ['get_ticker_info']
+RAG selected tools: ['get_current_stock_price', 'get_stock_price_by_date', 'get_historical_stock_prices', 'get-crypto-price', 'get_stock_price_date_range', 'get_ticker_info', 'get_news', 'get_cashflow', 'get-historical-analysis', 'search']
+LLM chose get_current_stock_price
+89.Ground-truth tools: ['duckduckgo_web_search', 'search_wikipedia', 'get_article']
+RAG selected tools: ['get_cnn_fear_greed_index', 'get_component_details', 'search_components', 'search', 'getSpecialEffects', 'search', 'generate_line_chart', 'generate_radar_chart', 'generate_fishbone_diagram', 'extract_key_facts']
+LLM chose no chose
+90.Ground-truth tools: ['get-station-code-by-names', 'get-tickets']
+RAG selected tools: ['get_cnn_fear_greed_index', 'search_components', 'get_component_details', 'valorant-leaderboard', 'getUserSubmissions', 'get_earning_dates', 'find_ev_charging_stations', 'tft-meta-item-combinations', 'get_platform_usage', 'generate_path_map']
+LLM chose no chose
+91.Ground-truth tools: ['get-bilibili-rank', 'get-zhihu-trending']
+RAG selected tools: ['get_github_trending_developers', 'get_github_trending_repositories', 'get_related_topics', 'search', 'npmTrends', 'get-douyin-trending', 'get-weibo-trending', 'duckduckgo_web_search', 'get_ticker_news', 'get-zhihu-trending']
+LLM chose get-zhihu-trending
+92.Ground-truth tools: ['get_current_time', 'getChineseCalendar']
+RAG selected tools: ['buildBaziFromLunarDatetime', 'getBaziDetail', 'buildBaziFromSolarDatetime', 'getChineseCalendar', 'get_earning_dates', 'whois_domain', 'tft-play-style-comment', 'get_cnn_fear_greed_index', 'suggest_meeting_point', 'search']
+LLM chose getChineseCalendar
+93.Ground-truth tools: ['docx_to_pdf', 'pdf_merger']
+RAG selected tools: ['convert_to_pdf', 'docx_to_pdf', 'get_document_outline', 'get_document_info', 'copy_document', 'text_encoding_converter', 'docx_to_html', 'get_document_text', 'format_convert', 'pdf_merger']
+LLM chose docx_to_pdf
+94.Ground-truth tools: ['get_stock_price_date_range', 'get_income_statement', 'get_cashflow', 'get_news']
+RAG selected tools: ['get_asset_price', 'get_cashflow', 'tft-meta-item-combinations', 'get-market-analysis', 'get-crypto-price', 'npmQuality', 'get_institutional_holders', 'get_cnn_fear_greed_index', 'npmMaintenance', 'get-historical-analysis']
+LLM chose get_cashflow

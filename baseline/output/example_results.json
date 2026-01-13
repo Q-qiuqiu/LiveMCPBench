@@ -22,15 +22,17 @@
                 "content": "I'm planning a trip to the Forbidden City in Beijing, show me where to park and what's interesting to do within 1km distance?"
             },
             {
+                "content": "",
                 "role": "assistant",
                 "tool_calls": [
                     {
-                        "id": "chatcmpl-tool-a2545f47d5da4f9da399c204f20d5845",
+                        "id": "call_fd137a29f2d64f98b94388",
                         "function": {
-                            "arguments": "{\"query\": \"<tool_assistant>\\nserver: Beijing Tourism and Transportation Information System\\ntool: Find parking locations and nearby attractions within 1km of the Forbidden City\\n</tool_assistant>\"}",
+                            "arguments": "{\"query\": \"<tool_assistant>\\nserver: Beijing Tourism Information Platform\\ntool: Find parking locations and nearby attractions within 1km of the Forbidden City\\n</tool_assistant>\"}",
                             "name": "route"
                         },
-                        "type": "function"
+                        "type": "function",
+                        "index": 0
                     }
                 ]
             }
